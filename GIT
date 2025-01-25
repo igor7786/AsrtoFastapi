@@ -1,5 +1,5 @@
 #####…or create a new repository on the command line####
-echo "# Astro-FastApi" >> README.md
+echo "# Astro-FastApI" >> README.md
 
 git init
 git add README.md
