@@ -1,0 +1,17 @@
+---
+import '@/styles/globals.css';
+import Head from '../layouts/Head.astro';
+import Body from '../layouts/Body.astro';
+import { ModeToggle } from '../components/reactcomp/ModeToggle';
+import AiChat from '../components/reactcomp/AiChat';
+---
+
+<!doctype html>
+<html lang="en">
+  <Head title="AI page" />
+  <Body>
+    <ModeToggle client:only="react" />
+    <AiChat client:only="react" />
+    <script is:inline src="../../public/scripts-lib/theme-dark-white.js"></script>
+  </Body>
+</html>
