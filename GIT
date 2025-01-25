@@ -1,0 +1,86 @@
+#####…or create a new repository on the command line####
+echo "# Astro-FastApi" >> README.md
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:igor7786/Astro-FastApi.git
+git push -u origin main
+
+#########…or push an existing repository from the command line####
+git remote add origin git@github.com:igor7786/Astro-FastApi.git
+git branch -M main
+git push -u origin main
+==============================================================
+Branches:
+git branch -> list all branches
+git branch -a -> list all branches
+git branch <new-branch-name> -> create new branch
+git branch -d <branch-name> -> delete branch
+git checkout <branch-name> -> switch to branch
+git checkout -b <new-branch-name> -> create and switch to new branch
+git push -u origin <new-branch-name> -> push new branch to remote
+?????
+
+Status:
+git status
+git status --ignored
+git log -> list commits, to exit press q
+git log -1 -> last commit
+git reflog
+
+Add, remove, and modify files:
+git add <file>
+git rm <file>
+git rm --cached <file> effectively removes the file from version control while keeping it on your local machine.
+git rm --cached -r . ->Unstage All Files To remove all staged files, use:
+git restore <file> -> restore file
+
+To restore the files(only files not what inside the file):
+git reset --mixed HEAD~2 ->number represent commits back
+git checkout HEAD -- .
+git add .
+git commit -m "Restored files after unintended reset"
+git push origin main --force
+
+Merge:
+git checkout main
+git merge <branch-name>
+git add <file> -> add file if needed or optional ###
+git commit
+git push origin main
+
+Specific folder:
+git checkout frontend -- <path-to-folder> o pull the specific folder from the frontend branch
+git commit -m "Merged specific folder from frontend branch"
+git push origin main
+
+
+
+######## IGNORE BUT KEEP CHANGES LOCALLY ########
+git filter-branch --force --index-filter \
+'git rm -r --cached --ignore-unmatch .env' \
+--prune-empty --tag-name-filter cat -- --all
+
+rm -rf .git/refs/original
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+
+
+git pull origin main --rebase
+
+git status
+git commit -m "Re-initialised repository and added files"
+git fetch origin
+git rebase origin/main
+git push origin main
+git push --set-upstream origin main -> after deliting the file
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    backend/app_db.db
+ Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    backend/app_db.db
