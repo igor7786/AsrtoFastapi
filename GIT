@@ -45,7 +45,8 @@ git commit -m "Restored files after unintended reset"
 git push origin main --force
 Commits:
 git commit -m "Restored files after unintended reset"
-git reset --hard HEAD^1 -> undo last commit
+git reset --hard HEAD^1 -> undo last commit(hard reset, deletes the commit)
+git reset --soft HEAD^1 -> undo last commit(soft reset, leaves the commit intact)
 
 Merge:
 git checkout main
