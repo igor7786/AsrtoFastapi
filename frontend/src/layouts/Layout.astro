@@ -1,0 +1,16 @@
+---
+import '@/styles/globals.css';
+import Head from './Head.astro';
+import Body from './Body.astro';
+import { ModeToggle } from '@/components/reactcomp/ModeToggle';
+---
+
+<!doctype html>
+<html lang="en">
+  <Head title="Main page" />
+  <Body>
+    <ModeToggle client:only="react" />
+    <div>Layout</div>
+    <script is:inline src="../../public/scripts-lib/theme-dark-white.js"></script>
+  </Body>
+</html>
