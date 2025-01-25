@@ -1,0 +1,18 @@
+create app_db folder -> inside folder run the following command:
+alembic init -t async migrations -> for async support
+create __init files__
+in alembic.ini: #! important ->prepend_sys_path = ..
+in scrript.mako -> line 12 -> import sqlmodel
+in env.py:
+    from sqlmodel import SQLModel
+    from app_main.app_models.models import Tasks
+    from os import environ as env_vars
+    from dotenv import load_dotenv
+    load_dotenv()
+    #! if you have APP_PATH -> load_dotenv(dotenv_path=APP_PATH+'.env')
+    config = context.config
+    config.set_main_option('sqlalchemy.url', env_vars.get('SQLMODEL_MIGRATE_PTH'))
+    line 23 -> target_metadata = SQLModel.metadata
+run:
+    alembic revision --autogenerate -m "init"
+    alembic upgrade head

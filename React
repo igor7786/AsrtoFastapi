@@ -1,0 +1,13 @@
+#shadcn forms, ect:
+https://www.shadcn-form.com/
+https://shadcnui-expansions.typeart.cc/
+https://shadcn-extension.vercel.app/docs/introduction
+https://magicui.design/docs/components/ripple
+
+
+Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
+    npm i ai
+    files to ammend:
+        markdown-renderer.tsx ->line 173, 1
+        message-input.tsx -> line 140 ->  const textAreaRef = useRef<HTMLTextAreaElement>(null!)
+        message-input.tsx -> line 175 ->  absolute inset-x-3 bottom-0 z-20 overflow-x-scroll py-3
