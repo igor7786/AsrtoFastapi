@@ -221,6 +221,7 @@ out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+package-lock.json
 
 # JIRA plugin
 atlassian-ide-plugin.xml
