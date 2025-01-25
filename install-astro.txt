@@ -1,0 +1,34 @@
+install astro:
+ npm create astro@latest
+ udpate typescript:
+  npm update typescript
+  npx tsc -v
+  npm i --save-dev typescript @types/node
+ npx astro add node tailwind @qwikdev/astro
+  !configure tsconfig.json!
+ npm install astro-htmx htmx.org
+
+prettier:
+ npm i --save-dev prettier prettier-plugin-astro prettier-plugin-tailwindcss prettier-plugin-classnames
+ prettier-plugin-merge
+ !! need to configure pycharm prettier path!
+material-tailwind:
+ npm i --save-dev @material-tailwind/html
+ configure tailwind.config.mjs
+
+react:
+npm install @astrojs/react
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+
+to combine qwik and react:
+in file qwikcomp/Counter.tsx:
+pls add on top of file:
+/** @jsxImportSource @builder.io/qwik */
+
+/not working in astro+qwik:
+qwik-react:
+npm install @builder.io/qwik-react@0.5.0 @emotion/react@^11.11.1  @emotion/styled@^11.11.0   @mui/material@^5.13.0 @mui/x-data-grid@^6.4.0
+
