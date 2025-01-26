@@ -1,6 +1,12 @@
+####gloabal git config####
+git config --global user.name "User Name"
+git config --global user.email "User Email"
+git config --global init.defaultBranch main
+git config --global code.editor "nano"
+echo ~/.gitconfig -> to see the path of the file
+
 #####…or create a new repository on the command line####
 echo "# Astro-FastApi" >> README.md
-
 git init
 git add README.md
 git commit -m "first commit"
