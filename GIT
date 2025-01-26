@@ -3,10 +3,11 @@ git config --global user.name "User Name"
 git config --global user.email "User Email"
 git config --global init.defaultBranch main
 git config --global code.editor "nano"
-echo ~/.gitconfig -> to see the path of the file
+echo ~/.gitconfig -> to see the path of the file.
 
 #####…or create a new repository on the command line####
 echo "# Astro-FastApi" >> README.md
+
 git init
 git add README.md
 git commit -m "first commit"
@@ -49,13 +50,6 @@ git checkout HEAD -- .
 git add .
 git commit -m "Restored files after unintended reset"
 git push origin main --force
-Commits:
-git commit -m "Restored files after unintended reset"
-git reset --hard HEAD^1 -> undo last commit(hard reset, deletes the commit)
-git reset --soft HEAD^1 -> undo last commit(soft reset, leaves the commit intact)
-git revert HEAD -> This reverts all changes made from <commit-hash> up to the current HEAD.
-git reset --mixed HEAD^1 -> Mixed Reset (Keep changes in the working directory)
-git checkout abc1234 -> gow to specific commit
 
 Merge:
 git checkout main
@@ -70,8 +64,6 @@ git commit -m "Merged specific folder from frontend branch"
 git push origin main
 
 
-#####scan for security issues in your codebase####
- ggshield secret scan repo /home/igor7786/PycharmProjects/PythonProject/astro+fastapi
 
 ######## IGNORE BUT KEEP CHANGES LOCALLY ########
 git filter-branch --force --index-filter \
@@ -85,4 +77,17 @@ git gc --prune=now --aggressive
 
 git pull origin main --rebase
 
-
+git status
+git commit -m "Re-initialised repository and added files"
+git fetch origin
+git rebase origin/main
+git push origin main
+git push --set-upstream origin main -> after deliting the file
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    backend/app_db.db
+ Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    backend/app_db.db

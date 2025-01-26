@@ -223,7 +223,6 @@ out/
 .idea_modules/
 package-lock.json
 config.fish
-
 # JIRA plugin
 atlassian-ide-plugin.xml
 
