@@ -29,6 +29,9 @@ db_alembic_url = env_vars.get('SQLMODEL_MIGRATE_PTH')
 api_ai_key = env_vars.get('API_AI_KEY')
 api_ai_base = env_vars.get('API_AI_BASE')
 api_ai_model = env_vars.get('API_AI_MODEL')
+api_ai_key_hf = env_vars.get('API_AI_KEY_HF')
+api_ai_base_hf = env_vars.get('API_AI_BASE_HF')
+api_ai_model_hf = env_vars.get('API_AI_MODEL_HF')
 
 __all__ = [
 	'FastAPI',
@@ -60,7 +63,7 @@ __all__ = [
 	'db_url',
 	'db_alembic_url',
 	'install',
-	'api_ai_base', 'api_ai_key', 'api_ai_model',
+	'api_ai_base', 'api_ai_key', 'api_ai_model', 'api_ai_base_hf', 'api_ai_key_hf', 'api_ai_model_hf',
 	'Any',
 	'AsyncGenerator',
 	'json'

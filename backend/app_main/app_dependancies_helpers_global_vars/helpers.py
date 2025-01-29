@@ -1,4 +1,7 @@
-from app_main.app_imports import AsyncOpenAI, api_ai_key, api_ai_base, api_ai_model, AsyncGenerator, json
+from openai import OpenAI
+
+from app_main.app_imports import (AsyncOpenAI, api_ai_key, api_ai_base, api_ai_model, api_ai_key_hf, api_ai_base_hf,
+                                  api_ai_model_hf, AsyncGenerator, json)
 
 client = AsyncOpenAI(api_key=api_ai_key, base_url=api_ai_base)
 
@@ -25,3 +28,27 @@ async def stream_text(message="") -> AsyncGenerator:
 
 	except Exception as e:
 		yield f"Error: {str(e)}"
+
+
+async def stream_text_hf(message=""):
+	client = AsyncOpenAI(
+		base_url=api_ai_base_hf,
+		api_key=api_ai_key_hf
+	)
+
+	messages = [
+		{
+			"role": "user",
+			"content": message
+		}
+	]
+
+	completion = await client.chat.completions.create(
+		model=api_ai_model_hf,
+		messages=messages,
+		max_tokens=500,
+		stream=True
+	)
+	async for chunk in completion:
+		yield chunk.choices[0].delta.content
+
