@@ -2,7 +2,7 @@ from app_main.app_imports import APIRouter, Depends, datetime, AsyncSession
 from app_main.app_models.models import Tasks, User
 from app_main.app_dependancies_helpers_global_vars.dependencies import get_db
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="v1/user", tags=["user"])
 
 
 @router.post("/")

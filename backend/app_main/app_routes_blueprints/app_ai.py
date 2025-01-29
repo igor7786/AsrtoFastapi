@@ -6,7 +6,7 @@ class Query(BaseModel):
 	prompt: str
 
 
-router = APIRouter(prefix="/AI", tags=["AIollama"])
+router = APIRouter(prefix="v1/AI", tags=["AIollama"])
 
 
 @router.post("/generate-gemma")
