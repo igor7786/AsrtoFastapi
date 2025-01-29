@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
   const { messages } = await request.json();
-  const fastAPIUrl = 'http://localhost:8080/AI/generate-gemma';
+  const fastAPIUrl = 'http://localhost:8080/v1/AI/generate-gemma';
 
   if (!messages) {
     // Return the message object if no messages are provided
