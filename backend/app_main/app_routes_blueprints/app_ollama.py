@@ -9,7 +9,7 @@ class Query(BaseModel):
 router = APIRouter(prefix="/AI", tags=["AIollama"])
 
 
-@router.post("/generate")
+@router.post("/generate-gemma")
 async def generate_text(query: Query, ):
 	if not query.prompt.strip():
 		return {"error": "Prompt cannot be empty"}
@@ -19,8 +19,9 @@ async def generate_text(query: Query, ):
 	)
 
 
-@router.post("/generatehf")
-async def generate_text(query: Query):
+@router.post("/generate-hf")
+async def generate_text(query: Query, ):
+	print(query)
 	return StreamingResponse(
 		stream_text_hf(query.prompt),
 		media_type="text/event-stream",  # Ensure no caching of the response
