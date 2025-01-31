@@ -59,7 +59,7 @@ import type { APIRoute } from 'astro';
 // };
 export const POST: APIRoute = async ({ request }) => {
   const { messages } = await request.json();
-  const fastAPIUrl = 'http://localhost:8080/v1/AI/test/generate-gemma';
+  const fastAPIUrl = 'http://localhost:8080/v1/AI/generate-gemmini';
 
   if (!messages) {
     const noMessage =

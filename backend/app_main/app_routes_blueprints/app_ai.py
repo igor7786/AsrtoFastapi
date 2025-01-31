@@ -16,7 +16,7 @@ class Query(BaseModel):
 	attachments: Optional[List[str]] = None
 
 
-router = APIRouter(prefix="/v1/AI", tags=["AIollama"])
+router = APIRouter(prefix="/v1/AI", tags=["AI-Models"])
 
 
 @router.post("/generate-gemma")
@@ -43,7 +43,7 @@ class AIRequest(BaseModel):
 
 
 # Define the endpoint to receive the request
-@router.post("/test/generate-gemma", tags=["AI"])
+@router.post("/test/generate-gemmini")
 async def receive_data(prompt: Annotated[str, Form()], files: Annotated[list[UploadFile], File()] = None):
 	try:
 		if not prompt.strip():

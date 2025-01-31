@@ -11,3 +11,15 @@ Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
         markdown-renderer.tsx ->line 173, 1
         message-input.tsx -> line 140 ->  const textAreaRef = useRef<HTMLTextAreaElement>(null!)
         message-input.tsx -> line 175 ->  absolute inset-x-3 bottom-0 z-20 overflow-x-scroll py-3
+        chat-message.tsx -> line 160 ->function dataUrlToUint8Array(data: string) {
+                                            const base64 = data.split(',')[1]; // Get the base64 part of the data URL
+                                            const binaryString = atob(base64); // Decode base64 to binary string
+
+                                            // Convert the binary string to a Uint8Array
+                                            const uint8Array = new Uint8Array(binaryString.length);
+                                            for (let i = 0; i < binaryString.length; i++) {
+                                              uint8Array[i] = binaryString.charCodeAt(i); // Convert each character to its char code
+                                            }
+                                            return uint8Array;
+                                            }
+        message-input.tsx -> line 181 -> key={file.name + String(index) + String(file.lastModified)}
