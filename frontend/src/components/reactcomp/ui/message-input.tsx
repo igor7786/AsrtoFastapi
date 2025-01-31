@@ -175,10 +175,10 @@ export function MessageInput({
         <div className="absolute inset-x-3 bottom-0 z-20 py-3">
           <div className="flex space-x-3">
             <AnimatePresence mode="popLayout">
-              {props.files?.map((file) => {
+              {props.files?.map((file, index) => {
                 return (
                   <FilePreview
-                    key={file.name + String(file.lastModified)}
+                    key={file.name + String(index) + String(file.lastModified)}
                     file={file}
                     onRemove={() => {
                       props.setFiles((files) => {

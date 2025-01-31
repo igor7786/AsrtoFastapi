@@ -1,13 +1,18 @@
 from app_main.app_imports import (AsyncOpenAI, OpenAIError, openai, api_ai_key_gemma, api_ai_base_gemma,
-                                  api_ai_model_gemma, api_ai_key_hf, api_ai_base_hf, api_ai_model_hf, AsyncGenerator,
-                                  json)
+                                  api_ai_model_gemma, api_ai_key_gemmini, api_ai_model_gemmini, AsyncGenerator,
+                                  json, base64, genai, Tool, GoogleSearch, Part, GenerateContentConfig, Generator)
 
+ERR = "The server could not be reached at the moment try again later!!!"
 STOP_STREAM_TEXT = ('{"finishReason":"stop","usage":{"promptTokens":"null","completionTokens":"null"},'
                     '"isContinued":"false"}')
-import openai
 
 
-async def stream_text(message) -> AsyncGenerator:
+def _stream_error():
+	yield '0:{text}\n'.format(text=json.dumps(ERR))
+	yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
+
+
+async def stream_text_gemma(message) -> AsyncGenerator:
 	"""
 	Stream text from the model as a response to the provided messages.
 	"""
@@ -27,41 +32,32 @@ async def stream_text(message) -> AsyncGenerator:
 					continue
 				yield '0:{text}\n'.format(text=json.dumps(choice.delta.content))
 
-	except openai.APIConnectionError as e:
-		err = f"{e} The server could not be reached"
-		yield '0:{text}\n'.format(text=json.dumps(err))
-		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
-	except OpenAIError as e:
-		err = e.body.get("message", "An error occurred")
-		yield '0:{text}\n'.format(text=json.dumps(err))
+	except Exception:
+		yield '0:{text}\n'.format(text=json.dumps(ERR))
 		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
 
 
-async def stream_text_hf(message):
+def stream_text_gemmini(promt, image=None) -> Generator:
+	client = genai.Client(api_key=api_ai_key_gemmini)
+	model = api_ai_model_gemmini
+	google_search_tool = Tool(google_search=GoogleSearch())
+	if not image:
+		content = [promt]
+	else:
+		content = [promt, image]
 	try:
-		client = AsyncOpenAI(base_url=api_ai_base_hf, api_key=api_ai_key_hf)
-		messages = [{"role": "user", "content":"dont use think in your response" + message}]
-		response = await client.chat.completions.create(
-			model=api_ai_model_hf,
-			messages=messages,
-			stream=True
+		# Generate content with the model
+		response = client.models.generate_content_stream(
+			model=model,
+			contents=content,  # ✅ Corrected format
+			config=GenerateContentConfig(
+				tools=[google_search_tool],
+				response_modalities=["TEXT"],
+			)
 		)
-		async for chunk in response:
-			print(chunk)
-			for choice in chunk.choices:
-				if choice.finish_reason == "stop":
-					yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
-					continue
-				yield '0:{text}\n'.format(text=json.dumps(choice.delta.content))
-	except Exception as e:
-		err = e.body
-		yield '0:{text}\n'.format(text=json.dumps(err))
+		for part in response:
+			yield '0:{text}\n'.format(text=json.dumps(part.text))
 		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
-	except openai.APIConnectionError as e:
-		err = f"{e} The server could not be reached"
-		yield '0:{text}\n'.format(text=json.dumps(err))
-		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
-	except OpenAIError as e:
-		err = e.body.get("message", "An error occurred")
-		yield '0:{text}\n'.format(text=json.dumps(err))
+	except Exception:
+		yield '0:{text}\n'.format(text=json.dumps(ERR))
 		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)

@@ -102,8 +102,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   const files = useMemo(() => {
     return experimental_attachments?.map((attachment) => {
       const dataArray = dataUrlToUint8Array(attachment.url);
-      const file = new File([dataArray], attachment.name ?? 'Unknown');
-      return file;
+      return new File([dataArray], attachment.name ?? 'Unknown');
     });
   }, [experimental_attachments]);
 
@@ -159,9 +158,15 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 };
 
 function dataUrlToUint8Array(data: string) {
-  const base64 = data.split(',')[1];
-  const buf = Buffer.from(base64, 'base64');
-  return new Uint8Array(buf);
+  const base64 = data.split(',')[1]; // Get the base64 part of the data URL
+  const binaryString = atob(base64); // Decode base64 to binary string
+
+  // Convert the binary string to a Uint8Array
+  const uint8Array = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    uint8Array[i] = binaryString.charCodeAt(i); // Convert each character to its char code
+  }
+  return uint8Array;
 }
 
 function ToolCall({ toolInvocations }: Pick<ChatMessageProps, 'toolInvocations'>) {
