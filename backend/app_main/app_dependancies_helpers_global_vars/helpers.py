@@ -1,3 +1,5 @@
+import asyncio
+
 from app_main.app_imports import (AsyncOpenAI, OpenAIError, openai, api_ai_key_gemma, api_ai_base_gemma,
                                   api_ai_model_gemma, api_ai_key_gemmini, api_ai_model_gemmini, AsyncGenerator,
                                   json, base64, genai, Tool, GoogleSearch, Part, GenerateContentConfig, Generator)
@@ -5,11 +7,6 @@ from app_main.app_imports import (AsyncOpenAI, OpenAIError, openai, api_ai_key_g
 ERR = "The server could not be reached at the moment try again later!!!"
 STOP_STREAM_TEXT = ('{"finishReason":"stop","usage":{"promptTokens":"null","completionTokens":"null"},'
                     '"isContinued":"false"}')
-
-
-def _stream_error():
-	yield '0:{text}\n'.format(text=json.dumps(ERR))
-	yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
 
 
 async def stream_text_gemma(message) -> AsyncGenerator:
@@ -53,7 +50,8 @@ def stream_text_gemmini(promt, image=None) -> Generator:
 			config=GenerateContentConfig(
 				tools=[google_search_tool],
 				response_modalities=["TEXT"],
-			)
+				system_instruction="You are helpfull assistant."
+			),
 		)
 		for part in response:
 			yield '0:{text}\n'.format(text=json.dumps(part.text))
@@ -61,3 +59,4 @@ def stream_text_gemmini(promt, image=None) -> Generator:
 	except Exception:
 		yield '0:{text}\n'.format(text=json.dumps(ERR))
 		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
+		raise GeneratorExit

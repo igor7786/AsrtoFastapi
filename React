@@ -24,3 +24,4 @@ Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
                                             return uint8Array;
                                             }
         message-input.tsx -> line 181 -> key={file.name + String(index) + String(file.lastModified)}
+                          -> line 220 -> className="h-8 w-8 bg-red-600 transition-opacity"

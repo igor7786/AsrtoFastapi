@@ -12,7 +12,7 @@ export default function AIChat(props: ChatDemoProps) {
     useChat(props);
 
   return (
-    <div className="flex h-[500px] w-full">
+    <div className="flex h-[85vh] w-full px-2.5 md:h-[95vh] md:px-2">
       <Chat
         className="grow"
         messages={messages}
