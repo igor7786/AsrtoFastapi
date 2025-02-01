@@ -1,7 +1,11 @@
 from pathlib import Path
+from typing_extensions import Annotated
+import io
+from PIL import Image
+
 
 from sqlmodel import SQLModel, Field, create_engine, Session
-from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, File, Form, UploadFile
 from fastapi.responses import JSONResponse
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,7 +22,7 @@ from fastapi.responses import StreamingResponse
 from os import environ as env_vars
 from dotenv import load_dotenv
 from rich.traceback import install
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, List, Optional
 import json
 import base64
 from google.genai.types import Tool, GenerateContentConfig, GoogleSearch, Part
@@ -43,28 +47,18 @@ api_ai_key_gemmini = env_vars.get('API_AI_KEY_GEMMINI')
 api_ai_model_gemmini = env_vars.get('API_AI_MODEL_GEMMINI')
 
 __all__ = [
-	'FastAPI',
+
+	'FastAPI','APIRouter','Depends','HTTPException','Request','File','Form','UploadFile',
 	'uvicorn',
 	'CORSMiddleware',
 	'datetime',
-	'BaseModel',
-	'SQLModel',
-	'create_engine',
-	'Field',
-	'Session',
-	'Depends',
-	'ValidationError',
+	'BaseModel', 'ConfigDict', 'EmailStr','ValidationError','field_validator',
+	'Field','Session',	'create_engine','SQLModel',
 	'AsyncSession',
 	'create_async_engine',
-	'ConfigDict',
-	'HTTPException',
-	'EmailStr',
 	'PydanticCustomError',
 	'ErrorDetails',
-	'field_validator',
 	'JSONResponse',
-	'Request',
-	'APIRouter',
 	'logging',
 	'colorlog',
 	'AsyncOpenAI', 'OpenAIError', 'openai', 'Tool', 'GenerateContentConfig', 'GoogleSearch', 'Part', 'genai',
@@ -73,10 +67,12 @@ __all__ = [
 	'db_alembic_url',
 	'install',
 	'api_ai_base_gemma', 'api_ai_key_gemma', 'api_ai_model_gemma', 'api_ai_model_gemmini','api_ai_key_gemmini',
-	'Any',
-	'AsyncGenerator',
+	'Any','AsyncGenerator', 'List', 'Optional',
+	'Annotated',
 	'json',
 	'base64',
 	'Generator',
+	'io',
+	'Image',
 
 ]

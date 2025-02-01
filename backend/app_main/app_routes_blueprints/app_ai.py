@@ -1,13 +1,5 @@
-import base64
-import io
-import os
-from typing import List, Optional
-
-from PIL import Image
-from fastapi import File, Form, UploadFile
-from typing_extensions import Annotated
-
-from app_main.app_imports import StreamingResponse, BaseModel, APIRouter
+from app_main.app_imports import StreamingResponse, BaseModel, APIRouter, Annotated, Optional, List, File, UploadFile, \
+	Form, io, Image
 from app_main.app_dependancies_helpers_global_vars.helpers import stream_text_gemma, stream_text_gemmini, _stream_error
 
 
@@ -43,7 +35,7 @@ class AIRequest(BaseModel):
 
 
 # Define the endpoint to receive the request
-@router.post("/test/generate-gemmini")
+@router.post("/generate-gemmini")
 async def receive_data(prompt: Annotated[str, Form()], files: Annotated[list[UploadFile], File()] = None):
 	try:
 		if not prompt.strip():
