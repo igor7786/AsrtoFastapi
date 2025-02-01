@@ -29,25 +29,33 @@ export const POST: APIRoute = async ({ request }) => {
   if (lastMessage?.experimental_attachments && lastMessage.experimental_attachments.length > 1) {
     return errorHandler('Please load a single file, servers are limited!!');
   }
-  lastMessage.experimental_attachments?.forEach((att: any, index: number) => {
-    const data: string = att.url;
-    if (data) {
-      // Decode Base64 to binary
-      const byteCharacters = atob(data.split(',')[1]); // Remove base64 header
-      const byteArrays = [];
+  if (lastMessage?.experimental_attachments) {
+    for (const [index, att] of lastMessage.experimental_attachments.entries()) {
+      const data: string = att.url;
+      if (data) {
+        // Decode Base64 to binary
+        const byteCharacters = atob(data.split(',')[1]); // Remove base64 header
+        const byteArrays = [];
 
-      // Convert the byte characters into an array of bytes
-      for (let offset = 0; offset < byteCharacters.length; offset++) {
-        byteArrays.push(byteCharacters.charCodeAt(offset));
+        // Convert the byte characters into an array of bytes
+        for (let offset = 0; offset < byteCharacters.length; offset++) {
+          byteArrays.push(byteCharacters.charCodeAt(offset));
+        }
+
+        const blob = new Blob([new Uint8Array(byteArrays)], { type: 'application/octet-stream' });
+        console.log(`File ${index} Size: ${blob.size} bytes`);
+
+        // Checking if file size is greater than 5MB
+        if (blob.size / (1024 * 1024) > 3) {
+          return errorHandler('File size limit exceeded is more than 3MB!!'); // Stops execution properly
+        }
+
+        // Use the actual filename from the attachment
+        const filename = `${index}+${att.name}` || `files`; // Fallback to index if no filename provided
+        formData.append(`files`, blob, filename);
       }
-
-      const blob = new Blob([new Uint8Array(byteArrays)], { type: 'application/octet-stream' });
-
-      // Use the actual filename from the attachment
-      const filename = `${index}+${att.name}` || `files`; // Fallback to index if no filename provided
-      formData.append(`files`, blob, filename);
     }
-  });
+  }
   try {
     // Fetch from the FastAPI endpoint
     const response = await fetch(fastAPIUrl, {

@@ -38,8 +38,9 @@ async def receive_data(prompt: Annotated[str, Form()], files: Annotated[Optional
 			contents = await f.read()
 			# Convert to Image using PIL
 			image = Image.open(io.BytesIO(contents))
+			image_resized = image.resize((600, 480))
 			return StreamingResponse(
-				stream_text_gemmini(prompt, image), media_type="text/event-stream", status_code=201
+				stream_text_gemmini(prompt, image_resized), media_type="text/event-stream", status_code=201
 			)
 	except Exception:
 		return JSONResponse(content={"error": "Something went wrong"}, status_code=400)

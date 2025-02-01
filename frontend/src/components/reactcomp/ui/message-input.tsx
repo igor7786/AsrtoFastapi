@@ -217,7 +217,7 @@ export function MessageInput({
           <Button
             type="button"
             size="icon"
-            className="h-8 w-8 bg-red-600 transition-opacity"
+            className="h-8 w-8 bg-red-600 transition-opacity hover:h-10 hover:w-10 hover:bg-red-500"
             aria-label="Stop generating"
             onClick={stop}
           >

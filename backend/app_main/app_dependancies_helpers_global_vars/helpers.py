@@ -50,7 +50,7 @@ def stream_text_gemmini(promt, image=None) -> Generator:
 			config=GenerateContentConfig(
 				tools=[google_search_tool],
 				response_modalities=["TEXT"],
-				system_instruction="You are helpfull assistant."
+				system_instruction="You are helpful assistant."
 			),
 		)
 		for part in response:
@@ -59,4 +59,3 @@ def stream_text_gemmini(promt, image=None) -> Generator:
 	except Exception:
 		yield '0:{text}\n'.format(text=json.dumps(ERR))
 		yield 'e:{text}\n'.format(text=STOP_STREAM_TEXT)
-		raise GeneratorExit
