@@ -12,14 +12,17 @@ router = APIRouter(prefix="/v1/AI", tags=["AI-Models"])
 
 @router.post("/generate-gemma")
 async def generate_text(query: Query):
-	q = query.prompt
-	if not q.strip():
-		return JSONResponse(content={"error": "Prompt cannot be empty"}, status_code=422)
-	return StreamingResponse(
-		stream_text_gemma(q),
-		media_type="text/event-stream",  # Ensure no caching of the response
-		status_code=201
-	)
+	try:
+		q = query.prompt
+		if not q.strip():
+			return JSONResponse(content={"error": "Prompt cannot be empty"}, status_code=422)
+		return StreamingResponse(
+			stream_text_gemma(q),
+			media_type="text/event-stream",  # Ensure no caching of the response
+			status_code=201
+		)
+	except Exception:
+		return JSONResponse(content={"error": "Something went wrong"}, status_code=400)
 
 
 # Define the endpoint to receive the request
