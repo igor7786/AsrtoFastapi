@@ -1,12 +1,11 @@
 import type { APIRoute } from 'astro';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 function errorHandler(error: string) {
-  const err =
-    '0:"Please load a single file, servers are limited!!"\n' +
-    'e:{"finishReason":"stop","usage":{"promptTokens":null,"completionTokens":null},"isContinued":false}\n';
-  console.log(err);
+  const err = '0:"' + error + '"\n';
+  ('e:{"finishReason":"stop","usage":{"promptTokens":null,"completionTokens":null},"isContinued":false}\n');
   return new Response(err, {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
@@ -17,14 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
   const { messages } = await request.json();
   const fastAPIUrl = `${process.env.API_AI_ENDPOINT}`;
   if (!messages) {
-    const noMessage =
-      '0:"No message provided!!"\n' +
-      'e:{"finishReason":"stop","usage":{"promptTokens":null,"completionTokens":null},"isContinued":false}\n';
-    return new Response(noMessage, {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-    // errorHandler('No message provided!!');
+    return errorHandler('No message provided!!');
   }
 
   const lastMessage = messages[messages.length - 1];
@@ -35,13 +27,6 @@ export const POST: APIRoute = async ({ request }) => {
   formData.append('prompt', prompt);
 
   if (lastMessage?.experimental_attachments && lastMessage.experimental_attachments.length > 1) {
-    // const noMessage =
-    //   '0:"Please load a single file, servers are limited!!"\n' +
-    //   'e:{"finishReason":"stop","usage":{"promptTokens":null,"completionTokens":null},"isContinued":false}\n';
-    // return new Response(noMessage, {
-    //   status: 200,
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
     return errorHandler('Please load a single file, servers are limited!!');
   }
   lastMessage.experimental_attachments?.forEach((att: any, index: number) => {
@@ -69,9 +54,11 @@ export const POST: APIRoute = async ({ request }) => {
       method: 'POST',
       body: formData, // Send as multipart/form-data
     });
-
+    if (!response.ok) {
+      return errorHandler('Could not fetch response from Server try again Later!!');
+    }
     return new Response(response.body, {
-      status: 200,
+      status: 201,
       headers: {
         'Content-Type': 'text/plain; charset=utf-8',
         'X-Vercel-AI-Data-Stream': 'v1',
@@ -80,17 +67,6 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
   } catch (error) {
-    const err =
-      '0:"Could not fetch response from Server try again Later!!"\n' +
-      'e:{"finishReason":"stop","usage":{"promptTokens":null,"completionTokens":null},"isContinued":false}\n';
-    return new Response(err, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'X-Vercel-AI-Data-Stream': 'v1',
-        'Transfer-Encoding': 'chunked',
-        'Cache-Control': 'no-cache',
-      },
-    });
+    return errorHandler('Could not fetch response from Server try again Later!!!');
   }
 };
