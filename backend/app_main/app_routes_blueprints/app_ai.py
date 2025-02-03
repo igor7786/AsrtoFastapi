@@ -2,18 +2,14 @@ from app_main.app_imports import StreamingResponse, BaseModel, APIRouter, Annota
 	Form, io, Image, JSONResponse
 from app_main.app_dependancies_helpers_global_vars.helpers import stream_text_gemma, stream_text_gemmini
 
-
-class Query(BaseModel):
-	prompt: str
-
-
 router = APIRouter(prefix="/v1/AI", tags=["AI-Models"])
 
 
 @router.post("/generate-gemma")
-async def generate_text(query: Query):
+async def generate_text(prompt: Annotated[str, Form()]):
 	try:
-		q = query.prompt
+		q = prompt
+		print(q)
 		if not q.strip():
 			return JSONResponse(content={"error": "Prompt cannot be empty"}, status_code=422)
 		return StreamingResponse(
@@ -27,7 +23,7 @@ async def generate_text(query: Query):
 
 # Define the endpoint to receive the request
 @router.post("/generate-gemmini")
-async def receive_data(prompt: Annotated[str, Form()], files: Annotated[Optional[list[UploadFile]], File()] = None):
+async def receive_data(prompt: Annotated[str, Form()], files: Annotated[Optional[List[UploadFile]], File()] = None):
 	try:
 		if not prompt.strip():
 			return JSONResponse(content={"error": "Prompt cannot be empty"}, status_code=422)

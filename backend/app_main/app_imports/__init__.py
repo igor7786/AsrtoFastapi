@@ -45,6 +45,9 @@ api_ai_base_hf = env_vars.get('API_AI_BASE_HF')
 api_ai_model_hf = env_vars.get('API_AI_MODEL_HF')
 api_ai_key_gemmini = env_vars.get('API_AI_KEY_GEMMINI')
 api_ai_model_gemmini = env_vars.get('API_AI_MODEL_GEMMINI')
+api_ai_model_qwen = env_vars.get('API_AI_MODEL_QWEN')
+api_ai_key_qwen = env_vars.get('API_AI_KEY_QWEN')
+api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 
 __all__ = [
 
@@ -67,6 +70,7 @@ __all__ = [
 	'db_alembic_url',
 	'install',
 	'api_ai_base_gemma', 'api_ai_key_gemma', 'api_ai_model_gemma', 'api_ai_model_gemmini','api_ai_key_gemmini',
+	'api_ai_key_qwen','api_ai_model_qwen', 'api_ai_base_qwen',
 	'Any','AsyncGenerator', 'List', 'Optional',
 	'Annotated',
 	'json',

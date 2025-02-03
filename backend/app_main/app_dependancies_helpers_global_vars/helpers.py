@@ -1,8 +1,9 @@
 import asyncio
 
-from app_main.app_imports import (AsyncOpenAI, OpenAIError, openai, api_ai_key_gemma, api_ai_base_gemma,
+from app_main.app_imports import (AsyncOpenAI, api_ai_key_gemma, api_ai_base_gemma, api_ai_key_qwen, api_ai_base_qwen,
+                                  api_ai_model_qwen,
                                   api_ai_model_gemma, api_ai_key_gemmini, api_ai_model_gemmini, AsyncGenerator,
-                                  json, base64, genai, Tool, GoogleSearch, Part, GenerateContentConfig, Generator)
+                                  json, genai, Tool, GoogleSearch, GenerateContentConfig, Generator)
 
 ERR = "The server could not be reached at the moment try again later!!!"
 STOP_STREAM_TEXT = ('{"finishReason":"stop","usage":{"promptTokens":"null","completionTokens":"null"},'
@@ -13,12 +14,13 @@ async def stream_text_gemma(message) -> AsyncGenerator:
 	"""
 	Stream text from the model as a response to the provided messages.
 	"""
-	client = AsyncOpenAI(api_key=api_ai_key_gemma, base_url=api_ai_base_gemma)
+	client = AsyncOpenAI(api_key=api_ai_key_qwen,
+	                     base_url=api_ai_base_qwen)
 	try:
 		# Start a streaming request to OpenAI or Groq API
 		response = await client.chat.completions.create(
 			messages=[{"role": "user", "content": message}],
-			model=api_ai_model_gemma,
+			model=api_ai_model_qwen,
 			stream=True  # Enable streaming
 		)
 		# Yield each chunk of the response

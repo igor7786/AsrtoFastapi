@@ -63,7 +63,8 @@ git checkout frontend -- <path-to-folder> o pull the specific folder from the fr
 git commit -m "Merged specific folder from frontend branch"
 git push origin main
 
-
+### run to see if any secret keys are exploitable ###
+ggshield secret scan repo ./ -> change path to actual path
 
 ######## IGNORE BUT KEEP CHANGES LOCALLY ########
 git filter-branch --force --index-filter \

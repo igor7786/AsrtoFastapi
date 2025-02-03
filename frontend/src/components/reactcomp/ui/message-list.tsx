@@ -2,18 +2,16 @@ import {
   ChatMessage,
   type ChatMessageProps,
   type Message,
-} from "@/components/reactcomp/ui/chat-message"
-import { TypingIndicator } from "@/components/reactcomp/ui/typing-indicator"
+} from '@/components/reactcomp/ui/chat-message';
+import { TypingIndicator } from '@/components/reactcomp/ui/typing-indicator';
 
-type AdditionalMessageOptions = Omit<ChatMessageProps, keyof Message>
+type AdditionalMessageOptions = Omit<ChatMessageProps, keyof Message>;
 
 interface MessageListProps {
-  messages: Message[]
-  showTimeStamps?: boolean
-  isTyping?: boolean
-  messageOptions?:
-    | AdditionalMessageOptions
-    | ((message: Message) => AdditionalMessageOptions)
+  messages: Message[];
+  showTimeStamps?: boolean;
+  isTyping?: boolean;
+  messageOptions?: AdditionalMessageOptions | ((message: Message) => AdditionalMessageOptions);
 }
 
 export function MessageList({
@@ -26,20 +24,13 @@ export function MessageList({
     <div className="space-y-4 overflow-visible">
       {messages.map((message, index) => {
         const additionalOptions =
-          typeof messageOptions === "function"
-            ? messageOptions(message)
-            : messageOptions
+          typeof messageOptions === 'function' ? messageOptions(message) : messageOptions;
 
         return (
-          <ChatMessage
-            key={index}
-            showTimeStamp={showTimeStamps}
-            {...message}
-            {...additionalOptions}
-          />
-        )
+          <ChatMessage key={index} showTimeStamp={showTimeStamps} {...message} {...additionalOptions} />
+        );
       })}
       {isTyping && <TypingIndicator />}
     </div>
-  )
+  );
 }
