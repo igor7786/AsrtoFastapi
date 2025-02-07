@@ -11,12 +11,13 @@ import CardGlobalState from '../components/reactcomp/CardGlobal';
   <Head title="Global State" />
   <Body>
     <ModeToggle client:only="react" />
-    <div class="flex h-[95vh] items-center justify-between p-6">
+    <div
+      class="mx-auto flex h-[85vh] flex-col items-center justify-between gap-5 p-4 md:h-[95vh] md:flex-row"
+    >
       <CardGlobalState client:only="react" />
       <CardGlobalState client:only="react" />
     </div>
-    <div id="global-state" hx-post="/partials/1" hx-swap="outerHTML" hx-target="this">Global State</div>
     <!--<script is:inline src="../../public/scripts-lib/htmx.js"></script>-->
-    <script is:inline src="../../public/scripts-lib/theme-dark-white.js"></script>
+    <script is:inline src="/scripts-lib/theme-dark-white.js"></script>
   </Body>
 </html>

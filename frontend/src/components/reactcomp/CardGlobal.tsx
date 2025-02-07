@@ -54,7 +54,7 @@ export default function CardGlobalState() {
   const sub = () => decrement();
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[340px]">
       <CardHeader>
         <CardTitle className="text-center">Global State</CardTitle>
         <CardDescription className="text-center">Global State with Nano stores</CardDescription>
@@ -69,7 +69,6 @@ export default function CardGlobalState() {
             <div id="counter">{counter}</div>
           </div>
         )}
-        {/*<div className="text-2xl font-bold">{globalState}</div>*/}
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="flex w-2/3 justify-between">
