@@ -5,6 +5,8 @@ import { Code2, Loader2, Terminal } from 'lucide-react';
 import { cn } from '@/components/reactcomp/reactlib/utils';
 import { FilePreview } from '@/components/reactcomp/ui/file-preview';
 import { MarkdownRenderer } from '@/components/reactcomp/ui/markdown-renderer';
+// import { err } from '@/pages/api/utils/stores.ts';
+// import { useStore } from '@nanostores/react';
 
 const chatBubbleVariants = cva(
   'group/message relative break-words rounded-lg p-3 text-sm sm:max-w-[70%]',
@@ -19,6 +21,11 @@ const chatBubbleVariants = cva(
         slide: 'duration-300 animate-in fade-in-0',
         scale: 'duration-300 animate-in fade-in-0 zoom-in-75',
         fade: 'duration-500 animate-in fade-in-0',
+      },
+      // !
+      err: {
+        true: 'bg-red-500 text-white', // Error styling
+        false: '',
       },
     },
     compoundVariants: [
@@ -86,6 +93,7 @@ export interface ChatMessageProps extends Message {
   animation?: Animation;
   actions?: React.ReactNode;
   className?: string;
+  // !
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
@@ -109,14 +117,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   if (toolInvocations && toolInvocations.length > 0) {
     return <ToolCall toolInvocations={toolInvocations} />;
   }
-
   const isUser = role === 'user';
-
   const formattedTime = createdAt?.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
   });
-
+  // !
   return (
     <div className={cn('flex flex-col', isUser ? 'items-end' : 'items-start')}>
       {files ? (
@@ -126,12 +132,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           })}
         </div>
       ) : null}
-
+      {/*!*/}
       <div className={cn(chatBubbleVariants({ isUser, animation }), className)}>
         <div>
           <MarkdownRenderer>{content}</MarkdownRenderer>
         </div>
-
         {role === 'assistant' && actions ? (
           <div
             className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-background p-1 text-foreground opacity-0
@@ -155,6 +160,52 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       ) : null}
     </div>
   );
+  // return (
+  //   <div className={cn('flex flex-col', isUser ? 'items-end' : 'items-start')}>
+  //     {files && (
+  //       <div className="mb-1 flex flex-wrap gap-2">
+  //         {files.map((file, index) => (
+  //           <FilePreview file={file} key={index} />
+  //         ))}
+  //       </div>
+  //     )}
+  //
+  //     {/* Chat bubble with error check */}
+  //     <div
+  //       className={cn(
+  //         chatBubbleVariants({ isUser, animation }),
+  //         className,
+  //         role === 'assistant' && error ? 'bg-red-600 text-white' : ''
+  //       )}
+  //     >
+  //       <div>
+  //         <MarkdownRenderer>{content}</MarkdownRenderer>
+  //       </div>
+  //
+  //       {/* Only show actions if there’s no error */}
+  //       {role === 'assistant' && actions && !error && (
+  //         <div
+  //           className="absolute -bottom-4 right-2 flex space-x-1 rounded-lg border bg-background p-1 text-foreground opacity-0
+  //             transition-opacity group-hover/message:opacity-100"
+  //         >
+  //           {actions}
+  //         </div>
+  //       )}
+  //     </div>
+  //
+  //     {showTimeStamp && createdAt && (
+  //       <time
+  //         dateTime={createdAt.toISOString()}
+  //         className={cn(
+  //           'mt-1 block px-1 text-xs opacity-50',
+  //           animation !== 'none' && 'duration-500 animate-in fade-in-0'
+  //         )}
+  //       >
+  //         {formattedTime}
+  //       </time>
+  //     )}
+  //   </div>
+  // );
 };
 
 function dataUrlToUint8Array(data: string) {

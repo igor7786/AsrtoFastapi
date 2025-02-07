@@ -8,10 +8,16 @@ nanostores and transtack ->https://www.youtube.com/watch?v=3Iz3D7cVi04&t=1283s
 
 Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
     npm i ai
+Nano-stores:
+    npm i nanostores
+    @nanostores/react
+
+
     files to ammend:
         markdown-renderer.tsx ->line 173, 1
         message-input.tsx -> line 140 ->  const textAreaRef = useRef<HTMLTextAreaElement>(null!)
-        message-input.tsx -> line 175 ->  absolute inset-x-3 bottom-0 z-20 overflow-x-scroll py-3
+        message-input.tsx -> line 175 ->  absolute inset-x-3 bottom-0 z-20 overflow-y-auto py-3
+        message-input.tsx -> line 92-102 -> comment lines
         chat-message.tsx -> line 160 ->function dataUrlToUint8Array(data: string) {
                                             const base64 = data.split(',')[1]; // Get the base64 part of the data URL
                                             const binaryString = atob(base64); // Decode base64 to binary string
@@ -24,4 +30,5 @@ Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
                                             return uint8Array;
                                             }
         message-input.tsx -> line 181 -> key={file.name + String(index) + String(file.lastModified)}
-                          -> line 220 -> className="h-8 w-8 bg-red-600 transition-opacity"
+                          -> line 200 -> absolute bottom-3 right-3 z-20 flex gap-2
+                          -> line 220 -> h-8 w-8 bg-red-600 transition-opacity hover:bg-red-500

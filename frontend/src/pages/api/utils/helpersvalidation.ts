@@ -5,6 +5,7 @@ export const headers = {
   'X-Vercel-AI-Data-Stream': 'v1',
   'Transfer-Encoding': 'chunked',
   'Cache-Control': 'no-cache',
+  'X-ERR': 'true',
 };
 
 export function errorHandler(error: string) {
@@ -16,7 +17,7 @@ export function errorHandler(error: string) {
   });
 }
 
-export const messagesSchema = z.object({
+export const messageSchema = z.object({
   role: z.string(),
   content: z.string().min(2, 'Message must be at least 2 characters long to chat with AI!'),
   experimental_attachments: z

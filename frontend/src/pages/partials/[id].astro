@@ -1,0 +1,17 @@
+---
+export const partial = true;
+//! checking if it is a POST request
+const req = Astro.request;
+if (req.method === 'POST') {
+  // Prepare the data you want to send in the response
+  const data = { count: 0 };
+
+  //! Return the JSON response
+  return new Response(JSON.stringify(data), {
+    status: 201,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+//? If it's not a POST request, you can handle it differently (or return a 405 Method Not Allowe
+return new Response('Method Not Allowed', { status: 405 });
+---

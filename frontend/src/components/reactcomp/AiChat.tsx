@@ -1,20 +1,26 @@
 'use client';
 import { useChat, type UseChatOptions } from 'ai/react';
-
 import { Chat } from '@/components/reactcomp/ui/chat';
+import { useState } from 'react';
 
 type ChatDemoProps = {
   initialMessages?: UseChatOptions['initialMessages'];
 };
-
 export default function AIChat(props: ChatDemoProps) {
-  const { error, messages, input, handleInputChange, handleSubmit, append, stop, isLoading } =
-    useChat(props);
-
+  const { messages, input, handleInputChange, handleSubmit, append, stop, isLoading } = useChat({
+    api: '/api/chat',
+    onResponse: (response) => {
+      if (response.headers.get('X-ERR') === 'true') {
+        const err = true;
+      } else {
+        const err = false;
+      }
+    },
+    ...props,
+  });
   return (
-    <div className="flex h-[85vh] w-full px-2.5 md:h-[95vh] md:px-2">
+    <div className="mx-auto flex h-[85vh] max-w-2xl rounded-md border p-4 md:h-[95vh]">
       <Chat
-        className="grow"
         messages={messages}
         handleSubmit={handleSubmit}
         input={input}

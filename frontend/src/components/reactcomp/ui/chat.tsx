@@ -51,7 +51,6 @@ export function Chat({
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === 'user';
-
   const messageOptions = useCallback(
     (message: Message) => ({
       actions: onRateResponse ? (
@@ -111,6 +110,7 @@ export function Chat({
     </ChatContainer>
   );
 }
+
 Chat.displayName = 'Chat';
 
 export function ChatMessages({
@@ -178,7 +178,6 @@ interface ChatFormProps {
 export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
   ({ children, handleSubmit, isPending, className }, ref) => {
     const [files, setFiles] = useState<File[] | null>(null);
-
     const onSubmit = (event: React.FormEvent) => {
       if (!files) {
         handleSubmit(event);
@@ -189,7 +188,6 @@ export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
       handleSubmit(event, { experimental_attachments: fileList });
       setFiles(null);
     };
-
     return (
       <form ref={ref} onSubmit={onSubmit} className={className}>
         {children({ files, setFiles })}

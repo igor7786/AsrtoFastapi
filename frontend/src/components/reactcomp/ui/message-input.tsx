@@ -89,17 +89,17 @@ export function MessageInput({
     const items = event.clipboardData?.items;
     if (!items) return;
 
-    const text = event.clipboardData.getData('text');
-    if (text && text.length > 500 && props.allowAttachments) {
-      event.preventDefault();
-      const blob = new Blob([text], { type: 'text/plain' });
-      const file = new File([blob], 'Pasted text', {
-        type: 'text/plain',
-        lastModified: Date.now(),
-      });
-      addFiles([file]);
-      return;
-    }
+    // const text = event.clipboardData.getData('text');
+    // if (text && text.length > 500 && props.allowAttachments) {
+    //   event.preventDefault();
+    //   const blob = new Blob([text], { type: 'text/plain' });
+    //   const file = new File([blob], 'Pasted text', {
+    //     type: 'text/plain',
+    //     lastModified: Date.now(),
+    //   });
+    //   addFiles([file]);
+    //   return;
+    // }
 
     const files = Array.from(items)
       .map((item) => item.getAsFile())
@@ -160,7 +160,7 @@ export function MessageInput({
         onPaste={onPaste}
         onKeyDown={onKeyDown}
         className={cn(
-          `z-10 w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm
+          `z-10 w-full resize-none grid-rows-2 rounded-xl border border-input bg-background p-3 pr-24 text-sm
           ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary
           focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`,
           showFileList && 'pb-16',
@@ -172,7 +172,7 @@ export function MessageInput({
       />
 
       {props.allowAttachments && (
-        <div className="absolute inset-x-3 bottom-0 z-20 py-3">
+        <div className="absolute inset-x-3 bottom-0 z-20 overflow-x-auto py-3">
           <div className="flex space-x-3">
             <AnimatePresence mode="popLayout">
               {props.files?.map((file, index) => {
@@ -217,7 +217,7 @@ export function MessageInput({
           <Button
             type="button"
             size="icon"
-            className="h-8 w-8 bg-red-600 transition-opacity hover:h-10 hover:w-10 hover:bg-red-500"
+            className="h-8 w-8 bg-red-600 transition-opacity hover:bg-red-500"
             aria-label="Stop generating"
             onClick={stop}
           >
