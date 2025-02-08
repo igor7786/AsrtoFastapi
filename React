@@ -9,8 +9,9 @@ nanostores and transtack ->https://www.youtube.com/watch?v=3Iz3D7cVi04&t=1283s
 Ai-bot: https://shadcn-chatbot-kit.vercel.app/docs/components/chat
     npm i ai
 Nano-stores:
-    npm i nanostores
-    @nanostores/react
+    npm i nanostores -> global stores
+    @nanostores/react -> hooks
+    npm install @tanstack/react-query -> data fetching
 
 
     files to ammend:
