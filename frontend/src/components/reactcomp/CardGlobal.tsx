@@ -15,14 +15,9 @@ import { useStore } from '@nanostores/react';
 import { count, err } from '@/components/reactcomp/reactlib/utils.ts';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '@/components/reactcomp/reactlib/utils.ts';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function CardGlobalState() {
-  useEffect(() => {
-    // @ts-ignore
-    // ! initialize htmx to work in react
-    window.htmx.process(document.body);
-  }, []);
-
   // ! Nano stores
   const counter = useStore(count);
   const errorMessage = useStore(err);
@@ -52,7 +47,7 @@ export default function CardGlobalState() {
   };
   const mutation = useMutation(
     {
-      mutationKey: ['reset'],
+      mutationKey: ['reset', counter],
       mutationFn: getData,
       onSuccess: (data) => {
         count.set(data.count); // Update counter with the response
@@ -61,9 +56,13 @@ export default function CardGlobalState() {
       onError: () => {
         err.set('Something went wrong!');
       },
+      onMutate: () => {
+        err.set('');
+      },
     },
     queryClient
   );
+
   return (
     <Card className="w-[340px]">
       <CardHeader>
@@ -90,8 +89,21 @@ export default function CardGlobalState() {
             <Plus />
           </Button>
         </div>
+        {/* !ERROR MESSAGE WITH FADE-IN EFFECT */}
         <div className="mt-2 h-4">
-          {errorMessage && <div className="mt-2 text-sm text-red-500">{errorMessage}</div>}
+          <AnimatePresence>
+            {errorMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }} // → Starts invisible & slightly above.
+                animate={{ opacity: 1, y: 0 }} // → Fades in and moves to normal position.
+                exit={{ opacity: 0, y: 0 }} // → Fades out smoothly.
+                transition={{ duration: 0.3, ease: 'easeInOut' }} // → Controls speed.
+                className="mt-2 text-sm text-red-500"
+              >
+                {errorMessage}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <Button
           className="mt-4 text-center font-bold text-white"

@@ -18,7 +18,7 @@ export default defineConfig({
     mode: 'standalone',
   }),
   integrations: [
-    htmx(),
+    // htmx(),
     tailwind({ applyBaseStyles: false }),
     react({ include: ['**/reactcomp/*'] }),
     qwikdev({ include: ['**/qwikcomp/*'] }),

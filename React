@@ -12,6 +12,15 @@ Nano-stores:
     npm i nanostores -> global stores
     @nanostores/react -> hooks
     npm install @tanstack/react-query -> data fetching
+    npm install framer-motion -> animations
+
+
+     useEffect(() => {
+    // @ts-ignore
+    // ! initialize htmx to work in react
+        window.htmx.process(document.body);
+        }, []);
+
 
 
     files to ammend:
