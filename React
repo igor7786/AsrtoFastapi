@@ -13,6 +13,10 @@ Nano-stores:
     @nanostores/react -> hooks
     npm install @tanstack/react-query -> data fetching
     npm install framer-motion -> animations
+    npm i @tanstack/react-query-devtools@5 -> react query devtools -> check version
+    make sure to add <ReactQueryDevtools client={queryClient} /> on the end of component
+    only GET will be cached!!!
+     npm i axios -> data fetching with axios
 
 
      useEffect(() => {

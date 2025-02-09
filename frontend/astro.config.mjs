@@ -17,10 +17,21 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  server: {
+    host: '0.0.0.0',
+    port: 4321,
+  },
   integrations: [
     // htmx(),
     tailwind({ applyBaseStyles: false }),
-    react({ include: ['**/reactcomp/*'] }),
-    qwikdev({ include: ['**/qwikcomp/*'] }),
+    react({ include: ['**/reactcomp/**/*'] }),
+    qwikdev({ include: ['**/qwikcomp/**/*'] }),
   ],
+  vite: {
+    resolve: {
+      alias: {
+        '/scripts-lib': '/public/scripts-lib',
+      },
+    },
+  },
 });

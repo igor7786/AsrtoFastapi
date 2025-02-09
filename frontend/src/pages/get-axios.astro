@@ -1,0 +1,21 @@
+---
+import '@/styles/globals.css';
+import Head from '../layouts/Head.astro';
+import Body from '../layouts/Body.astro';
+import { ModeToggle } from '../components/reactcomp/ModeToggle';
+import CardGetAxios from '../components/reactcomp/CardGetAxios';
+---
+
+<!doctype html>
+<html lang="en">
+  <Head title="Get Axios" />
+  <Body>
+    <ModeToggle client:only="react" />
+    <div
+      class="w-max-2xl mx-auto flex h-[85vh] flex-col items-center justify-center gap-5 p-4 md:h-[95vh]"
+    >
+      <CardGetAxios client:only="react" />
+    </div>
+    <script is:inline src="/scripts-lib/theme-dark-white.js"></script>
+  </Body>
+</html>

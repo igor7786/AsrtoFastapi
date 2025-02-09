@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { Skeleton } from '@/components/reactcomp/ui/skeleton';
 import { Button } from '@/components/reactcomp/ui/button';
 import { Spinner } from '@/components/reactcomp/ui/spinner';
 import {
@@ -10,34 +11,48 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/reactcomp/ui/card';
-import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { count, err } from '@/components/reactcomp/reactlib/utils.ts';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '@/components/reactcomp/reactlib/utils.ts';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function CardGlobalState() {
+  const [disabled, setDisabled] = useState(false);
+
   // ! Nano stores
   const counter = useStore(count);
   const errorMessage = useStore(err);
+
+  // +
   const increment = () => {
     err.set(''); // Clear error when incrementing
     count.set(counter + 1);
   };
-  const decrement = () => {
+
+  // -
+  const showErrorWithDelay = async (message: string) => {
+    err.set('');
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    err.set(message);
+  };
+  const decrement = async () => {
     if (counter === 0) {
-      err.set("Value can't be below zero!");
+      showErrorWithDelay("Value can't be below zero!");
     } else {
       count.set(counter - 1);
       err.set('');
     }
   };
+
+  // +- fn
   const add = () => increment();
   const sub = () => decrement();
   // ! Tanstack Query
   const getData = async () => {
-    const response = await fetch('/partials/1', { method: 'POST' });
+    const response = await fetch(`/partials/${counter}`, { method: 'POST' });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -49,15 +64,17 @@ export default function CardGlobalState() {
     {
       mutationKey: ['reset', counter],
       mutationFn: getData,
-      onSuccess: (data) => {
-        count.set(data.count); // Update counter with the response
+      onSuccess: (data: { count: number }) => {
+        count.set(data?.count); // Update counter with the response
         err.set('');
+        setDisabled(false);
       },
       onError: () => {
         err.set('Something went wrong!');
       },
       onMutate: () => {
         err.set('');
+        setDisabled(true);
       },
     },
     queryClient
@@ -70,22 +87,22 @@ export default function CardGlobalState() {
         <CardDescription className="text-center">Global State with Nano stores</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center justify-center">
-        {errorMessage ? (
-          <div className="text-2xl font-bold text-red-500">
-            <div id="counter">{counter}</div>
-          </div>
+        {mutation.isPending ? (
+          <Skeleton className="h-8 w-8 bg-gray-300 dark:bg-gray-800" />
         ) : (
-          <div className="text-2xl font-bold text-black dark:text-white">
-            <div id="counter">{counter}</div>
+          <div
+            className={`text-2xl font-bold ${errorMessage ? 'text-red-500' : 'text-black dark:text-white'}`}
+          >
+            {counter}
           </div>
         )}
       </CardContent>
       <CardFooter className="flex flex-col">
         <div className="flex w-2/3 justify-between">
-          <Button variant="outline" onClick={sub}>
+          <Button variant="outline" onClick={sub} disabled={mutation.isPending}>
             <Minus />
           </Button>
-          <Button onClick={add}>
+          <Button disabled={disabled} onClick={add} className="md:hover:text-white">
             <Plus />
           </Button>
         </div>
@@ -113,13 +130,14 @@ export default function CardGlobalState() {
           {mutation.isPending ? (
             <div className="flex items-center justify-between">
               <Spinner className="mr-2 text-white"></Spinner>
-              <span className="text-cyan-white">Resting</span>
+              <span className="text-cyan-white">Resetting</span>
             </div>
           ) : (
             'Reset-Fetch'
           )}
         </Button>
       </CardFooter>
+      <ReactQueryDevtools client={queryClient} />
     </Card>
   );
 }
