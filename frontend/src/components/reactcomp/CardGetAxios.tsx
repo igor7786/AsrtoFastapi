@@ -98,8 +98,8 @@ export default function CardGlobalState() {
   return (
     <Card className="h-[600px] w-[340px]">
       <CardHeader>
-        <CardTitle className="text-center">Global State</CardTitle>
-        <CardDescription className="text-center">Global State with Nano stores</CardDescription>
+        <CardTitle className="text-center">Axsios Transtack Query</CardTitle>
+        <CardDescription className="text-center">Image fetcher</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center justify-center">
         {query.isLoading ? (
@@ -139,9 +139,9 @@ export default function CardGlobalState() {
           )}
         </div>
         <Button
-          className="mt-8 text-center font-bold text-white"
+          className="mt-8 text-center font-bold text-white hover:text-cyan-100"
           onClick={() => query.refetch()}
-          disabled={query.isLoading || count === 0}
+          disabled={query.isLoading || count === 0 || image !== null}
         >
           {query.isLoading ? (
             <div className="flex items-center justify-between">
@@ -152,19 +152,18 @@ export default function CardGlobalState() {
             'Get Image'
           )}
         </Button>
-        {/*{image && <img src={image} alt="Downloaded" className="mt-4 h-auto w-full rounded-lg" />}*/}
         <div className="mt-10 flex h-20">
           <AnimatePresence>
             {image && (
               <motion.div
                 key="image" // Ensure that it is uniquely keyed
-                initial={{ opacity: 0, y: -5 }} // → Starts invisible and slightly below
-                animate={{ opacity: 1, y: 0 }} // → Fades in and moves to normal position
-                exit={{ opacity: 0, y: 0 }} // → Fades out smoothly
-                transition={{ duration: 1, ease: 'easeInOut' }} // → Controls speed
-                className="mt-4 h-auto w-full rounded-lg"
+                initial={{ opacity: 0.1 }} // → Starts invisible and slightly below
+                animate={{ opacity: 1 }} // → Fades in and moves to normal position
+                exit={{ opacity: 0 }} // → Fades out smoothly
+                transition={{ duration: 0.6, ease: 'easeInOut' }} // → Controls speed
+                className="mt-4 rounded-lg"
               >
-                <img src={image} alt="Downloaded" className="h-auto w-full object-cover" />
+                <img src={image} alt="Downloaded" width={400} height={250} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -174,28 +173,3 @@ export default function CardGlobalState() {
     </Card>
   );
 }
-
-//#####################################################
-// const getData = async () => {
-//     const options = {
-//       responseType: 'blob',
-//       onDownloadProgress: async function (progressEvent: any) {
-//         const percentCompleted: number = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-//         console.log(percentCompleted);
-//         setErr(`${percentCompleted}%`);
-//       },
-//     };
-//     // @ts-ignore
-//     const res = await axios.get('/pexels-fotios-photos-1540258.jpg', options);
-//     console.log(res.data);
-//     return res.data;
-//   };
-//   const query = useQuery(
-//     {
-//       queryKey: ['data', count],
-//       queryFn: () => getData(),
-//       enabled: false,
-//       staleTime: 2000,
-//     },
-//     queryClient
-//   );
