@@ -4,14 +4,16 @@ import io
 from PIL import Image
 
 
-from sqlmodel import SQLModel, Field, create_engine, Session
+from sqlmodel import SQLModel, Field, create_engine, Session, select
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, File, Form, UploadFile
+from fastapi.params import Body, Query
 from fastapi.responses import JSONResponse
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, ValidationError, EmailStr, field_validator
 from pydantic_core import ErrorDetails, PydanticCustomError
+from pydantic_core.core_schema import FieldValidationInfo
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 import logging
@@ -51,16 +53,15 @@ api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 
 __all__ = [
 
-	'FastAPI','APIRouter','Depends','HTTPException','Request','File','Form','UploadFile',
+	'FastAPI','APIRouter','Depends','HTTPException','Request','File','Form','UploadFile', 'Body', 'Query',
 	'uvicorn',
 	'CORSMiddleware',
 	'datetime',
 	'BaseModel', 'ConfigDict', 'EmailStr','ValidationError','field_validator',
-	'Field','Session',	'create_engine','SQLModel',
+	'Field','Session',	'create_engine','SQLModel', 'select',
 	'AsyncSession',
 	'create_async_engine',
-	'PydanticCustomError',
-	'ErrorDetails',
+	'PydanticCustomError','ErrorDetails', 'FieldValidationInfo',
 	'JSONResponse',
 	'logging',
 	'colorlog',
