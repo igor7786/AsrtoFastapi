@@ -9,9 +9,15 @@ from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware
 app = FastAPI()
 # Add the CSRF middleware
 # app.add_middleware(CSRFMiddleware)
-CORSMiddleware(app, allow_origins=["localhost:4321"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-
-
+# CORSMiddleware(app, allow_origins=["http://localhost:8080"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+# noinspection PyTypeChecker
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4321"],  # 👈 Add protocol (http://)
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 @app.exception_handler(ValidationError)
 async def validation_exception_handler(request: Request, exc: ValidationError):
 	return JSONResponse(
