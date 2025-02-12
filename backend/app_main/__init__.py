@@ -1,5 +1,4 @@
 from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Request, JSONResponse
-
 from app_main.app_models.models import Tasks, Books
 from app_main.app_routes_blueprints import app_books_store, app_user, app_ai
 from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware

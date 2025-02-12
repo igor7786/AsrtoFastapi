@@ -40,6 +40,10 @@ class Book(BaseModel):
 	@field_validator("book_name", mode="before")
 	def capitalize_book_name(cls, value: str) -> str:
 		return value.title()
+
+	@field_validator("book_author", mode="before")
+	def capitalize_book_author(cls, value: str) -> str:
+		return value.title()
 	# ! Validate book_author and compare it with book_name -> make sure passing last field to compere with
 	@field_validator("book_author", mode="before")
 	def validate_book_author(cls, v, info: FieldValidationInfo) -> str:
