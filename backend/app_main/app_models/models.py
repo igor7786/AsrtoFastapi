@@ -38,6 +38,17 @@ class Tasks(BaseSQLModel, table=True):
 class Book(BaseModel):
 	book_name: str
 	book_author: str
+	rating: int
+
+	model_config = {
+		"json_schema_extra": {
+			"example": {
+				"book_author": "AUTHOR",
+				"book_name": "NAME",
+				"rating": 5
+			}
+		}
+	}
 
 	@field_validator("book_name", mode="before")
 	def capitalize_book_name(cls, value: str) -> str:
@@ -46,6 +57,7 @@ class Book(BaseModel):
 	@field_validator("book_author", mode="before")
 	def capitalize_book_author(cls, value: str) -> str:
 		return value.title()
+
 	# ! Validate book_author and compare it with book_name -> make sure passing last field to compere with
 	@field_validator("book_author", mode="before")
 	def validate_book_author(cls, v, info: FieldValidationInfo) -> str:
@@ -61,4 +73,4 @@ class Books(BaseSQLModel, Book, table=True):
 	book_id: int | None = Field(default=None, primary_key=True)
 	book_name: str = Field(min_length=4, max_length=200)
 	book_author: str = Field(min_length=4, max_length=20)
-	rating: int = Field(gt=0, lt=6,default=1)
+	rating: int = Field(gt=0, lt=6, default=1)
