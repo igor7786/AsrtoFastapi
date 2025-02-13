@@ -64,11 +64,10 @@ async def update_book(
 	print(upd_book)
 	if not upd_book:
 		return {"updateBook": "failed", "dateCreated": f"{DATE_TIME_NOW}"}
-
-	# ✅ Convert Pydantic model to dict and update fields dynamically
-	book_data = book_upd.model_dump(exclude_unset=True)
+	# ✅ Correct way: Update fields dynamically
+	book_data = book_upd.model_dump(exclude_unset=True)  # Get dict from Pydantic model
 	for key, value in book_data.items():
-		setattr(upd_book, key, value)
+		setattr(upd_book, key, value)  # Dynamically update fields
 	db.add(upd_book)
 	await db.commit()
 	await db.refresh(upd_book)

@@ -55,7 +55,6 @@ class Book(BaseModel):
 			}
 		}
 	)
-
 	@field_validator("book_name", mode="before")
 	def capitalize_book_name(cls, value: str) -> str:
 		return value.title()
