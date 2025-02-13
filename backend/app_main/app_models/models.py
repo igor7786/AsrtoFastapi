@@ -36,19 +36,25 @@ class Tasks(BaseSQLModel, table=True):
 
 ################### Book schema ################
 class Book(BaseModel):
+	book_id: Optional[int] = None
 	book_name: str
 	book_author: str
 	book_rating: int
 
-	model_config = {
-		"json_schema_extra": {
+	# ConfigDict for validation and ordering
+	model_config = ConfigDict(
+		validate_assignment=True,
+		strict=True,
+		extra="forbid",
+		json_schema_extra={
 			"example": {
+				"book_id": 1,
 				"book_author": "AUTHOR",
 				"book_name": "NAME",
 				"book_rating": 5
 			}
 		}
-	}
+	)
 
 	@field_validator("book_name", mode="before")
 	def capitalize_book_name(cls, value: str) -> str:

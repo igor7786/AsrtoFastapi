@@ -56,16 +56,19 @@ async def update_book_name(
 # noinspection PyTypeChecker
 @router.put("/book")
 async def update_book(
-		book: Book,
+		book_upd: Book,
 		db: AsyncSession = (Depends(get_db))
 ) -> dict:
-	upd_book = await db.exec(select(Books).where(Books.book_id == book.book_id))
-	
+	res = await db.exec(select(Books).where(Books.book_id == book_upd.book_id))
+	upd_book = res.one_or_none()
+	print(upd_book)
 	if not upd_book:
 		return {"updateBook": "failed", "dateCreated": f"{DATE_TIME_NOW}"}
-	upd_book.book_name = book.book_name
-	upd_book.book_author = book.book_author
-	upd_book.book_rating = book.book_rating
+
+	# ✅ Convert Pydantic model to dict and update fields dynamically
+	book_data = book_upd.model_dump(exclude_unset=True)
+	for key, value in book_data.items():
+		setattr(upd_book, key, value)
 	db.add(upd_book)
 	await db.commit()
 	await db.refresh(upd_book)
