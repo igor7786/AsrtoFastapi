@@ -26,12 +26,12 @@ def upgrade():
         sa.Column('book_id', sa.Integer(), primary_key=True),
         sa.Column('book_name', sa.String(200), nullable=False),
         sa.Column('book_author', sa.String(20), nullable=False),
-        sa.Column('rating', sa.Integer(), nullable=False, server_default='1')  # Ensuring default value of 1
+        sa.Column('book_rating', sa.Integer(), nullable=False, server_default='1')  # Ensuring default value of 1
     )
 
     # Copy data from old table to new table with a default rating of 1
     op.execute(
-        "INSERT INTO books_new (book_id, book_name, book_author, rating) "
+        "INSERT INTO books_new (book_id, book_name, book_author, book_rating) "
         "SELECT book_id, book_name, book_author, 1 FROM books"
     )
     # Drop the old table

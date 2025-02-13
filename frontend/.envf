@@ -1,5 +1,0 @@
-API_AI_KEY="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"
-API_AI_BASE="https://api.groq.com/openai/v1"
-API_AI_MODEL="gemma2-9b-it"
-API_AI_ENDPOINT="http://localhost:8080/v1/AI/generate-gemmini"
-API_AI_ENDPOINT2="http://localhost:8080/v1/AI/generate-gemma"

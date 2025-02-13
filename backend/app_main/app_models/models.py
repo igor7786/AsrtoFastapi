@@ -38,14 +38,14 @@ class Tasks(BaseSQLModel, table=True):
 class Book(BaseModel):
 	book_name: str
 	book_author: str
-	rating: int
+	book_rating: int
 
 	model_config = {
 		"json_schema_extra": {
 			"example": {
 				"book_author": "AUTHOR",
 				"book_name": "NAME",
-				"rating": 5
+				"book_rating": 5
 			}
 		}
 	}
@@ -73,4 +73,4 @@ class Books(BaseSQLModel, Book, table=True):
 	book_id: int | None = Field(default=None, primary_key=True)
 	book_name: str = Field(min_length=4, max_length=200)
 	book_author: str = Field(min_length=4, max_length=20)
-	rating: int = Field(gt=0, lt=6, default=1)
+	book_rating: int = Field(gt=0, lt=6, default=1)
