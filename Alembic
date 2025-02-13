@@ -15,4 +15,6 @@ in env.py:
     line 23 -> target_metadata = SQLModel.metadata
 run:
     alembic revision --autogenerate -m "init"
+    alembic upgrade -1
+    alembic downgrade -1
     alembic upgrade head

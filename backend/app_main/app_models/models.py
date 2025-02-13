@@ -1,3 +1,5 @@
+from typing import Optional
+
 from app_main.app_imports import (SQLModel, Field, ConfigDict, EmailStr, field_validator, PydanticCustomError,
                                   BaseModel, FieldValidationInfo)
 
@@ -58,4 +60,5 @@ class Book(BaseModel):
 class Books(BaseSQLModel, Book, table=True):
 	book_id: int | None = Field(default=None, primary_key=True)
 	book_name: str = Field(min_length=4, max_length=200)
-	book_author: str | None = Field(min_length=4, max_length=20)
+	book_author: str = Field(min_length=4, max_length=20)
+	rating: int = Field(gt=0, lt=6,default=1)
