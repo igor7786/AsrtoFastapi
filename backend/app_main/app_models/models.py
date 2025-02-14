@@ -1,7 +1,5 @@
-from typing import Optional
-
 from app_main.app_imports import (SQLModel, Field, ConfigDict, EmailStr, field_validator, PydanticCustomError,
-                                  BaseModel, FieldValidationInfo)
+                                  BaseModel, FieldValidationInfo, Optional)
 
 
 # ! configure pydantic -> for validation errors availability
@@ -36,7 +34,7 @@ class Tasks(BaseSQLModel, table=True):
 
 ################### Book schema ################
 class Book(BaseModel):
-	book_id: Optional[int] = None
+	book_id: Optional[int] = Field(default=None, description="No need to pass book_id only if you want to update")
 	book_name: str
 	book_author: str
 	book_rating: int
@@ -48,7 +46,7 @@ class Book(BaseModel):
 		extra="forbid",
 		json_schema_extra={
 			"example": {
-				"book_id": 1,
+				# "book_id": 1,
 				"book_author": "AUTHOR",
 				"book_name": "NAME",
 				"book_rating": 5

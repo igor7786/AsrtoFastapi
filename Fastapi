@@ -1,1 +1,36 @@
+router = APIRouter(prefix="/v1/books-store", tags=["Books-Store"]) tags-> for swagger
+@router.get("/books")
+
+async def get_all_books(db: AsyncSession = Depends(get_db)) -> dependency injection
+
+async def interactive_book_search(
+		q: str = Query(None, min_length=4, max_length=200),
+		db: AsyncSession = Depends(get_db)
+) -> dependency injection, query
+async def create_book(book: Book, db: AsyncSession = Depends(get_db)) -> dependency injection, body -> Book model
+
+@router.put("/book/{book_id}")
+async def update_book_name(
+		book_id: int,
+		upd_book_name: str = Body(..., embed=True, min_length=4, max_length=200),
+		db: AsyncSession = (Depends(get_db))
+) -> dependency injection, path -> book_id, body if only one param -> with embed returns dict!
+
+
+@router.delete("/book/{del_book_id}")
+async def delete_book(
+		del_book_id: int = Path(gt=0),
+		db: AsyncSession = Depends(get_db)
+) -> dependency injection, path -> del_book_id greater than 0
+
+http codes:
+200 -> success
+201 -> created, new resource
+204 -> no content, for PUT or DELETE requests
+400 -> bad request
+401 -> unauthorized
+403 -> forbidden
+404 -> not found
+500 -> internal server error
+
 
