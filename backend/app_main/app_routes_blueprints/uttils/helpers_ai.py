@@ -1,5 +1,3 @@
-import asyncio
-
 from app_main.app_imports import (AsyncOpenAI, api_ai_key_gemma, api_ai_base_gemma, api_ai_key_qwen, api_ai_base_qwen,
                                   api_ai_model_qwen,
                                   api_ai_model_gemma, api_ai_key_gemmini, api_ai_model_gemmini, AsyncGenerator,
@@ -14,8 +12,10 @@ async def stream_text_gemma(message) -> AsyncGenerator:
 	"""
 	Stream text from the model as a response to the provided messages.
 	"""
-	client = AsyncOpenAI(api_key=api_ai_key_qwen,
-	                     base_url=api_ai_base_qwen)
+	client = AsyncOpenAI(
+		api_key=api_ai_key_qwen,
+		base_url=api_ai_base_qwen
+	)
 	try:
 		# Start a streaming request to OpenAI or Groq API
 		response = await client.chat.completions.create(
@@ -40,10 +40,7 @@ def stream_text_gemmini(promt, image=None) -> Generator:
 	client = genai.Client(api_key=api_ai_key_gemmini)
 	model = api_ai_model_gemmini
 	google_search_tool = Tool(google_search=GoogleSearch())
-	if not image:
-		content = [promt]
-	else:
-		content = [promt, image]
+	content = [promt, image] if image else [promt]
 	try:
 		# Generate content with the model
 		response = client.models.generate_content_stream(

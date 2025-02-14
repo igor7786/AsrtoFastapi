@@ -1,19 +1,12 @@
-from typing import Annotated
-
-from app_main.app_imports import (APIRouter, Depends, AsyncSession, select, datetime, Query, Body, FastApiPath,
-                                  Response, HTTPException, JSONResponse, jsonable_encoder)
-from app_main.app_dependancies_helpers_global_vars.dependencies import get_db
+from app_main.app_imports import (APIRouter, select, Query, Body, FastApiPath, Response, HTTPException, JSONResponse,
+                                  jsonable_encoder)
+from app_main.app_routes_blueprints.uttils.dependancies import dependency_db, dependency_time_now
 from app_main.app_models.models import Book, Books
+from app_main.app_global_helpers.app_logging import logger
+
 
 PREFIX = "/v1/books-store"
 
-
-def get_current_datetime():
-	return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-dependency_db = Annotated[AsyncSession, Depends(get_db)]
-dependency_time_now = Annotated[str, Depends(get_current_datetime)]
 router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
 
 
@@ -21,6 +14,7 @@ router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
 async def get_all_books(db: dependency_db, time_now: dependency_time_now) -> JSONResponse:
 	result = await db.exec(select(Books))
 	all_books = result.all()
+	logger.info(all_books)
 	return JSONResponse(
 		content={'allBooks': jsonable_encoder(all_books), "dateCreated": f"{time_now}"},
 		status_code=200,
