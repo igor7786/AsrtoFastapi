@@ -43,7 +43,7 @@ class Book(BaseModel):
 	model_config = ConfigDict(
 		validate_assignment=True,
 		strict=True,
-		extra="forbid",
+		extra="forbid",  # Rejects unknown fields
 		json_schema_extra={
 			"example": {
 				# "book_id": 1,
@@ -53,22 +53,21 @@ class Book(BaseModel):
 			}
 		}
 	)
-	@field_validator("book_name", mode="before")
-	def capitalize_book_name(cls, value: str) -> str:
+
+	@field_validator("book_name", "book_author", mode="before")
+	def capitalize_fields(cls, value: str) -> str:
+		if value.lower() in {"none", "null", ""}:  # Reject "None", "null", or empty string
+			raise ValueError(f"{value} is not a valid value for book_name or book_author")
 		return value.title()
 
-	@field_validator("book_author", mode="before")
-	def capitalize_book_author(cls, value: str) -> str:
-		return value.title()
 
-	# ! Validate book_author and compare it with book_name -> make sure passing last field to compere with
-	@field_validator("book_author", mode="before")
-	def validate_book_author(cls, v, info: FieldValidationInfo) -> str:
-		# ! Correct way to access another field
-		if 'book_name' in info.data and v == info.data["book_name"]:
-			raise ValueError("book_name and book_author cannot be the same")
-
-		return v
+# ! Validate book_author and compare it with book_name -> make sure passing last field to compere with
+@field_validator("book_author", mode="before")
+def validate_book_author(cls, v, info: FieldValidationInfo) -> str:
+	# ! Correct way to access another field
+	if 'book_name' in info.data and v == info.data["book_name"]:
+		raise ValueError("book_name and book_author cannot be the same")
+	return v
 
 
 # ! #################### Books table make sure passing BaseSQLModel, Book, table=True  ################

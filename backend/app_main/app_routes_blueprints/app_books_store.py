@@ -1,13 +1,10 @@
-from typing import Any, Coroutine
-
-from starlette.responses import JSONResponse
-
 from app_main.app_imports import (APIRouter, Depends, AsyncSession, select, datetime, Query, Body, FastApiPath,
-                                  Response, HTTPException, JSONResponse)
+                                  Response, HTTPException, JSONResponse, jsonable_encoder)
 from app_main.app_dependancies_helpers_global_vars.dependencies import get_db
 from app_main.app_models.models import Book, Books
 
-router = APIRouter(prefix="/v1/books-store", tags=["Books-Store"])
+PREFIX = "/v1/books-store"
+router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
 DATE_TIME_NOW = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -15,10 +12,10 @@ DATE_TIME_NOW = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 async def get_all_books(db: AsyncSession = Depends(get_db)) -> JSONResponse:
 	result = await db.exec(select(Books))
 	all_books = result.all()
-	books_list = [book.model_dump() for book in all_books]
 	return JSONResponse(
-		content={'allBooks': books_list, "dateCreated": f"{DATE_TIME_NOW}"},
-		status_code=200
+		content={'allBooks': jsonable_encoder(all_books), "dateCreated": f"{DATE_TIME_NOW}"},
+		status_code=200,
+		headers={"Location": f"{PREFIX}/books"},
 	)
 
 
@@ -30,23 +27,24 @@ async def interactive_book_search(
 ) -> JSONResponse:
 	book_q = select(Books).where(Books.book_name.ilike(f"%{q}%"))  # Adjust based on your model
 	result = await db.exec(book_q)  # Execute the query
-	all_books = result.all() # Fetch results
-	books_list = [book.model_dump() for book in all_books]
+	all_books = result.all()  # Fetch results
 	return JSONResponse(
-		content={"searchedBooks": books_list, "dateCreated": f"{DATE_TIME_NOW}"},
-		status_code=200
-		)
+		content={"searchedBooks": jsonable_encoder(all_books), "dateCreated": f"{DATE_TIME_NOW}"},
+		status_code=200,
+		headers={"Location": f"{PREFIX}/book"},
+	)
 
 
 @router.post("/book", status_code=201)
 async def create_book(book: Book, db: AsyncSession = Depends(get_db)) -> JSONResponse:
-	cr_book = Books(**book.model_dump())
+	cr_book = Books(**book.model_dump(exclude_unset=True))
 	db.add(cr_book)
 	await db.commit()
 	await db.refresh(cr_book)
 	return JSONResponse(
 		content={"createdBook": "success", "dateCreated": f"{DATE_TIME_NOW}"},
-		status_code=201
+		status_code=201,
+		headers={"Location": f"{PREFIX}/book/{cr_book.book_id}"},  # Add Location Header
 	)
 
 

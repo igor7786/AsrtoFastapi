@@ -9,6 +9,7 @@ from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, File, F
 from fastapi import Path as FastApiPath
 from fastapi.params import Body, Query
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
@@ -55,7 +56,7 @@ api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 __all__ = [
 
 	'FastAPI','APIRouter','Depends','HTTPException','Request','File','Form','UploadFile', 'Body', 'Query','FastApiPath',
-	'Response',
+	'Response','jsonable_encoder',
 	'uvicorn',
 	'CORSMiddleware',
 	'datetime',
