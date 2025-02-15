@@ -1,6 +1,6 @@
 from app_main.app_imports import SQLModel, Field, ConfigDict, EmailStr, Optional, datetime, Relationship
 from app_main.app_models.models_schema_validation import User, Book
-
+from sqlalchemy import UniqueConstraint, Column, String
 
 # ! configure pydantic -> for validation errors availability
 class BaseSQLModel(SQLModel):
@@ -12,7 +12,7 @@ class Users(BaseSQLModel, User, table=True):
 	id: Optional[int] = Field(default=None, primary_key=True)
 	first_name: str = Field(index=True, min_length=4, max_length=20)
 	last_name: str = Field(min_length=4, max_length=20)
-	email: EmailStr = Field(unique_items=True, regex=r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+	email: EmailStr = Field(sa_column=Column("email", String, unique=True))
 	dob: datetime
 	is_active: bool = Field(default=True)
 	role: str = Field(min_length=4, max_length=20)

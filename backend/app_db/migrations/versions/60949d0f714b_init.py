@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 29accb655944
+Revision ID: 60949d0f714b
 Revises: 
-Create Date: 2025-02-15 03:03:54.154360
+Create Date: 2025-02-15 12:24:09.325445
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '29accb655944'
+revision: str = '60949d0f714b'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,12 +25,13 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sqlmodel.sql.sqltypes.AutoString(length=20), nullable=False),
     sa.Column('last_name', sqlmodel.sql.sqltypes.AutoString(length=20), nullable=False),
-    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('email', sa.String(), nullable=True),
     sa.Column('dob', sa.DateTime(), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.Column('role', sqlmodel.sql.sqltypes.AutoString(length=20), nullable=False),
     sa.Column('hashed_password', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
     )
     op.create_index(op.f('ix_users_first_name'), 'users', ['first_name'], unique=False)
     op.create_table('books',

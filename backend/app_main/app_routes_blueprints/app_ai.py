@@ -1,7 +1,8 @@
-from app_main.app_imports import StreamingResponse, BaseModel, APIRouter, Annotated, Optional, List, File, UploadFile, \
+from app_main.app_imports import StreamingResponse, APIRouter, Annotated, Optional, List, File, UploadFile, \
 	Form, io, Image, JSONResponse
 from app_main.app_routes_blueprints.uttils.helpers_ai import stream_text_gemma, stream_text_gemmini
 
+PREFIX = "/v1/AI"
 router = APIRouter(prefix="/v1/AI", tags=["AI-Models"])
 
 

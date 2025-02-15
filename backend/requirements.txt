@@ -20,6 +20,7 @@ setuptools==75.8.0
 pillow==11.1.0
 google-generativeai==0.8.4
 google-genai == 1.1.0
-
+passlib==1.7.4
+bcrypt==4.0.1 #! for password hashing important this version
 
 

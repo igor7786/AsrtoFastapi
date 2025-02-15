@@ -4,19 +4,21 @@ import io
 from PIL import Image
 
 from sqlmodel import SQLModel, Field, create_engine, Session, select, Relationship
+from sqlalchemy.exc import IntegrityError
+from sqlmodel.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, File, Form, UploadFile, Response
 from fastapi import Path as FastApiPath
 from fastapi.params import Body, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 from datetime import datetime, timedelta
 from pydantic import BaseModel, ConfigDict, ValidationError, EmailStr, field_validator
 from pydantic_core import ErrorDetails, PydanticCustomError
 from pydantic_core.core_schema import FieldValidationInfo
-from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine
+from passlib.context import CryptContext
 import logging
 import colorlog
 from openai import AsyncOpenAI, OpenAIError
@@ -61,10 +63,10 @@ __all__ = [
 	'CORSMiddleware',
 	'datetime', 'timedelta',
 	'BaseModel', 'ConfigDict', 'EmailStr', 'ValidationError', 'field_validator',
-	'Field', 'Session', 'create_engine', 'SQLModel', 'select','Relationship',
-	'AsyncSession',
-	'create_async_engine',
+	'Field', 'Session', 'create_engine', 'SQLModel', 'select', 'Relationship',
+	'AsyncSession', 'IntegrityError', 'create_async_engine',
 	'PydanticCustomError', 'ErrorDetails', 'FieldValidationInfo',
+	'CryptContext',
 	'JSONResponse',
 	'logging',
 	'colorlog',
