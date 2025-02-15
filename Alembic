@@ -5,7 +5,7 @@ in alembic.ini: #! important ->prepend_sys_path = ..
 in scrript.mako -> line 12 -> import sqlmodel
 in env.py:
     from sqlmodel import SQLModel
-    from app_main.app_models.models import Tasks
+    from app_main.app_models.models import *
     from os import environ as env_vars
     from dotenv import load_dotenv
     load_dotenv()
@@ -14,6 +14,7 @@ in env.py:
     config.set_main_option('sqlalchemy.url', env_vars.get('SQLMODEL_MIGRATE_PTH'))
     line 23 -> target_metadata = SQLModel.metadata
 run:
+    make sure no validators before alembic commands in app_models/models.py
     alembic revision --autogenerate -m "init"
     alembic upgrade -1
     alembic downgrade -1

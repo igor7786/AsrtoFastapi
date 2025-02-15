@@ -1,6 +1,6 @@
 from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Request, JSONResponse
-from app_main.app_models.models import Tasks, Books
-from app_main.app_routes_blueprints import app_books_store, app_user, app_ai
+from app_main.app_models.models import Users, Books
+from app_main.app_routes_blueprints import app_books_store, app_ai, app_auth
 from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware
 
 # from rich import print
@@ -25,6 +25,6 @@ async def validation_exception_handler(request: Request, exc: ValidationError):
 	)
 
 
-app.include_router(app_user.router)
+app.include_router(app_auth.router)
 app.include_router(app_ai.router)
 app.include_router(app_books_store.router)

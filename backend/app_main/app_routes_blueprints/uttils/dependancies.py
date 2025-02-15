@@ -13,6 +13,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, Any]:
 		except Exception as e:
 			await session.rollback()
 			logger.error(e)
+			raise e
 		finally:
 			await session.close()
 
