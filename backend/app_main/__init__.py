@@ -26,5 +26,5 @@ async def validation_exception_handler(request: Request, exc: ValidationError):
 
 
 app.include_router(app_auth.router)
-app.include_router(app_ai.router)
 app.include_router(app_books_store.router)
+app.include_router(app_ai.router)

@@ -13,8 +13,11 @@ from fastapi.params import Body, Query
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from joserfc import jwt
+from joserfc.jwk import OctKey as jwt_OctKey
 import uvicorn
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel, ConfigDict, ValidationError, EmailStr, field_validator
 from pydantic_core import ErrorDetails, PydanticCustomError
 from pydantic_core.core_schema import FieldValidationInfo
@@ -40,6 +43,7 @@ APP_PATH = f'{str(Path(__file__).parent.parent.parent.resolve())}/'
 load_dotenv(dotenv_path=f'{APP_PATH}.env')
 
 # ? ####  ENVIRONMENT VARIABLES ####
+secret_key = env_vars.get('SECRET_KEY')
 db_url = env_vars.get('SQLITE_PATH')
 db_alembic_url = env_vars.get('SQLMODEL_MIGRATE_PTH')
 api_ai_key_gemma = env_vars.get('API_AI_KEY_GEMMA')
@@ -57,11 +61,12 @@ api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 __all__ = [
 
 	'FastAPI', 'APIRouter', 'Depends', 'HTTPException', 'Request', 'File', 'Form', 'UploadFile', 'Body', 'Query',
-	'FastApiPath',
+	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey',
+	'secret_key',
 	'Response', 'jsonable_encoder',
 	'uvicorn',
 	'CORSMiddleware',
-	'datetime', 'timedelta',
+	'datetime', 'timedelta','timezone',
 	'BaseModel', 'ConfigDict', 'EmailStr', 'ValidationError', 'field_validator',
 	'Field', 'Session', 'create_engine', 'SQLModel', 'select', 'Relationship',
 	'AsyncSession', 'IntegrityError', 'create_async_engine',

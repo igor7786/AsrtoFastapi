@@ -2,20 +2,43 @@ from app_main.app_global_helpers.app_logging import logger
 from app_main.app_imports import (Field, ConfigDict, EmailStr, field_validator, BaseModel, FieldValidationInfo,
                                   Optional, datetime, timedelta)
 
+MIN_AGE = 18
 
 # ! ############ User schema ##############
 class User(BaseModel):
-	id: Optional[int] = Field(default=None, primary_key=True)
+	id: Optional[int] = Field(default=None, description="No need to pass ID only if you want to update")
+	user_name: str
 	first_name: str
 	last_name: str
 	email: EmailStr
 	dob: datetime = datetime.now().date()
 	is_active: bool
 	role: str
+	#! same field as in db just do not manually assign fields in endpoint
 	hashed_password: str
 
+	# ConfigDict for validation and ordering
+	model_config = ConfigDict(
+		validate_assignment=True,
+		strict=True,
+		extra="forbid",  # Rejects unknown fields
+		json_schema_extra={
+			"example": {
+				# "book_id": 1,
+				"user_name": "USER_NAME",
+				"first_name": "FIRST_NAME",
+				"last_name": "LAST_NAME",
+				"email": "EMAIL",
+				"dob": "YYYY-MM-DD",
+				"is_active": True,
+				"role": "ROLE",
+				"hashed_password": "PASSWORD",
+			}
+		}
+	)
+
 	@field_validator('dob', mode="before")
-	def check_minimum_age(cls, v: datetime, MIN_AGE=18) -> datetime:
+	def check_minimum_age(cls, v: datetime, min_age=MIN_AGE) -> datetime:
 		"""Ensure that the user is at least 18 years old"""
 		# Convert string input to datetime object if needed
 		if isinstance(v, str):
@@ -23,7 +46,7 @@ class User(BaseModel):
 		# Get the current date
 		now = datetime.now()
 		# Calculate the minimum birthdate required for 18 years old
-		min_birthdate = now - timedelta(days=MIN_AGE * 365.25)
+		min_birthdate = now - timedelta(days=min_age * 365.25)
 	# Check if the user is at least 18 years old
 		if v > min_birthdate:
 			raise ValueError(f"User must be at least {MIN_AGE} years old")
@@ -32,7 +55,7 @@ class User(BaseModel):
 
 # ! ################### Book schema ################
 class Book(BaseModel):
-	id: Optional[int] = Field(default=None, description="No need to pass book_id only if you want to update")
+	id: Optional[int] = Field(default=None, description="No need to pass ID only if you want to update")
 	name: str
 	genre: str
 	rating: int

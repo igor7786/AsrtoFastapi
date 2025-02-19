@@ -1,6 +1,6 @@
 from app_main.app_imports import (APIRouter, select, Query, Body, FastApiPath, Response, HTTPException, JSONResponse,
                                   jsonable_encoder)
-from app_main.app_routes_blueprints.uttils.dependancies import dependency_db, dependency_time_now
+from app_main.app_routes_blueprints.uttils.dependancies import current_user, dependency_db, dependency_time_now
 from app_main.app_models.models import Book, Books
 from app_main.app_global_helpers.app_logging import logger
 from app_main.app_routes_blueprints.uttils.helpers_book import _update_class_fields
@@ -40,7 +40,7 @@ async def interactive_book_search(
 
 
 @router.post("/book", status_code=201)
-async def create_book(db: dependency_db, time_now: dependency_time_now, book: Book) -> JSONResponse:
+async def create_book(db: dependency_db, user: current_user, time_now: dependency_time_now, book: Book) -> JSONResponse:
 	cr_book = Books(**book.model_dump(exclude_unset=True))
 	db.add(cr_book)
 	await db.commit()
