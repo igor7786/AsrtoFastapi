@@ -1,4 +1,4 @@
-from app_main.app_imports import SQLModel, Field, ConfigDict, EmailStr, Optional, datetime, Relationship
+from app_main.app_imports import SQLModel, Field, ConfigDict, EmailStr, Optional, datetime, Relationship, uuid
 from app_main.app_models.models_schema_validation import User, Book
 from sqlalchemy import UniqueConstraint, Column, String
 
@@ -10,7 +10,7 @@ class BaseSQLModel(SQLModel):
 
 # ! #################### Users table make sure passing BaseSQLModel, Book, table=True  ################
 class Users(BaseSQLModel, User, table=True):
-	id: Optional[int] = Field(default=None, primary_key=True)
+	id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
 	user_name: str = Field(min_length=4, max_length=20, sa_column=Column("user_name", String, unique=True, index=True))
 	first_name: str = Field(min_length=4, max_length=20)
 	last_name: str = Field(min_length=4, max_length=20)
@@ -25,10 +25,10 @@ class Users(BaseSQLModel, User, table=True):
 
 # ! #################### Books table make sure passing BaseSQLModel, Book, table=True  ################
 class Books(BaseSQLModel, Book, table=True):
-	id: Optional[int] = Field(default=None, primary_key=True)
+	id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
 	name: str = Field(index=True, min_length=4, max_length=200)
 	genre: str = Field(min_length=4, max_length=20)
 	rating: int = Field(gt=0, lt=6, default=1)
-	user_id: Optional[int] = Field(default=None, foreign_key="users.id")
+	user_id: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
 	# ! can be one user
 	users: "Users" = Relationship(back_populates="books")

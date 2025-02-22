@@ -4,6 +4,7 @@ from app_main.app_imports import (Field, ConfigDict, EmailStr, field_validator, 
 
 MIN_AGE = 18
 
+
 # ! ############ User schema ##############
 class User(BaseModel):
 	id: Optional[int] = Field(default=None, description="No need to pass ID only if you want to update")
@@ -14,7 +15,7 @@ class User(BaseModel):
 	dob: datetime = datetime.now().date()
 	is_active: bool
 	role: str
-	#! same field as in db just do not manually assign fields in endpoint
+	# ! same field as in db just do not manually assign fields in endpoint
 	hashed_password: str
 
 	# ConfigDict for validation and ordering
@@ -28,8 +29,8 @@ class User(BaseModel):
 				"user_name": "USER_NAME",
 				"first_name": "FIRST_NAME",
 				"last_name": "LAST_NAME",
-				"email": "EMAIL",
-				"dob": "YYYY-MM-DD",
+				"email": "EMAIL@EMAIL.COM",
+				"dob": "27-04-2000",
 				"is_active": True,
 				"role": "ROLE",
 				"hashed_password": "PASSWORD",
@@ -42,12 +43,12 @@ class User(BaseModel):
 		"""Ensure that the user is at least 18 years old"""
 		# Convert string input to datetime object if needed
 		if isinstance(v, str):
-			v = datetime.strptime(v, "%Y-%m-%d")
+			v = datetime.strptime(v, "%d-%m-%Y")
 		# Get the current date
 		now = datetime.now()
 		# Calculate the minimum birthdate required for 18 years old
 		min_birthdate = now - timedelta(days=min_age * 365.25)
-	# Check if the user is at least 18 years old
+		# Check if the user is at least 18 years old
 		if v > min_birthdate:
 			raise ValueError(f"User must be at least {MIN_AGE} years old")
 		return v  # Return the parsed datetime object
@@ -62,6 +63,7 @@ class Book(BaseModel):
 
 	# ConfigDict for validation and ordering
 	model_config = ConfigDict(
+		from_attributes=True,
 		validate_assignment=True,
 		strict=True,
 		extra="forbid",  # Rejects unknown fields
@@ -95,10 +97,6 @@ class Book(BaseModel):
 		if value.lower() in {"none", "null", ""}:  # Reject "None", "null", or empty string
 			raise ValueError(f"{value} is not a valid value for book_name or book_author")
 		return value.title()
-
-
-
-
 
 # validation of user input data when user enters the data to endpoint
 # class User(BaseModel):

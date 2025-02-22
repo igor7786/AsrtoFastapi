@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+import uuid
 from joserfc import jwt
 from joserfc.jwk import OctKey as jwt_OctKey
 import uvicorn
@@ -61,7 +62,7 @@ api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 __all__ = [
 
 	'FastAPI', 'APIRouter', 'Depends', 'HTTPException', 'Request', 'File', 'Form', 'UploadFile', 'Body', 'Query',
-	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey',
+	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey','uuid',
 	'secret_key',
 	'Response', 'jsonable_encoder',
 	'uvicorn',

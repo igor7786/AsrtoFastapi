@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: fastApi.dockerfile
+    image: my-python-app
+    container_name: my-python-app-container
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./app_db:/backend/app_db  # This line should mount the local app_db to the container
+    restart: unless-stopped

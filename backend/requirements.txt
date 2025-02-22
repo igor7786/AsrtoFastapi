@@ -14,7 +14,6 @@ openai==1.59.7
 groq==0.15.0
 python-dotenv==1.0.1
 aiosqlite==0.20.0
-llama-cpp-python==0.3.7
 wheel==0.45.1
 setuptools==75.8.0
 pillow==11.1.0
@@ -24,3 +23,4 @@ passlib==1.7.4
 bcrypt==4.0.1 #! for password hashing important this version
 python-multipart==0.0.19
 joserfc==1.0.3
+uuid==1.30
