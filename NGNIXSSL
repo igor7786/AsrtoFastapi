@@ -29,3 +29,8 @@ iside the file go to CA Issuers - URI:http://crt.sectigo.com/SectigoRSADomainVal
 after download ->
 Convert to PEM Format
 openssl x509 -inform DER -in SectigoRSADomainValidationSecureServerCA.crt -out SectigoRSADomainValidationSecureServerCA.pem
+#! important
+cat igorfastapi.co.uk_ssl_certificate.cer SectigoRSADomainValidationSecureServerCA.pem > full_chain.pem
+sudo chown igor7786:igor7786 full_chain.pem
+sudo bash -c 'cat igorfastapi.co.uk_ssl_certificate.cer SectigoRSADomainValidationSecureServerCA.pem > /e/n/ssl/full_chain.pem'
+
