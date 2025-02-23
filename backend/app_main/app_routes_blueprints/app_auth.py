@@ -1,6 +1,3 @@
-from typing import Annotated
-from fastapi import Depends
-
 from app_main.app_imports import (APIRouter, select, HTTPException, JSONResponse, jsonable_encoder, IntegrityError,
                                   timedelta)
 from app_main.app_models.models_schema_validation import User

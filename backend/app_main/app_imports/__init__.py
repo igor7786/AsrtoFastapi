@@ -2,6 +2,8 @@ from pathlib import Path
 from typing_extensions import Annotated
 import io
 from PIL import Image
+from uuid import UUID
+
 
 from sqlmodel import SQLModel, Field, create_engine, Session, select, Relationship
 from sqlalchemy.exc import IntegrityError
@@ -62,7 +64,7 @@ api_ai_base_qwen = env_vars.get('API_AI_BASE_QWEN')
 __all__ = [
 
 	'FastAPI', 'APIRouter', 'Depends', 'HTTPException', 'Request', 'File', 'Form', 'UploadFile', 'Body', 'Query',
-	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey','uuid',
+	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey','uuid', 'UUID',
 	'secret_key',
 	'Response', 'jsonable_encoder',
 	'uvicorn',
