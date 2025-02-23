@@ -1,3 +1,6 @@
+from typing import Any
+
+import uuid
 from datetime import datetime
 from uuid import UUID
 
@@ -17,12 +20,13 @@ logger.warning(f'route endpoint-> {PREFIX}')
 @router.get("/books", status_code=200)
 async def get_all_books(db: dependency_db, time_now: dependency_time_now) -> JSONResponse:
 	result = await db.exec(select(Books))
-	all_books = result.all()
-	return JSONResponse(
-		content={'allBooks': jsonable_encoder(all_books), "dateCreated": f"{time_now}"},
-		status_code=200,
-		headers={"Location": f"{PREFIX}/books"},
-	)
+	if all_books := result.all():
+		return JSONResponse(
+			content={'allBooks': jsonable_encoder(all_books), "dateCreated": f"{time_now}"},
+			status_code=200,
+			headers={"Location": f"{PREFIX}/books"},
+		)
+	raise HTTPException(status_code=404, detail="Books not found")
 
 
 @router.get("/book", status_code=200)
@@ -31,10 +35,11 @@ async def interactive_book_search(
 		time_now: dependency_time_now,
 		q: str = Query(min_length=4, max_length=200),
 ) -> JSONResponse:
-	logger.info(q)
 	book_q = select(Books, Users).where(Books.name.ilike(f"%{q}%")).where(Books.user_id == Users.id)  # Adjust based on
 	result = await db.exec(book_q)  # Execute the query
 	all_books = result.all()
+	if not all_books:
+		raise HTTPException(status_code=404, detail="Books not found")
 	user_dict = {}
 	for book, user in all_books:
 		user_id = str(user.id)  # Convert UUID to string for JSON serialization
@@ -92,7 +97,7 @@ async def create_book(db: dependency_db, time_now: dependency_time_now, book: Bo
 @router.put("/book-name/{book_id}", status_code=204)
 async def update_book_name(
 		db: dependency_db,
-		book_id: int = FastApiPath(gt=0),
+		book_id: UUID,
 		upd_book_name: str = Body(..., embed=True, min_length=4, max_length=200),
 ) -> Response:
 	res = await db.exec(select(Books).where(Books.id == book_id))
@@ -107,7 +112,7 @@ async def update_book_name(
 
 
 @router.put("/book/{book_id}", status_code=204)
-async def update_book(db: dependency_db, book_upd: Book, book_id: int = FastApiPath(gt=0)) -> Response:
+async def update_book(db: dependency_db, book_upd: Book, book_id: UUID) -> Response:
 	res = await db.exec(select(Books).where(Books.id == book_id))
 	upd_book = res.one_or_none()
 	if upd_book is None:
@@ -121,7 +126,7 @@ async def update_book(db: dependency_db, book_upd: Book, book_id: int = FastApiP
 
 
 @router.delete("/book/{del_book_id}", status_code=204)
-async def delete_book(db: dependency_db, del_book_id: int = FastApiPath(gt=0)) -> Response:
+async def delete_book(db: dependency_db, del_book_id: UUID) -> Response:
 	res = await db.exec(select(Books).where(Books.id == del_book_id))
 	q_book = res.one_or_none()
 	if q_book is None:

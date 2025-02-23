@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 services:
   app:
     build:
@@ -9,5 +9,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./app_db:/backend/app_db  # This line should mount the local app_db to the container
+      - ./app_db:/backend/app_db  # Bidirectional sync for the database
+      - ./app_main:/backend/app_main:ro  # Read-only mount for app_main
     restart: unless-stopped
