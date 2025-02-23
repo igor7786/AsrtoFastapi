@@ -1,14 +1,40 @@
 version: "3.9"
 services:
-  app:
+  app1:
     build:
       context: .
       dockerfile: fastApi.dockerfile
     image: my-python-app
-    container_name: my-python-app-container
+    container_name: my-python-app1-container
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
-      - ./app_db:/backend/app_db  # Bidirectional sync for the database
-      - ./app_main:/backend/app_main:ro  # Read-only mount for app_main
+      - ./app_db:/backend/app_db  # Shared database
+      - ./app_main:/backend/app_main:ro  # Read-only codebase
+    restart: unless-stopped
+
+  app2:
+    build:
+      context: .
+      dockerfile: fastApi.dockerfile
+    image: my-python-app
+    container_name: my-python-app2-container
+    ports:
+      - "8001:8000"  # Unique port
+    volumes:
+      - ./app_db:/backend/app_db
+      - ./app_main:/backend/app_main:ro
+    restart: unless-stopped
+
+  app3:
+    build:
+      context: .
+      dockerfile: fastApi.dockerfile
+    image: my-python-app
+    container_name: my-python-app3-container
+    ports:
+      - "8002:8000"  # Changed from 8001 to 8002
+    volumes:
+      - ./app_db:/backend/app_db
+      - ./app_main:/backend/app_main:ro
     restart: unless-stopped

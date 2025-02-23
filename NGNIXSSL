@@ -1,0 +1,31 @@
+fallow:
+https://www.youtube.com/watch?v=q8OleYuqntY&t=3374s
+
+Nginx:
+/etc/nginx/
+mkdir ssl
+sudo nginx -t
+sudo systemctl reload nginx
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+sudo journalctl -xeu nginx.service
+
+ufw:
+sudo ufw status
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw status
+
+
+
+
+for ssl certificates:
+https://my.ionos.co.uk/ -> add record in dns-> @192.168.1.XXX
+Details->https://my.ionos.co.uk/domain-details/ ->SSL certificates-> manage-> advanced_settings->download->SSL
+Certificate, Intermediate certificate.
+after sudo openssl x509 -in /etc/nginx/ssl/igorfastapi.co.uk_ssl_certificate.cer -text -noout
+iside the file go to CA Issuers - URI:http://crt.sectigo.com/SectigoRSADomainValidationSecureServerCA.crt
+after download ->
+Convert to PEM Format
+openssl x509 -inform DER -in SectigoRSADomainValidationSecureServerCA.crt -out SectigoRSADomainValidationSecureServerCA.pem
