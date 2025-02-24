@@ -3,38 +3,62 @@ services:
   app1:
     build:
       context: .
-      dockerfile: fastApi.dockerfile
+      dockerfile: fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app1-container
-    ports:
-      - "8000:8000"
     volumes:
       - ./app_db:/backend/app_db  # Shared database
       - ./app_main:/backend/app_main:ro  # Read-only codebase
-    restart: unless-stopped
+    networks:
+      - my_network
+    restart: always  # Ensure container auto-restarts on failure or reboot
 
   app2:
     build:
       context: .
-      dockerfile: fastApi.dockerfile
+      dockerfile: fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app2-container
-    ports:
-      - "8001:8000"  # Unique port
     volumes:
       - ./app_db:/backend/app_db
       - ./app_main:/backend/app_main:ro
-    restart: unless-stopped
+    networks:
+      - my_network
+    restart: always
 
   app3:
     build:
       context: .
-      dockerfile: fastApi.dockerfile
+      dockerfile: fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app3-container
-    ports:
-      - "8002:8000"  # Changed from 8001 to 8002
     volumes:
       - ./app_db:/backend/app_db
       - ./app_main:/backend/app_main:ro
-    restart: unless-stopped
+    networks:
+      - my_network
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: nginx-app.dockerfile
+    image: my-nginx
+    container_name: my-nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app1
+      - app2
+      - app3
+    networks:
+      - my_network
+    restart: always
+
+networks:
+  my_network:
+    driver: bridge
+volumes:
+  app_db:
+    driver: local
