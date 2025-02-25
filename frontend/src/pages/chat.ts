@@ -9,9 +9,7 @@ export const POST: APIRoute = async ({ request }) => {
     const { messages } = await request.json();
     //! extract last message
     const lastMessage = messages[messages.length - 1];
-    let fastAPIUrl = `${process.env.API_AI_ENDPOINT}`;
-    console.log(fastAPIUrl)
-    fastAPIUrl='https://igorfastapi.co.uk/api/stream/v1/AI/generate-gemmini'
+    const fastAPIUrl = `${process.env.API_AI_ENDPOINT}`;
     // ! validate
     const parsedData = messageSchema.safeParse(lastMessage);
     if (!parsedData.success) {
