@@ -5,7 +5,7 @@ from app_main.app_models.models import Book, Books, Users
 from app_main.app_global_helpers.app_logging import logger
 from app_main.app_routes_blueprints.uttils.helpers_book import _update_class_fields
 
-PREFIX = "/v1/books-store"
+PREFIX = "/api/v1/books-store"
 
 router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
 logger.warning(f'route endpoint-> {PREFIX}')

@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  # FastAPI application 1
+  app1:
+    build:
+      context: .
+      dockerfile: ./backend/fastapi-app.dockerfile
+    image: my-python-app
+    container_name: my-python-app1-container
+    volumes:
+      - ./backend/app_db:/backend/app_db  # Shared database
+      - ./backend/app_main:/backend/app_main:ro  # Read-only codebase
+    networks:
+      - my_network
+    restart: always
+
+  # FastAPI application 2
+  app2:
+    build:
+      context: .
+      dockerfile: ./backend/fastapi-app.dockerfile
+    image: my-python-app
+    container_name: my-python-app2-container
+    volumes:
+      - ./backend/app_db:/backend/app_db
+      - ./backend/app_main:/backend/app_main:ro
+    networks:
+      - my_network
+    restart: always
+
+  # FastAPI application 3
+  app3:
+    build:
+      context: .
+      dockerfile: ./backend/fastapi-app.dockerfile
+    image: my-python-app
+    container_name: my-python-app3-container
+    volumes:
+      - ./backend/app_db:/backend/app_db
+      - ./backend/app_main:/backend/app_main:ro
+    networks:
+      - my_network
+    restart: always
+
+  #My Astro app (Node.js app)
+  astro-app:
+    build:
+      context: .
+      dockerfile: ./frontend/astro-app.dockerfile  # Ensure this is the correct path to your Dockerfile
+    container_name: my-astro-app-container
+    volumes:
+      - ./frontend:/frontend  # Mount the local frontend directory to the container for live updates
+    networks:
+      - my_network
+    restart: always
+
+  # Nginx web server (acting as a reverse proxy)
+  web:
+    build:
+      context: .
+      dockerfile: nginx/nginx-app.dockerfile
+    image: my-nginx
+    container_name: my-nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+      - "25566:25566"
+      - "1935:1935"
+    depends_on:
+      - app1
+      - app2
+      - app3
+#      - astro-app  # Nginx depends on the other services being available
+    networks:
+      - my_network
+    restart: always
+
+# Define the shared network between all containers
+networks:
+  my_network:
+    driver: bridge
+
+# Define the volume shared for database persistence
+volumes:
+  app_db:
+    driver: local

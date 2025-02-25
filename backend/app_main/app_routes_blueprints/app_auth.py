@@ -9,7 +9,7 @@ from app_main.app_routes_blueprints.uttils.helpers_auth import (_auth_user, bcry
 
 # from app_main.app_models.models import Book
 # dependency_user = Annotated[dict, Depends(_get_current_user)]
-PREFIX = "/v1/auth"
+PREFIX = "/api/v1/auth"
 router = APIRouter(prefix=PREFIX, tags=["Auth-User"])
 logger.warning(f'route endpoint-> {PREFIX}')
 

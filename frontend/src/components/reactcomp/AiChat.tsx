@@ -8,7 +8,7 @@ type ChatDemoProps = {
 };
 export default function AIChat(props: ChatDemoProps) {
   const { messages, input, handleInputChange, handleSubmit, append, stop, isLoading } = useChat({
-    api: '/api/chat',
+    api: '/chat',
     onResponse: (response) => {
       if (response.headers.get('X-ERR') === 'true') {
         const err = true;

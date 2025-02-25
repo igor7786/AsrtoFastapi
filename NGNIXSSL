@@ -10,7 +10,11 @@ sudo systemctl stop nginx
 sudo systemctl start nginx
 sudo systemctl status nginx
 docker exec -it my-nginx-container bash
+docker rmi -f $(docker images -q)
+docker-compose down --remove-orphans
+docker network prune -f
 sudo journalctl -xeu nginx.service
+sudo chown -R $(whoami) frontend
 
 
 ufw:
@@ -19,7 +23,10 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw status
 
-
+for dns:
+https://my.ionos.co.uk/ -> add record in dns-> @192.168.1.XXX
+cat /etc/hosts | grep igorfastapi.co.uk
+sudo nano /etc/hosts -> @192.168.1.XXX
 
 
 for ssl certificates:

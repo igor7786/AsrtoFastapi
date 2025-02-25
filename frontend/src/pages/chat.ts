@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import dotenv from 'dotenv';
-import { headers, errorHandler, messageSchema } from './utils/helpersvalidation';
+import { headers, errorHandler, messageSchema } from './api/utils/helpersvalidation.ts';
 // load env variables
 dotenv.config();
 
@@ -9,7 +9,9 @@ export const POST: APIRoute = async ({ request }) => {
     const { messages } = await request.json();
     //! extract last message
     const lastMessage = messages[messages.length - 1];
-    const fastAPIUrl = `${process.env.API_AI_ENDPOINT}`;
+    let fastAPIUrl = `${process.env.API_AI_ENDPOINT}`;
+    console.log(fastAPIUrl)
+    fastAPIUrl='https://igorfastapi.co.uk/api/stream/v1/AI/generate-gemmini'
     // ! validate
     const parsedData = messageSchema.safeParse(lastMessage);
     if (!parsedData.success) {
