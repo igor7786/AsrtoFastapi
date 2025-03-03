@@ -1,5 +1,6 @@
+from fastapi import Request
 from app_main.app_imports import (APIRouter, select, Query, Body, UUID, Response, HTTPException, JSONResponse,
-                                  jsonable_encoder ,datetime)
+                                  jsonable_encoder, datetime)
 from app_main.app_routes_blueprints.uttils.dependancies import current_user, dependency_db, dependency_time_now
 from app_main.app_models.models import Book, Books, Users
 from app_main.app_global_helpers.app_logging import logger
@@ -9,6 +10,15 @@ PREFIX = "/api/v1/books-store"
 
 router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
 logger.warning(f'route endpoint-> {PREFIX}')
+
+
+@router.get("/test", status_code=200)
+async def test(request: Request):
+	http_request = request.get('http_version')  # Convert MultiDict to a standard dictionary
+	logger.warning(http_request)
+	return {
+		"http": http_request,
+	}
 
 
 @router.get("/books", status_code=200)

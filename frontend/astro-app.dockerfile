@@ -19,7 +19,5 @@ FROM base AS runtime
 COPY --from=dev-deps /frontend/node_modules ./node_modules
 COPY --from=build /frontend/dist ./dist
 
-# Expose the port used by the Astro app (4321, or adjust if needed)
-EXPOSE 4321
 # Command to run the application in development mode
-CMD npm run dev
+CMD ["npm", "run", "dev"]

@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   # FastAPI application 1
@@ -12,8 +12,10 @@ services:
       - ./backend/app_db:/backend/app_db  # Shared database
       - ./backend/app_main:/backend/app_main:ro  # Read-only codebase
     networks:
-      - my_network
-    restart: always
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
+#    restart: always
 
   # FastAPI application 2
   app2:
@@ -26,7 +28,9 @@ services:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
     networks:
-      - my_network
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
     restart: always
 
   # FastAPI application 3
@@ -40,10 +44,12 @@ services:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
     networks:
-      - my_network
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
     restart: always
 
-  #My Astro app (Node.js app)
+  # My Astro app (Node.js app)
   astro-app:
     build:
       context: .
@@ -51,8 +57,14 @@ services:
     container_name: my-astro-app-container
     volumes:
       - ./frontend:/frontend  # Mount the local frontend directory to the container for live updates
+    depends_on:
+      - app1
+      - app2
+      - app3
     networks:
       - my_network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
     restart: always
 
   # Nginx web server (acting as a reverse proxy)
@@ -63,24 +75,24 @@ services:
     image: my-nginx
     container_name: my-nginx-container
     ports:
-      - "80:80"
-      - "443:443"
-      - "81:81"
-      - "25566:25566"
-      - "1935:1935"
+      - "80:80"  # HTTP
+      - "443:443"  # HTTPS
     depends_on:
-      - app1
-      - app2
-      - app3
-#      - astro-app  # Nginx depends on the other services being available
+      - astro-app  # Uncommented to ensure Nginx can proxy requests to the Astro app
     networks:
-      - my_network
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
     restart: always
 
 # Define the shared network between all containers
 networks:
   my_network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+          gateway: 192.168.1.1
 
 # Define the volume shared for database persistence
 volumes:

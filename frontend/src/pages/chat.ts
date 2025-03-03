@@ -69,6 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
   } catch (error) {
+    console.error('Error:', error);
     return errorHandler('Could not fetch response from Server try again Later!!!');
   }
 };

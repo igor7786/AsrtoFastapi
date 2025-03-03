@@ -10,6 +10,7 @@ sudo systemctl stop nginx
 sudo systemctl start nginx
 sudo systemctl status nginx
 docker exec -it my-nginx-container bash
+docker stop $(docker ps -q)
 docker rmi -f $(docker images -q)
 docker-compose down --remove-orphans
 docker network prune -f

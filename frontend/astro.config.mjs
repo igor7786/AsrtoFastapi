@@ -30,13 +30,9 @@ export default defineConfig({
         },
         server: {
             allowedHosts: [
-                'astro-app', // Custom host for your container/host
-                'localhost',  // Allow localhost
-                '127.0.0.1',  // Loopback interface
-                '0.0.0.0',    // Allow all interfaces (check security)
-                'igorfastapi.co.uk',  // Add your domain here
+                'astro-cluster',
             ],
-            host: '0.0.0.0', // Listen on all interfaces (use localhost if you prefer security)
+            host: 'igorfastapi.co.uk', // Listen on all interfaces (use localhost if you prefer security)
             port: 5173,      // Vite default port, make sure it's not conflicting
             hmr: {
                 protocol: 'wss',          // WebSocket Secure (use if required for secure connections)

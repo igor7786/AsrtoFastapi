@@ -1,0 +1,15 @@
+.gitignore
+Alembic
+Astro
+docker-compose.yml
+Fastapi
+GIT
+NGNIXSSL
+JS
+PIP
+Poetry
+React
+SSH
+frontend/node_modules
+frontend/.astro
+backend/.fastapivenv

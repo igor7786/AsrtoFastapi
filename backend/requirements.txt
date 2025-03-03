@@ -9,7 +9,7 @@ aiosqlite==0.20.0
 pydantic[email]==2.10.3
 colorlog==6.9.0
 python-multipart==0.0.19
-httpx==0.28.1
+#httpx==0.28.1
 openai==1.59.7
 groq==0.15.0
 python-dotenv==1.0.1
@@ -24,3 +24,7 @@ bcrypt==4.0.1 #! for password hashing important this version
 python-multipart==0.0.19
 joserfc==1.0.3
 uuid==1.30
+httpx[http2]==0.28.1
+hypercorn==0.17.3
+uvloop==0.21.0
+granian==1.7.6
