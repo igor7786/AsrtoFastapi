@@ -11,7 +11,7 @@ RUN npm install
 
 # Copy the entire source code into the container
 FROM dev-deps AS build
-COPY ./frontend .
+COPY ./frontend /frontend/
 RUN npm run build
 
 # Set environment variables for development

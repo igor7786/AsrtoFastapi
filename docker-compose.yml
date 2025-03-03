@@ -15,7 +15,7 @@ services:
       - my_network  # Use the custom network
     dns:
       - 8.8.8.8  # Use Google Public DNS
-#    restart: always
+    restart: always
 
   # FastAPI application 2
   app2:

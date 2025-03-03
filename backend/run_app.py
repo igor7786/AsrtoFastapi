@@ -8,7 +8,5 @@ if __name__ == '__main__':
 		host="0.0.0.0",
 		port=8000,
 		workers=4,
-		# ssl_keyfile='./ssl/key.pem',
-		# ssl_certfile='./ssl/cert.pem',
 		reload=True,
 	)

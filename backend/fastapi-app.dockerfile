@@ -31,8 +31,7 @@ COPY --chown=appuser:appuser ./backend /backend/
 CMD ["uvicorn", \
      "app_main:app", \
      "--host", "0.0.0.0", \
-     "--port", "443", \
-     "--workers", "4"]
+     "--port", "8080"]
 #! GRANIAN
 #CMD ["granian", \
 #     "--host", "0.0.0.0", \
