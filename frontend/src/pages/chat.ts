@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import dotenv from 'dotenv';
-import { headers, errorHandler, messageSchema } from './utils/helpersvalidation';
+import { headers, errorHandler, messageSchema } from './api/utils/helpersvalidation.ts';
 // load env variables
 dotenv.config();
 
@@ -69,6 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
   } catch (error) {
+    console.error('Error:', error);
     return errorHandler('Could not fetch response from Server try again Later!!!');
   }
 };

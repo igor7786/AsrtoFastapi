@@ -1,0 +1,8 @@
+curl -sSL https://install.python-poetry.org | python3 -
+sudo pacman -S python-poetry -> Linux arch users
+poetry --version
+poetry add fastapi uvicorn -> install packages
+or poetry install --no-root -> install all packages
+poetry run uvicorn app_main:app --reload -> to run application
+poetry shell -> go to virtual env
+exit -> exit from virtual env

@@ -1,0 +1,47 @@
+fallow:
+https://www.youtube.com/watch?v=q8OleYuqntY&t=3374s
+
+Nginx:
+/etc/nginx/
+mkdir ssl
+sudo nginx -t
+sudo systemctl reload nginx
+sudo systemctl stop nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+docker exec -it my-nginx-container bash
+docker stop $(docker ps -q)
+docker rmi -f $(docker images -q)
+docker compose down --remove-orphans
+docker network prune -f
+docker exec -it 0c640c652bc2 /bin/sh
+sudo journalctl -xeu nginx.service
+sudo chown -R $(whoami) frontend
+
+
+ufw:
+sudo ufw status
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw status
+
+for dns:
+https://my.ionos.co.uk/ -> add record in dns-> @192.168.1.XXX
+cat /etc/hosts | grep igorfastapi.co.uk
+sudo nano /etc/hosts -> @192.168.1.XXX
+
+
+for ssl certificates:
+https://my.ionos.co.uk/ -> add record in dns-> @192.168.1.XXX
+Details->https://my.ionos.co.uk/domain-details/ ->SSL certificates-> manage-> advanced_settings->download->SSL
+Certificate, Intermediate certificate.
+after sudo openssl x509 -in /etc/nginx/ssl/igorfastapi.co.uk_ssl_certificate.cer -text -noout
+iside the file go to CA Issuers - URI:http://crt.sectigo.com/SectigoRSADomainValidationSecureServerCA.crt
+after download ->
+Convert to PEM Format
+openssl x509 -inform DER -in SectigoRSADomainValidationSecureServerCA.crt -out SectigoRSADomainValidationSecureServerCA.pem
+#! important
+cat igorfastapi.co.uk_ssl_certificate.cer SectigoRSADomainValidationSecureServerCA.pem > full_chain.pem
+sudo chown igor7786:igor7786 full_chain.pem
+sudo bash -c 'cat igorfastapi.co.uk_ssl_certificate.cer SectigoRSADomainValidationSecureServerCA.pem > /e/n/ssl/full_chain.pem'
+
