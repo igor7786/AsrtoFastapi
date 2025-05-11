@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
-import ssl
 from httpx import AsyncClient, Timeout
-from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Request, JSONResponse
+from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Request, JSONResponse, FastApiMCP
 from app_main.app_models.models import Users, Books
 from app_main.app_routes_blueprints import app_books_store, app_ai, app_auth, app_test
 from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware
@@ -19,11 +18,22 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+mcp = FastApiMCP(
+    app,
+    name="Item API MCP",
+    description="MCP server for the Item API",
+    describe_full_response_schema=True,  # Describe the full response JSON-schema instead of just a response example
+    describe_all_responses=True,  # Describe all the possible responses instead of just the success (2XX) response
+)
+# Mount the MCP server directly to your FastAPI app
+mcp.mount()
 # Add the CSRF middleware
 # app.add_middleware(CSRFMiddleware)
 app.add_middleware(
 	CORSMiddleware,
-	allow_origins=["http://localhost:4321"],  # 👈 Add protocol (http://)
+	#allow_origins=["http://localhost:4321"],  # 👈 Add protocol (http://)
+	allow_origins=["*"],
 	allow_credentials=True,
 	allow_methods=["GET", "POST", "PUT", "DELETE"],
 	allow_headers=["*"],

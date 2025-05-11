@@ -39,6 +39,8 @@ import base64
 from google.genai.types import Tool, GenerateContentConfig, GoogleSearch, Part
 from google import genai
 from typing import Generator
+from fastapi import FastAPI
+from fastapi_mcp import FastApiMCP
 
 # ! absolute path
 APP_PATH = f'{str(Path(__file__).parent.parent.parent.resolve())}/'
@@ -65,6 +67,7 @@ __all__ = [
 
 	'FastAPI', 'APIRouter', 'Depends', 'HTTPException', 'Request', 'File', 'Form', 'UploadFile', 'Body', 'Query',
 	'FastApiPath','OAuth2PasswordRequestForm','OAuth2PasswordBearer','jwt', 'jwt_OctKey','uuid', 'UUID',
+	'FastApiMCP',
 	'secret_key',
 	'Response', 'jsonable_encoder',
 	'uvicorn',

@@ -28,3 +28,4 @@ httpx[http2]==0.28.1
 hypercorn==0.17.3
 uvloop==0.21.0
 granian==1.7.6
+fastapi-mcp==0.3.3
