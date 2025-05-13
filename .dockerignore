@@ -14,4 +14,4 @@ frontend/node_modules
 frontend/.astro
 frontend/astro-app.dockerfile
 backend/.fastapivenv
-backend/fastapi-app.dockerfile
+backend/fastapi-app2.dockerfile

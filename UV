@@ -1,4 +1,6 @@
 curl -LsSf https://astral.sh/uv/install.sh | sh #install on linux
 uv --version
 uv init --app #to initialize a new project
+uv venv .fastapi #to create a virtual environment or uv venv .fastapi
 uv pip install -r requirements.txt
+uv run main.py #to run the app

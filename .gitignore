@@ -659,3 +659,9 @@ pip-selfcheck.json
 backend/app_db/app_db.db
 ### ngnix-ssl ###
 /*/ssl
+
+###uv###
+/*/pyproject.toml
+/*/uv.lock
+/*/.python-version
+/*/uv.lock

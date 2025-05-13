@@ -5,7 +5,7 @@ services:
   app1:
     build:
       context: .
-      dockerfile: ./backend/fastapi-app.dockerfile
+      dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app1-container
     volumes:
@@ -21,7 +21,7 @@ services:
   app2:
     build:
       context: .
-      dockerfile: ./backend/fastapi-app.dockerfile
+      dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app2-container
     volumes:
@@ -37,7 +37,7 @@ services:
   app3:
     build:
       context: .
-      dockerfile: ./backend/fastapi-app.dockerfile
+      dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app3-container
     volumes:
