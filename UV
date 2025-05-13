@@ -1,0 +1,4 @@
+curl -LsSf https://astral.sh/uv/install.sh | sh #install on linux
+uv --version
+uv init --app #to initialize a new project
+uv pip install -r requirements.txt
