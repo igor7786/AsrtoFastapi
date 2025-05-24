@@ -30,7 +30,6 @@ mcp = FastApiMCP(
     describe_full_response_schema=True,  # Describe the full response JSON-schema instead of just a response example
     describe_all_responses=True,  # Describe all the possible responses instead of just the success (2XX) response
 )
-# Mount the MCP server directly to your FastAPI app
 mcp.mount()
 # Add the CSRF middleware
 # app.add_middleware(CSRFMiddleware)
@@ -56,3 +55,4 @@ app.include_router(app_test.router)
 app.include_router(app_auth.router)
 app.include_router(app_books_store.router)
 app.include_router(app_ai.router)
+mcp.setup_server()

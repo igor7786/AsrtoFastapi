@@ -15,9 +15,11 @@ async def _auth_user(db, user_name, password):
 	return user if bcrypt_context.verify(password, user.hashed_password) else False
 
 
-def _create_jwt_token(username: str, user_id: int, expires_delta: timedelta = 10):
+def _create_jwt_token(username: str, user_id, expires_delta: timedelta = 10):
 	expires_delta = datetime.now(timezone.utc) + expires_delta
-	encode = {"sub": username, "id": user_id, "exp": expires_delta}
+	# Convert UUID to string for JSON serialization
+	user_id_str = str(user_id) if user_id else None
+	encode = {"sub": username, "id": user_id_str, "exp": expires_delta}
 	algorithm = {"alg": "HS256"}
 	return jwt.encode(algorithm, encode, secret_key)
 
