@@ -4,6 +4,10 @@ from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Reque
 from app_main.app_models.models import Users, Books
 from app_main.app_routes_blueprints import app_books_store, app_ai, app_auth, app_test
 from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware
+from app_main.app_imports import install
+import granian
+# ! handling exceptions with rich
+install(show_locals=True)
 
 timeout = Timeout(30.0, connect=5.0)
 
