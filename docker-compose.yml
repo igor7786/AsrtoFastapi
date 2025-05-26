@@ -85,6 +85,26 @@ services:
       - 8.8.8.8  # Use Google Public DNS
     restart: always
 
+  n8n:
+    build:
+      context: .
+      dockerfile: n8n/n8n-app.dockerfile
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=Europe/London
+      - TZ=Europe/London
+      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
+    volumes:
+      - n8n_data:/home/node/.n8n
+    depends_on:
+      - astro-app
+    restart: always
+    networks:
+      - my_network
+
+
 # Define the shared network between all containers
 networks:
   my_network:
@@ -98,3 +118,4 @@ networks:
 volumes:
   app_db:
     driver: local
+  n8n_data:

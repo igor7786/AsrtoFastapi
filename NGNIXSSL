@@ -14,6 +14,7 @@ docker stop $(docker ps -q)
 docker rmi -f $(docker images -q)
 docker compose down --remove-orphans
 docker network prune -f
+docker compose build --no-cache && docker compose up
 docker exec -it 0c640c652bc2 /bin/sh
 sudo journalctl -xeu nginx.service
 sudo chown -R $(whoami) frontend #after needed on top layer after running docker

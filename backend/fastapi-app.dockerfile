@@ -30,9 +30,9 @@ RUN uv sync --frozen --no-cache
 #! PYTHON
 #CMD ["python", "run_app.py"]
 #! Uvicorn
-CMD [".venv/bin/uvicorn", \
-     "app_main:app", \
-     "--host", "0.0.0.0", \
-     "--port", "8080"]
+#CMD [".venv/bin/uvicorn", \
+#     "app_main:app", \
+#     "--host", "0.0.0.0", \
+#     "--port", "8080"]
 #! UV
-#CMD ["uv","run", "run.py"]
+CMD ["uv","run", "run.py"]
