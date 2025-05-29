@@ -30,6 +30,10 @@ for dns:
 https://my.ionos.co.uk/ -> add record in dns-> @192.168.1.XXX
 cat /etc/hosts | grep igorfastapi.co.uk
 sudo nano /etc/hosts -> @192.168.1.XXX
+sudo systemctl restart named
+sudo systemd-resolve --flush-caches
+nslookup igorfastapi.co.uk
+
 
 
 for ssl certificates:
