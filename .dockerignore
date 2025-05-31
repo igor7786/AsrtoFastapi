@@ -17,3 +17,5 @@ backend/.venv
 backend/fastapi-app.dockerfile
 n8n/n8n-app.dockerfile
 nginx/nginx-app.dockerfile
+backend/.idea
+backend/fflask.py
