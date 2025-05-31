@@ -13,4 +13,4 @@ FROM docker.n8n.io/n8nio/n8n:latest
 # RUN apt-get update && apt-get install -y <package-name>
 
 # Start n8n
-CMD ["start"]
+#CMD ["start"]

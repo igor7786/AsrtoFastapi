@@ -18,6 +18,13 @@ docker compose build --no-cache && docker compose up
 docker exec -it 0c640c652bc2 /bin/sh
 sudo journalctl -xeu nginx.service
 sudo chown -R $(whoami) frontend #after needed on top layer after running docker
+docker network ls
+docker network inspect my_network
+docker network rm my_network
+docker-compose -f portainer-docker-compose.yml up -d
+docker exec -it my-nginx-container curl -I http://localhost:9000
+docker exec -it my-nginx-container curl -k -I https://127.0.0.1 #by pass ssl
+
 
 
 ufw:

@@ -20,4 +20,4 @@ COPY --from=dev-deps /frontend/node_modules ./node_modules
 COPY --from=build /frontend/dist ./dist
 
 # Command to run the application in development mode
-CMD ["npm", "run", "dev"]
+#CMD ["npm", "run", "dev"]

@@ -30,13 +30,14 @@ export default defineConfig({
     },
 
     server: {
-      allowedHosts: ['astro-cluster'],
+      allowedHosts: ['astro-cluster', 'igorfastapi.co.uk', 'localhost', '127.0.0.1'],
       host: 'igorfastapi.co.uk', // Listen on all interfaces (use localhost if you prefer security)
       port: 5173, // Vite default port, make sure it's not conflicting
       hmr: {
         protocol: 'wss', // WebSocket Secure (use if required for secure connections)
         host: 'igorfastapi.co.uk', // Your domain or IP
-        port: 5173, // Set the same port as the main port above
+        port: 5173,
+        clientPort: 443, // Set the same port as the main port above
       },
     },
   },

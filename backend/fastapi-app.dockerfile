@@ -1,30 +1,24 @@
-
-#! Multi-stage build to reduce image size
-#! Builder stage
-FROM python:3.12-slim AS builder
-#! set working directory
-WORKDIR /backend
-#! Final stage
 FROM python:3.12-slim
 
-#! Create a non-root user and switch to it
+# Install uv first (before switching user)
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Create a non-root user and switch to it
 RUN adduser --disabled-password --gecos "" appuser
-#! Switch to appuser
 USER appuser
 
-#! Set working directory
-WORKDIR /backend
+# Set working directory
+#WORKDIR /backend
 
-#! Copy dependencies from builder stage
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-#! Copy the application code
+# Copy the FastAPI app source
 COPY --chown=appuser:appuser ./backend /backend/
+WORKDIR /backend
+# Set path (if needed)
+ENV PATH=/home/appuser/.local/bin:$PATH
 
-#! Install uv
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-#! Create virtual environment and install dependencies
-RUN uv sync --frozen --no-cache
+# Ensure uv lock file is respected
+RUN uv sync --locked
+
 
 #! Run the FastAPI app
 #! PYTHON
@@ -35,4 +29,4 @@ RUN uv sync --frozen --no-cache
 #     "--host", "0.0.0.0", \
 #     "--port", "8080"]
 #! UV
-CMD ["uv","run", "run.py"]
+#CMD ["uv","run", "run.py"]

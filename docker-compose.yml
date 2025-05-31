@@ -8,6 +8,7 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app1-container
+    command: ["uv", "run", "run.py"]
     volumes:
       - ./backend/app_db:/backend/app_db  # Shared database
       - ./backend/app_main:/backend/app_main:ro  # Read-only codebase
@@ -24,6 +25,7 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app2-container
+    command: ["uv", "run", "run.py"]
     volumes:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
@@ -40,6 +42,7 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app
     container_name: my-python-app3-container
+    command: ["uv", "run", "run.py"]
     volumes:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
@@ -55,6 +58,7 @@ services:
       context: .
       dockerfile: ./frontend/astro-app.dockerfile  # Ensure this is the correct path to your Dockerfile
     container_name: my-astro-app-container
+    command: ["npm", "run", "dev"]
     volumes:
       - ./frontend:/frontend  # Mount the local frontend directory to the container for live updates
     depends_on:
@@ -62,35 +66,20 @@ services:
       - app2
       - app3
     networks:
-      - my_network
+      my_network:
+        ipv4_address: 192.168.1.7
     dns:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
 
-  # Nginx web server (acting as a reverse proxy)
-  web:
-    build:
-      context: .
-      dockerfile: nginx/nginx-app.dockerfile
-    image: my-nginx
-    container_name: my-nginx-container
-    ports:
-      - "80:80"  # HTTP
-      - "443:443"  # HTTPS
-    depends_on:
-      - astro-app  # Uncommented to ensure Nginx can proxy requests to the Astro app
-      - n8n  # Uncommented to ensure Nginx can proxy requests to the N8n app
-    networks:
-      - my_network  # Use the custom network
-    dns:
-      - 8.8.8.8  # Use Google Public DNS
-    restart: unless-stopped
+  # N8n application
   n8n:
     build:
       context: .
       dockerfile: n8n/n8n-app.dockerfile
     image: my-n8n
     container_name: my-n8n-container
+    command: ["start"]
     environment:
       - GENERIC_TIMEZONE=Europe/London
       - TZ=Europe/London
@@ -107,16 +96,50 @@ services:
       - N8N_EXPRESS_TRUST_PROXY=true
       - N8N_PROXY_HOPS=1
       - N8N_SECURE_COOKIE=true
-      - N8N_LOG_LEVEL=debug
+#      - N8N_LOG_LEVEL=debug
 #      - N8N_LOG_OUTPUT=console
       - N8N_ENCRYPTION_KEY=rMNQaVK1eUfq7rnAge4Ga60Tqhyam5ta
-
-
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./local-files:/files
     restart: unless-stopped
     networks:
       - my_network
+
+  # Portainer
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - my_network  # Use the custom network
+  # Nginx web server (acting as a reverse proxy)
+  web:
+    build:
+      context: .
+      dockerfile: nginx/nginx-app.dockerfile
+    image: my-nginx
+    container_name: my-nginx-container
+    command: ["nginx", "-g", "daemon off;"]
+    ports:
+      - "80:80"  # HTTP
+      - "443:443"  # HTTPS
+      - "9000:9000"  # Portainer
+      - "5678:5678"  # N8n
+      - "4321:4321"  # Astro
+      #- "5173:5173"  # Vite
+    depends_on:
+      - astro-app  # Uncommented to ensure Nginx can proxy requests to the Astro app
+      - n8n  # Uncommented to ensure Nginx can proxy requests to the N8n app
+      - portainer # Uncommented to ensure Nginx can proxy requests to the Portainer app
+    networks:
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
+    restart: unless-stopped
 
 
 # Define the shared network between all containers
@@ -133,3 +156,4 @@ volumes:
   app_db:
     driver: local
   n8n_data:
+  portainer_data:

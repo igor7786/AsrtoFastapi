@@ -13,5 +13,7 @@ SSH
 frontend/node_modules
 frontend/.astro
 frontend/astro-app.dockerfile
-backend/.fastapivenv
+backend/.venv
 backend/fastapi-app.dockerfile
+n8n/n8n-app.dockerfile
+nginx/nginx-app.dockerfile

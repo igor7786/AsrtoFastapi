@@ -11,5 +11,5 @@ RUN mkdir -p /etc/nginx/logs && touch /etc/nginx/logs/access.log
 # Set correct permissions
 RUN chmod -R 755 /etc/nginx/logs && chown -R nginx:nginx /etc/nginx/logs
 
-CMD ["nginx", "-g", "daemon off;"]
+#CMD ["nginx", "-g", "daemon off;"]
 
