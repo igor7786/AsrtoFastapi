@@ -59,6 +59,7 @@ services:
       dockerfile: ./frontend/astro-app.dockerfile  # Ensure this is the correct path to your Dockerfile
     container_name: my-astro-app-container
     command: ["npm", "run", "dev"]
+    # for production
 #    command: ["node", "./dist/server/entry.mjs"]
     volumes:
       - ./frontend:/frontend  # Mount the local frontend directory to the container for live updates
@@ -118,7 +119,7 @@ services:
     networks:
       - my_network  # Use the custom network
   # Nginx web server (acting as a reverse proxy)
-  web:
+  nginx:
     build:
       context: .
       dockerfile: nginx/nginx-app.dockerfile
