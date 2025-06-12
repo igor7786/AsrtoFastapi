@@ -39,6 +39,8 @@ cat /etc/hosts | grep igorfastapi.co.uk
 sudo nano /etc/hosts -> @192.168.1.XXX
 sudo systemctl restart named
 sudo systemd-resolve --flush-caches
+sudo systemctl restart NetworkManager
+
 nslookup igorfastapi.co.uk
 
 

@@ -59,6 +59,7 @@ services:
       dockerfile: ./frontend/astro-app.dockerfile  # Ensure this is the correct path to your Dockerfile
     container_name: my-astro-app-container
     command: ["npm", "run", "dev"]
+#    command: ["node", "./dist/server/entry.mjs"]
     volumes:
       - ./frontend:/frontend  # Mount the local frontend directory to the container for live updates
     depends_on:
@@ -87,9 +88,9 @@ services:
       - NODEJS_PREFER_IPV4=true
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://n8n.igorfastapi.co.uk/
+      - WEBHOOK_URL=https://services.igorfastapi.co.uk/
       - N8N_PATH=/
-      - N8N_HOST=n8n.igorfastapi.co.uk
+      - N8N_HOST=services.igorfastapi.co.uk
       - NODE_ENV=production
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
@@ -127,9 +128,9 @@ services:
     ports:
       - "80:80"  # HTTP
       - "443:443"  # HTTPS
-      - "9000:9000"  # Portainer
-      - "5678:5678"  # N8n
-      - "4321:4321"  # Astro
+#      - "9000:9000"  # Portainer
+#      - "5678:5678"  # N8n
+#      - "4321:4321"  # Astro
       #- "5173:5173"  # Vite
     depends_on:
       - astro-app  # Uncommented to ensure Nginx can proxy requests to the Astro app
