@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app1
     container_name: my-python-app1-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app2
     container_name: my-python-app2-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -40,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app3
     container_name: my-python-app3-container
     command: ["uv", "run", "run.py"]
     volumes:
