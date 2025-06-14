@@ -660,6 +660,8 @@ pip-selfcheck.json
 
 ### n8n ###
 **/n8n_data
+### portainer ###
+**/portainer_data
 ### ngnix-ssl ###
 **/ssl
 

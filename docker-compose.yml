@@ -115,7 +115,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - ./portainer_data:/data
     networks:
       - my_network  # Use the custom network
   # Nginx web server (acting as a reverse proxy)
@@ -160,3 +160,4 @@ volumes:
   n8n_data:
     driver: local
   portainer_data:
+    driver: local
