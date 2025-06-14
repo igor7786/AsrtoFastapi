@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app1
+    image: my-python-app
     container_name: my-python-app1-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app2
+    image: my-python-app
     container_name: my-python-app2-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -40,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app3
+    image: my-python-app
     container_name: my-python-app3-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -102,8 +102,8 @@ services:
 #      - N8N_LOG_OUTPUT=console
       - N8N_ENCRYPTION_KEY=rMNQaVK1eUfq7rnAge4Ga60Tqhyam5ta
     volumes:
-      - n8n_data:/home/node/.n8n
-      - ./local-files:/files
+      - ./n8n/n8n_data:/home/node/.n8n
+#      - ./local-files:/files
     restart: unless-stopped
     networks:
       - my_network
@@ -158,4 +158,5 @@ volumes:
   app_db:
     driver: local
   n8n_data:
+    driver: local
   portainer_data:

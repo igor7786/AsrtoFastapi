@@ -657,6 +657,9 @@ pip-selfcheck.json
 # End of https://www.toptal.com/developers/gitignore/api/node,venv,dotenv,react,astro,archlinuxpackages,compressedarchive,intellij+all,pycharm+all,linux,python,fish.env
 ### data base###
 **/app_db.db
+
+### n8n ###
+**/n8n_data
 ### ngnix-ssl ###
 **/ssl
 
