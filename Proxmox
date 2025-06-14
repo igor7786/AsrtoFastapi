@@ -1,4 +1,5 @@
 /etc/network/interfaces
+ip a
 auto lo
 iface lo inet loopback
 
