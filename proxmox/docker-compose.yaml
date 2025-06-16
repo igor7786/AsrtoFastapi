@@ -1,0 +1,15 @@
+version: '3'
+services:
+  debian:
+    image: debian:bookworm
+    container_name: debian-downloader
+    volumes:
+      - ./rfkill:/rfkill
+    command: >
+      bash -c "
+        apt-get update &&
+        apt-get install -y --no-install-recommends apt-utils &&
+        apt-get install --download-only -y rfkill &&
+        cp /var/cache/apt/archives/*.deb /rfkill &&
+        echo 'Download complete. You can now copy from ./rfkill on the host.'
+      "

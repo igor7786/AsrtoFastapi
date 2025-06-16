@@ -1,0 +1,84 @@
+# Unblock Wi-Fi hardware/software
+rfkill unblock all
+
+# Confirm Wi-Fi is not blocked (should show "Soft blocked: no" and "Hard blocked: no")
+rfkill list
+
+# Generate wpa_supplicant.conf with Wi-Fi credentials
+wpa_passphrase iggr traktor123 > /etc/wpa_supplicant/wpa_supplicant.conf
+
+# Edit and confirm the file contents are correct
+nano /etc/wpa_supplicant/wpa_supplicant.conf
+# It should look like:
+# ctrl_interface=/run/wpa_supplicant
+# country=UK
+# network={
+#     ssid="iggr"
+#     psk="traktor123"
+# }
+
+# Check your Wi-Fi interface name (replace wlp2s0 below if different)
+ip link
+# or
+iw dev
+
+# Edit network interfaces
+nano /etc/network/interfaces
+auto lo
+iface lo inet loopback
+
+auto wlp2s0
+iface wlp2s0 inet static
+    address 192.168.102.100
+    netmask 255.255.255.0
+    gateway 192.168.102.229 -> ip r -> default via ->192.168.102.229<- dhcp src 192.168.102.210 metric 600
+    dns-nameservers 8.8.8.8 1.1.1.1
+    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+auto vmbr0
+iface vmbr0 inet static
+    address 192.168.100.1
+    netmask 255.255.255.0
+    bridge_ports none
+    bridge_stp off
+    bridge_fd 0
+    post-up echo 1 > /proc/sys/net/ipv4/ip_forward
+    post-up iptables -t nat -A POSTROUTING -s 192.168.100.0/24 -o wlp2s0 -j MASQUERADE
+    post-down iptables -t nat -D POSTROUTING -s 192.168.100.0/24 -o wlp2s0 -j MASQUERADE
+
+# Enable IP forwarding temporarily and permanently
+echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+
+# Make IP forwarding permanent by uncommenting/adding this line in /etc/sysctl.conf:
+sudo nano /etc/sysctl.conf
+# Add or ensure this line exists:
+# net.ipv4.ip_forward=1
+
+# Apply sysctl changes
+sudo sysctl -p
+
+# Restart networking service to apply changes
+sudo systemctl restart networking.service
+
+# Enable and start wpa_supplicant service for your Wi-Fi interface (replace wlp2s0 if different)
+sudo systemctl enable wpa_supplicant@wlp2s0.service
+sudo systemctl start wpa_supplicant@wlp2s0.service
+
+# Restart networking just in case
+sudo systemctl restart networking
+
+# Check IP addresses to confirm Wi-Fi IP assignment
+ip a
+
+# Test connectivity
+ping -c 4 google.com
+
+# If you don't see an IP address on wlp2s0, request one manually:
+sudo dhclient wlp2s0
+#for script:
+sudo chmod +x setup_proxmox_wifi_nat.sh
+sudo ./setup_proxmox_wifi_nat.sh
+
+sudo nano /etc/resolv.conf-> nameserver 8.8.8.8 nameserver 1.1.1.1
+gateway 192.168.102.229 -> ip r -> default via ->192.168.102.229<- dhcp src 192.168.102.210 metric 600
+

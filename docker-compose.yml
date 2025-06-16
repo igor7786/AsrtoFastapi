@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app1
     container_name: my-python-app1-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app2
     container_name: my-python-app2-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -40,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: backend/fastapi-app.dockerfile
-    image: my-python-app
+    image: my-python-app3
     container_name: my-python-app3-container
     command: ["uv", "run", "run.py"]
     volumes:
@@ -68,6 +68,7 @@ services:
       - app2
       - app3
     networks:
+#      - my_network
       my_network:
         ipv4_address: 192.168.1.7
     dns:
@@ -103,6 +104,7 @@ services:
       - N8N_ENCRYPTION_KEY=rMNQaVK1eUfq7rnAge4Ga60Tqhyam5ta
     volumes:
       - ./n8n/n8n_data:/home/node/.n8n
+#      - n8n_data:/home/node/.n8n
 #      - ./local-files:/files
     restart: unless-stopped
     networks:
@@ -116,6 +118,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer_data:/data
+#      - portainer_data:/data
     networks:
       - my_network  # Use the custom network
   # Nginx web server (acting as a reverse proxy)
