@@ -1,6 +1,0 @@
-ctrl_interface=/run/wpa_supplicant
-country=UK
-network={
-    ssid="iggr"
-    psk="traktor123"
-}
