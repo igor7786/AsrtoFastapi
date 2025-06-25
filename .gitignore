@@ -670,3 +670,4 @@ pip-selfcheck.json
 **/uv.lock
 **/.python-version
 **/.env
+**/proxmox

@@ -19,3 +19,4 @@ SSH
 **/nginx-app.dockerfile
 **/.idea
 **/fflask.py
+**/proxmox
