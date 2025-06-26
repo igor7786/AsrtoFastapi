@@ -52,7 +52,7 @@
 ##CMD ["uv","run", "run.py"]
 
 #? ============ STAGE 1: Builder ============
-FROM python:3.12-slim AS builder
+FROM python:3.12-slim-bullseye AS builder
 
 # Install uv binary
 COPY --from=ghcr.io/astral-sh/uv:0.7.12 /uv /uvx /bin/
@@ -68,12 +68,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_LINK_MODE=copy
 
 # Install build dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev libjpeg-dev libcairo2 gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl gcc libc-dev python3-dev libpq-dev libjpeg-dev libcairo2 \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 # Copy project files
-COPY --chown=appuser:appuser ./backend /backend
+COPY --chown=appuser:appuser ./backend/requirements.txt /backend/requirements.txt
 WORKDIR /backend
 USER appuser
 
@@ -81,10 +82,11 @@ USER appuser
 RUN uv init --app \
     && uv venv \
     && uv add -r requirements.txt
-
+# Then copy full project files
+COPY --chown=appuser:appuser ./backend /backend
 
 #? ============ STAGE 2: Final Image ============
-FROM python:3.12-slim
+FROM python:3.12-slim-bullseye
 
 # Copy uv binary
 COPY --from=builder /bin/uv /bin/uv

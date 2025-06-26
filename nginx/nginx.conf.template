@@ -142,25 +142,25 @@ http {
 
     upstream fastapi_cluster {
         least_conn;
-        server app1:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
-        server app2:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
-        server app3:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
+        server app1:${FAST_API_PORT} max_fails=3 fail_timeout=10s;
+        server app2:${FAST_API_PORT} max_fails=3 fail_timeout=10s;
+        server app3:${FAST_API_PORT} max_fails=3 fail_timeout=10s;
         #server 127.0.0.1:8001 max_fails=3 fail_timeout=3s;
 
     }
     upstream mcp_cluster {
         least_conn;
-        server app1:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
+        server app1:${FAST_API_PORT} max_fails=3 fail_timeout=10s;
         #server 127.0.0.1:8001 max_fails=3 fail_timeout=3s;
 
     }
     upstream astro-cluster {
         least_conn;
-        server astro-app:${ASTROPORT} max_fails=3 fail_timeout=10s;
+        server astro-app:${ASTRO_PORT} max_fails=3 fail_timeout=10s;
     }
     upstream n8n-cluster {
         least_conn;
-        server n8n:${N8NPORT} max_fails=3 fail_timeout=10s;
+        server n8n:${N8N_PORT} max_fails=3 fail_timeout=10s;
 
     }
     upstream portainer-cluster {
@@ -174,16 +174,16 @@ http {
     ######DOMAIN######
     #! Redirect HTTP to HTTPS
     server {
-        listen ${HTTPPORT};
-        listen [::]:${HTTPPORT};
+        listen ${HTTP_PORT};
+        listen [::]:${HTTP_PORT};
         server_name igorfastapi.co.uk www.igorfastapi.co.uk 127.0.0.1 localhost ;
 
         # Redirect all HTTP traffic to HTTPS
         return 301 https://igorfastapi.co.uk$request_uri;
     }
     server {
-        listen ${ASTROPORT};
-        listen [::]:${ASTROPORT};
+        listen ${ASTRO_PORT};
+        listen [::]:${ASTRO_PORT};
         server_name igorfastapi.co.uk www.igorfastapi.co.uk localhost 192.168.1.7;
 
         return 301 https://igorfastapi.co.uk$request_uri;
@@ -199,8 +199,8 @@ http {
         }
     }
     server {
-        listen ${N8NPORT};
-        listen [::]:${N8NPORT};
+        listen ${N8N_PORT};
+        listen [::]:${N8N_PORT};
         server_name services.igorfastapi.co.uk www.services.igorfastapi.co.uk loacalhost;
 
         return 301 https://services.igorfastapi.co.uk$request_uri;
@@ -208,8 +208,8 @@ http {
 
     # HTTPS
     server {
-        listen ${HTTPSPORT} ssl;
-        listen [::]:${HTTPSPORT} ssl;
+        listen ${HTTPS_PORT} ssl;
+        listen [::]:${HTTPS_PORT} ssl;
         server_name 127.0.0.1 172.18.0.4 192.168.102.210 192.168.0.39 192.168.0.71 localhost;
 
         ssl_certificate /etc/nginx/ssl/full_chain.pem;
@@ -220,12 +220,12 @@ http {
     # HTTPS/2 and HTTPS/3 for igorfastapi.co.uk
     server {
         # Listen for HTTP/2 on port 443 (TCP)
-        listen ${HTTPSPORT} ssl;
-        listen [::]:${HTTPSPORT} ssl;
+        listen ${HTTPS_PORT} ssl;
+        listen [::]:${HTTPS_PORT} ssl;
         http2 on;
         # Listen for HTTP/3 on port 443 (QUIC)
-        listen ${HTTPSPORT} quic;
-        listen [::]:${HTTPSPORT} quic;
+        listen ${HTTPS_PORT} quic;
+        listen [::]:${HTTPS_PORT} quic;
 
         # Enable HTTP/3
         http3 on;
@@ -414,12 +414,12 @@ http {
     #HTTP/2 and HTTP/3 for n8n.igorfastapi.co.uk
     server {
         # Listen for HTTP/2 on port 443 (TCP)
-        listen ${HTTPSPORT} ssl;
-        listen [::]:${HTTPSPORT} ssl;
+        listen ${HTTPS_PORT} ssl;
+        listen [::]:${HTTPS_PORT} ssl;
         http2 on;
         # Listen for HTTP/3 on port 443 (QUIC)
-        listen ${HTTPSPORT} quic;
-        listen [::]:${HTTPSPORT} quic;
+        listen ${HTTPS_PORT} quic;
+        listen [::]:${HTTPS_PORT} quic;
 
         # Enable HTTP/3
         http3 on;

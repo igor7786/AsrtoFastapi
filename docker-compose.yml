@@ -10,7 +10,6 @@ services:
     container_name: my-python-app1-container
     env_file:
       - ./backend/.env
-#    command: ["uv", "run", "run.py"]
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db  # Shared database
@@ -39,7 +38,6 @@ services:
     container_name: my-python-app2-container
     env_file:
       - ./backend/.env
-      #    command: ["uv", "run", "run.py"]
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db
@@ -68,7 +66,6 @@ services:
     container_name: my-python-app3-container
     env_file:
       - ./backend/.env
-      #    command: ["uv", "run", "run.py"]
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db
@@ -118,26 +115,9 @@ services:
       dockerfile: n8n/n8n-app.dockerfile
     image: my-n8n
     container_name: my-n8n-container
+    env_file:
+      - ./n8n/.env
     command: ["start"]
-    environment:
-      - GENERIC_TIMEZONE=Europe/London
-      - TZ=Europe/London
-      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
-      - NODEJS_PREFER_IPV4=true
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://services.igorfastapi.co.uk/
-      - N8N_PATH=/
-      - N8N_HOST=services.igorfastapi.co.uk
-      - NODE_ENV=production
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_EXPRESS_TRUST_PROXY=true
-      - N8N_PROXY_HOPS=1
-      - N8N_SECURE_COOKIE=true
-#      - N8N_LOG_LEVEL=debug
-#      - N8N_LOG_OUTPUT=console
-      - N8N_ENCRYPTION_KEY=rMNQaVK1eUfq7rnAge4Ga60Tqhyam5ta
     volumes:
       - ./n8n/n8n_data:/home/node/.n8n
 #      - n8n_data:/home/node/.n8n
@@ -170,6 +150,9 @@ services:
     command: ["/etc/nginx/run-nginx.sh"]
     env_file:
       - ./backend/.env
+      - ./frontend/.env
+      - ./n8n/.env
+      - ./.env
     ports:
       - "80:80"  # HTTP
       - "443:443"  # HTTPS

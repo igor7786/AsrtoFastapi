@@ -2,8 +2,8 @@
 
 # Exit immediately if a command exits with a non-zero status
 set -e
-RUN_PORT=${FASTAPIPORT:-8080}
-RUN_HOST=${FASTAPIHOST:-0.0.0.0}
+RUN_PORT=${FAST_API_PORT:-8080}
+RUN_HOST=${FAST_API_HOST:-0.0.0.0}
 # Check ENV variable
 if [ "$ENV" == "dev" ]; then
   echo "[+] Running in development mode ..."
