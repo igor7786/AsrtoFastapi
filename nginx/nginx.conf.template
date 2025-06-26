@@ -142,30 +142,30 @@ http {
 
     upstream fastapi_cluster {
         least_conn;
-        server app1:8080 max_fails=3 fail_timeout=10s;
-        server app2:8080 max_fails=3 fail_timeout=10s;
-        server app3:8080 max_fails=3 fail_timeout=10s;
+        server app1:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
+        server app2:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
+        server app3:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
         #server 127.0.0.1:8001 max_fails=3 fail_timeout=3s;
 
     }
     upstream mcp_cluster {
         least_conn;
-        server app1:8080 max_fails=3 fail_timeout=10s;
+        server app1:${FASTAPIPORT} max_fails=3 fail_timeout=10s;
         #server 127.0.0.1:8001 max_fails=3 fail_timeout=3s;
 
     }
     upstream astro-cluster {
         least_conn;
-        server astro-app:4321 max_fails=3 fail_timeout=10s;
+        server astro-app:${ASTROPORT} max_fails=3 fail_timeout=10s;
     }
     upstream n8n-cluster {
         least_conn;
-        server n8n:5678 max_fails=3 fail_timeout=10s;
+        server n8n:${N8NPORT} max_fails=3 fail_timeout=10s;
 
     }
     upstream portainer-cluster {
         least_conn;
-        server portainer:9000 max_fails=3 fail_timeout=10s;
+        server portainer:${PORTAINERPORT} max_fails=3 fail_timeout=10s;
     }
     # Global rate limiting zone
     #limit_req_zone $binary_remote_addr zone=mylimit:10m rate=5r/s;
@@ -174,24 +174,24 @@ http {
     ######DOMAIN######
     #! Redirect HTTP to HTTPS
     server {
-        listen 80;
-        listen [::]:80;
+        listen ${HTTPPORT};
+        listen [::]:${HTTPPORT};
         server_name igorfastapi.co.uk www.igorfastapi.co.uk 127.0.0.1 localhost ;
 
         # Redirect all HTTP traffic to HTTPS
         return 301 https://igorfastapi.co.uk$request_uri;
     }
     server {
-        listen 4321;
-        listen [::]:4321;
+        listen ${ASTROPORT};
+        listen [::]:${ASTROPORT};
         server_name igorfastapi.co.uk www.igorfastapi.co.uk localhost 192.168.1.7;
 
         return 301 https://igorfastapi.co.uk$request_uri;
     }
 
     server {
-        listen 9000;
-        listen [::]:9000;
+        listen ${PORTAINERPORT};
+        listen [::]:${PORTAINERPORT};
         server_name igorfastapi.co.uk www.igorfastapi.co.uk 127.0.0.1 localhost;
 
         location / {
@@ -199,8 +199,8 @@ http {
         }
     }
     server {
-        listen 5678;
-        listen [::]:5678;
+        listen ${N8NPORT};
+        listen [::]:${N8NPORT};
         server_name services.igorfastapi.co.uk www.services.igorfastapi.co.uk loacalhost;
 
         return 301 https://services.igorfastapi.co.uk$request_uri;
@@ -208,8 +208,8 @@ http {
 
     # HTTPS
     server {
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen ${HTTPSPORT} ssl;
+        listen [::]:${HTTPSPORT} ssl;
         server_name 127.0.0.1 172.18.0.4 192.168.102.210 192.168.0.39 192.168.0.71 localhost;
 
         ssl_certificate /etc/nginx/ssl/full_chain.pem;
@@ -220,12 +220,12 @@ http {
     # HTTPS/2 and HTTPS/3 for igorfastapi.co.uk
     server {
         # Listen for HTTP/2 on port 443 (TCP)
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen ${HTTPSPORT} ssl;
+        listen [::]:${HTTPSPORT} ssl;
         http2 on;
         # Listen for HTTP/3 on port 443 (QUIC)
-        listen 443 quic;
-        listen [::]:443 quic;
+        listen ${HTTPSPORT} quic;
+        listen [::]:${HTTPSPORT} quic;
 
         # Enable HTTP/3
         http3 on;
@@ -305,9 +305,9 @@ http {
             proxy_http_version 1.1;           # Ensure HTTP/1.1 for streaming
             proxy_set_header Connection "";    # Prevent connection closure issues
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-Port 443;# Enable chunked encoding
         }
@@ -315,9 +315,9 @@ http {
         location /docs {
             proxy_pass http://fastapi_cluster/docs;
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-Port 443;# Enable chunked encoding
         }
@@ -325,9 +325,9 @@ http {
         location /redoc {
             proxy_pass http://fastapi_cluster/redoc;
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-Port 443;# Enable chunked encoding
         }
@@ -339,18 +339,18 @@ http {
             proxy_buffering off;               # Disable buffering for real-time streaming
             chunked_transfer_encoding on;
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
         }
         location /openapi.json {
             proxy_pass http://fastapi_cluster/openapi.json;  # Assuming Astro app runs on port 4321
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
         }
@@ -363,9 +363,9 @@ http {
             chunked_transfer_encoding on;
 
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
         }
@@ -378,13 +378,13 @@ http {
             #limit_req zone=mylimit burst=10 nodelay;
 
             # WebSocket support
-            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Upgrade ${DOLLAR}http_upgrade;
             proxy_set_header Connection "upgrade";
 
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
 
@@ -396,9 +396,9 @@ http {
             proxy_buffering off;               # Disable buffering for real-time streaming
             chunked_transfer_encoding on;      # Enable chunked encoding
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
 
@@ -414,12 +414,12 @@ http {
     #HTTP/2 and HTTP/3 for n8n.igorfastapi.co.uk
     server {
         # Listen for HTTP/2 on port 443 (TCP)
-        listen 443 ssl;
-        listen [::]:443 ssl;
+        listen ${HTTPSPORT} ssl;
+        listen [::]:${HTTPSPORT} ssl;
         http2 on;
         # Listen for HTTP/3 on port 443 (QUIC)
-        listen 443 quic;
-        listen [::]:443 quic;
+        listen ${HTTPSPORT} quic;
+        listen [::]:${HTTPSPORT} quic;
 
         # Enable HTTP/3
         http3 on;
@@ -495,12 +495,12 @@ http {
           # required for browsers to direct them to quic port
           proxy_pass http://n8n-cluster/;  # ⚠️ Note the `/` at the end
           proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Upgrade ${DOLLAR}http_upgrade;
           proxy_set_header Connection "upgrade";
           # Standard headers
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host ${DOLLAR}host;
+          proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+          proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto https;
           proxy_set_header X-Forwarded-port 443;
         }
@@ -511,9 +511,9 @@ http {
             proxy_buffering off;               # Disable buffering for real-time streaming
             chunked_transfer_encoding on;      # Enable chunked encoding
             # Standard headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
         }

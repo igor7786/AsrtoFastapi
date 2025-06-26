@@ -30,3 +30,4 @@ uvloop==0.21.0
 granian==2.3.1
 fastapi-mcp==0.3.4
 flask==3.1.1
+gunicorn==23.0.0

@@ -6,11 +6,11 @@ import uvloop
 from tqdm import tqdm
 
 # Target URL
-URL = "https://igorfastapi.co.uk/api/v1/test"
+URL = "https://igorfastapi.co.uk/api/v1/test/"
 URL_2 = "http://localhost:8080/api/v1/test"
 
 # Number of requests to send
-NUM_REQUESTS = 1000
+NUM_REQUESTS = 20_000
 FAILED = 0
 PASSED = 0
 
@@ -24,7 +24,7 @@ async def fetch(client, request_id):
 	# async with semaphore:  # Prevent overload
 	try:
 		# await asyncio.sleep(0.4)
-		response = await client.get(URL_2)
+		response = await client.get(URL)
 		PASSED += 1
 		return response.text
 	except Exception as e:

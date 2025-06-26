@@ -19,4 +19,12 @@ SSH
 **/nginx-app.dockerfile
 **/.idea
 **/fflask.py
-**/proxmox
+**/backend/.python-version
+**/backend/pyproject.toml
+**/backend/uv.lock
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.env
+**/.git/

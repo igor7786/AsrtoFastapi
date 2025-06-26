@@ -8,7 +8,10 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app1
     container_name: my-python-app1-container
-    command: ["uv", "run", "run.py"]
+    env_file:
+      - ./backend/.env
+#    command: ["uv", "run", "run.py"]
+    command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db  # Shared database
       - ./backend/app_main:/backend/app_main:ro  # Read-only codebase
@@ -17,6 +20,15 @@ services:
     dns:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app_main
+          target: /backend/app_main
+          ignore:
+            - __pycache__/
+        - action: rebuild
+          path: ./backend/requirements.txt
 
   #FastAPI application 2
   app2:
@@ -25,7 +37,10 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app2
     container_name: my-python-app2-container
-    command: ["uv", "run", "run.py"]
+    env_file:
+      - ./backend/.env
+      #    command: ["uv", "run", "run.py"]
+    command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
@@ -34,6 +49,15 @@ services:
     dns:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app_main
+          target: /backend/app_main
+          ignore:
+            - __pycache__/
+        - action: rebuild
+          path: ./backend/requirements.txt
 
   #FastAPI application 3
   app3:
@@ -42,7 +66,10 @@ services:
       dockerfile: backend/fastapi-app.dockerfile
     image: my-python-app3
     container_name: my-python-app3-container
-    command: ["uv", "run", "run.py"]
+    env_file:
+      - ./backend/.env
+      #    command: ["uv", "run", "run.py"]
+    command: ["/backend/boot/run-fastapi.sh"]
     volumes:
       - ./backend/app_db:/backend/app_db
       - ./backend/app_main:/backend/app_main:ro
@@ -51,6 +78,15 @@ services:
     dns:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app_main
+          target: /backend/app_main
+          ignore:
+            - __pycache__/
+        - action: rebuild
+          path: ./backend/requirements.txt
 
   #My Astro app (Node.js app)
   astro-app:
@@ -128,7 +164,12 @@ services:
       dockerfile: nginx/nginx-app.dockerfile
     image: my-nginx
     container_name: my-nginx-container
-    command: ["nginx", "-g", "daemon off;"]
+    volumes:
+      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+#    command: ["nginx", "-g", "daemon off;"]
+    command: ["/etc/nginx/run-nginx.sh"]
+    env_file:
+      - ./backend/.env
     ports:
       - "80:80"  # HTTP
       - "443:443"  # HTTPS
