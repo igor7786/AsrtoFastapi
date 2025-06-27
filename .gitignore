@@ -671,3 +671,4 @@ pip-selfcheck.json
 **/.python-version
 **/.env
 **/proxmox/
+**/*.db

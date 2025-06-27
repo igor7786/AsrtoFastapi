@@ -6,10 +6,10 @@ from app_main.app_routes_blueprints.uttils.helpers_auth import _get_current_user
 # ! Create an asynchronous engine
 engine = create_async_engine(db_url, future=True)
 
-
 # ! Dependency to get the database session
 async def get_db() -> AsyncGenerator[AsyncSession, Any]:
 	async with AsyncSession(engine) as session:
+		print(engine)
 		try:
 			yield session
 		except Exception as e:
