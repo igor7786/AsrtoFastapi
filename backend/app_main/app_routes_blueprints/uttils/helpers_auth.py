@@ -1,11 +1,11 @@
 from joserfc.errors import JoseError
 from app_main.app_routes_blueprints.uttils.auth_dependencies import dependency_oauth2_bearer
 from app_main.app_global_helpers.app_logging import logger
-from app_main.app_imports import select, CryptContext, timedelta, datetime, jwt, secret_key, HTTPException, timezone
-
+from app_main.app_imports import select, CryptContext, timedelta, datetime, jwt, HTTPException, timezone
+from app_main.settings.config import get_settings
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 from app_main.app_models.models import Users
-
+secret_key = get_settings().SECRET_KEY
 
 async def _auth_user(db, user_name, password):
 	res = await db.exec(select(Users).where(Users.user_name == user_name))

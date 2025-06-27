@@ -1,5 +1,5 @@
 from app_main.app_imports import (APIRouter, select, HTTPException, JSONResponse, jsonable_encoder, IntegrityError,
-                                  timedelta)
+                                  timedelta, bcrypt)
 from app_main.app_models.models_schema_validation import User
 from app_main.app_models.models import Users
 from app_main.app_routes_blueprints.uttils.dependancies import (dependency_db, dependency_time_now,
@@ -7,6 +7,8 @@ from app_main.app_routes_blueprints.uttils.dependancies import (dependency_db, d
 from app_main.app_global_helpers.app_logging import logger
 from app_main.app_routes_blueprints.uttils.helpers_auth import (_auth_user, bcrypt_context, _create_jwt_token)
 
+if not hasattr(bcrypt, '__about__'):
+	bcrypt.__about__ = type('about', (object,), {'__version__': bcrypt.__version__})
 # from app_main.app_models.models import Book
 # dependency_user = Annotated[dict, Depends(_get_current_user)]
 PREFIX = "/api/v1/auth"

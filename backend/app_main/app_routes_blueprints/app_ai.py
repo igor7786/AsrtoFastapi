@@ -1,12 +1,12 @@
 from app_main.app_imports import StreamingResponse, APIRouter, Annotated, Optional, List, File, UploadFile, \
 	Form, io, Image, JSONResponse
-from app_main.app_routes_blueprints.uttils.helpers_ai import stream_text_gemma, stream_text_gemmini
+from app_main.app_routes_blueprints.uttils.helpers_ai import stream_text_qwen, stream_text_gemmini
 
 PREFIX = "/api/stream/v1/AI"
 router = APIRouter(prefix=PREFIX, tags=["AI-Models"])
 
 
-@router.post("/generate-gemma",status_code=201)
+@router.post("/generate-gwen",status_code=201)
 async def generate_text(prompt: Annotated[str, Form()]):
 	try:
 		q = prompt
@@ -14,7 +14,7 @@ async def generate_text(prompt: Annotated[str, Form()]):
 		if not q.strip():
 			return JSONResponse(content={"error": "Prompt cannot be empty"}, status_code=422)
 		return StreamingResponse(
-			stream_text_gemma(q),
+			stream_text_qwen(q),
 			media_type="text/event-stream",  # Ensure no caching of the response
 			# status_code=201
 		)
