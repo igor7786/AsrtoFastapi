@@ -1,9 +1,7 @@
 from app_main.app_imports import (AsyncOpenAI, AsyncGenerator, json, genai, Tool, GoogleSearch, GenerateContentConfig,
                                   Generator
                                   )
-from app_main.settings.config import get_settings
-
-settings = get_settings()
+from app_main.settings.config import settings
 
 ERR = "The server could not be reached at the moment try again later!!!"
 STOP_STREAM_TEXT = ('{"finishReason":"stop","usage":{"promptTokens":"null","completionTokens":"null"},'

@@ -1,22 +1,16 @@
-from contextlib import asynccontextmanager
-from httpx import AsyncClient, Timeout
 from app_main.app_imports import FastAPI, CORSMiddleware, ValidationError, Request, JSONResponse, FastApiMCP
 from app_main.app_models.models import Users, Books
 from app_main.app_routes_blueprints import app_books_store, app_ai, app_auth, app_test
 from app_main.app_middleware.app_csrf_middleware import CSRFMiddleware
 from app_main.app_imports import install
 import granian
+from app_main.app_routes_blueprints.uttils.dependancies import get_db
+from app_main.settings.config import settings
+from app_main.app_routes_blueprints.uttils.lifespan_onstart import lifespan
+
 # ! handling exceptions with rich
 install(show_locals=True)
-
-timeout = Timeout(30.0, connect=5.0)
-# from rich import print
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-	# Initialize a shared HTTP/2 client for the application
-	app.http_client = AsyncClient(http2=True, timeout=timeout)
-	yield  # Application is running
-	await app.http_client.aclose()
+from rich import print
 
 app = FastAPI(lifespan=lifespan)
 mcp = FastApiMCP(

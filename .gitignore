@@ -669,6 +669,10 @@ pip-selfcheck.json
 **/pyproject.toml
 **/uv.lock
 **/.python-version
-**/.env
+### env ###
+**/*.env
+
+### proxmox ###
 **/proxmox/
+### db ###
 **/*.db

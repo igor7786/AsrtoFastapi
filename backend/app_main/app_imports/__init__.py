@@ -10,7 +10,8 @@ from sqlalchemy.exc import IntegrityError
 import asyncpg
 from sqlalchemy.engine.url import make_url
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
+from sqlalchemy.orm import sessionmaker
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, Request, File, Form, UploadFile, Response, status
 from fastapi import Path as FastApiPath
 from fastapi.params import Body, Query
@@ -18,6 +19,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from contextlib import asynccontextmanager
 import uuid
 from joserfc import jwt
 from joserfc.jwk import OctKey as jwt_OctKey
@@ -47,11 +49,12 @@ from fastapi import FastAPI
 from fastapi_mcp import FastApiMCP
 from functools import lru_cache
 import bcrypt
+from httpx import AsyncClient, Timeout
 
 # ! absolute path
 APP_PATH = f'{str(Path(__file__).parent.parent.parent.resolve())}/'
 # ! load variables from .env
-load_dotenv(dotenv_path=f'{APP_PATH}.env')
+# load_dotenv(dotenv_path=f'{APP_PATH}.env')
 
 # ? ####  ENVIRONMENT VARIABLES ####
 # secret_key = env_vars.get('SECRET_KEY')
@@ -80,7 +83,7 @@ __all__ = [
 	'datetime', 'timedelta','timezone',
 	'BaseModel', 'ConfigDict', 'EmailStr', 'ValidationError', 'field_validator','BaseSettings', 'SettingsConfigDict',
 	'Field', 'Session', 'create_engine', 'SQLModel', 'select', 'Relationship',
-	'AsyncSession', 'IntegrityError', 'create_async_engine', 'make_url', 'asyncpg',
+	'AsyncSession', 'IntegrityError', 'create_async_engine', 'make_url', 'asyncpg', 'AsyncEngine', 'sessionmaker',
 	'PydanticCustomError', 'ErrorDetails', 'FieldValidationInfo',
 	'CryptContext',
 	'JSONResponse',
@@ -99,5 +102,7 @@ __all__ = [
 	'os',
 	'lru_cache',
 	'bcrypt',
+	'asynccontextmanager',
+	'AsyncClient', 'Timeout',
 
 ]

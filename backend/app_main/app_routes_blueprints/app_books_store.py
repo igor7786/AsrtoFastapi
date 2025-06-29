@@ -9,100 +9,103 @@ from app_main.app_routes_blueprints.uttils.helpers_book import _update_class_fie
 PREFIX = "/api/v1/books-store"
 
 router = APIRouter(prefix=PREFIX, tags=["Books-Store"])
-logger.warning(f'route endpoint-> {PREFIX}')
 
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
 
+
 # Pydantic Response Schema
 class TestResponse(BaseModel):
-    http: str
-    message: Optional[str] = "Success"
-    status: int = 200
-    data: Optional[Dict[str, Any]] = None
-    name: str
+	http: str
+	message: Optional[str] = "Success"
+	status: int = 200
+	data: Optional[Dict[str, Any]] = None
+	name: str
 
 
 class BookResponse(BaseModel):
-    id: str
-    name: str
-    genre: str
-    rating: int
-    user_id: Optional[str] = None
+	id: str
+	name: str
+	genre: str
+	rating: int
+	user_id: Optional[str] = None
+
 
 class BooksResponse(BaseModel):
-    http: str
-    message: Optional[str] = "Success"
-    status: int = 200
-    data: Optional[Dict[str, Any]] = None
+	http: str
+	message: Optional[str] = "Success"
+	status: int = 200
+	data: Optional[Dict[str, Any]] = None
+
 
 @router.get(
-    "/test",
-    response_model=TestResponse,
-    status_code=200,
-    description="This is a Test",
-    responses={
-        200: {
-            "description": "Successful Response",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "http": "1.1",
-                        "message": "Success",
-                        "status": 200,
-                        "data": None
-                    }
-                }
-            }
-        }
-    },
-    operation_id="test"
+	"/test",
+	response_model=TestResponse,
+	status_code=200,
+	description="This is a Test",
+	responses={
+		200: {
+			"description": "Successful Response",
+			"content": {
+				"application/json": {
+					"example": {
+						"http": "1.1",
+						"message": "Success",
+						"status": 200,
+						"data": None
+					}
+				}
+			}
+		}
+	},
+	operation_id="test"
 )
 async def test(request: Request, name: str) -> TestResponse:
-    """ No need to use request.get('http_version') """
-    http_version = request.scope.get('http_version', '1.1')
-    logger.warning(f"HTTP Version: {http_version}")
-    return TestResponse(
-        http=http_version,
-        message="Test successful",
-        status=200,
-        data={"details": "Additional test data"},
-        name=name
-    )
+	""" No need to use request.get('http_version') """
+	http_version = request.scope.get('http_version', '1.1')
+	logger.warning(f"HTTP Version: {http_version}")
+	return TestResponse(
+		http=http_version,
+		message="Test successful",
+		status=200,
+		data={"details": "Additional test data"},
+		name=name
+	)
 
 
-@router.get("/books",
-            status_code=200,
-            operation_id="get all books",
-            responses={
-                200: {
-                    "description": "Successful Response",
-                    "content": {
-                        "application/json": {
-                            "example": {
-                                "http": "1.1",
-                                "message": "Success",
-                                "status": 200,
-                                "data": None
-                            }
-                        }
-                    }
-                }
-            },
-            )
+@router.get(
+	"/books",
+	status_code=200,
+	operation_id="get all books",
+	responses={
+		200: {
+			"description": "Successful Response",
+			"content": {
+				"application/json": {
+					"example": {
+						"http": "1.1",
+						"message": "Success",
+						"status": 200,
+						"data": None
+					}
+				}
+			}
+		}
+	},
+	)
 async def get_all_books(db: dependency_db, time_now: dependency_time_now) -> JSONResponse:
-    result = await db.exec(select(Books))
-    if all_books := result.all():
-        return BooksResponse(
-            http="1.1",
-            message="Success",
-            status=200,
-            data={
-                "allBooks": jsonable_encoder(all_books),
-                "dateCreated": str(time_now)
-            }
-        )
-    raise HTTPException(status_code=404, detail="Books not found")
+	result = await db.exec(select(Books))
+	if all_books := result.all():
+		return BooksResponse(
+			http="1.1",
+			message="Success",
+			status=200,
+			data={
+				"allBooks": jsonable_encoder(all_books),
+				"dateCreated": str(time_now)
+			}
+		)
+	raise HTTPException(status_code=404, detail="Books not found")
 #
 #
 # @router.get("/book", status_code=200)

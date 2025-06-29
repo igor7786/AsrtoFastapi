@@ -13,7 +13,6 @@ if not hasattr(bcrypt, '__about__'):
 # dependency_user = Annotated[dict, Depends(_get_current_user)]
 PREFIX = "/api/v1/auth"
 router = APIRouter(prefix=PREFIX, tags=["Auth-User"])
-logger.warning(f'route endpoint-> {PREFIX}')
 
 
 @router.get("/", status_code=200)

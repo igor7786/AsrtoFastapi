@@ -12,7 +12,7 @@ from app_main.settings.config import settings
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option('sqlalchemy.url', settings.SQLMODEL_MIGRATE_PTH)
+config.set_main_option('sqlalchemy.url', settings.POSTGRES_SQL_PATH)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

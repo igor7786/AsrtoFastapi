@@ -5,8 +5,6 @@ from app_main.app_global_helpers.app_logging import logger
 PREFIX = "/api/v1/test"
 
 router = APIRouter(prefix=PREFIX, tags=["Tests"])
-logger.warning(f'route endpoint-> {PREFIX}')
-
 
 @router.get("/", status_code=200)
 async def test(request: Request):

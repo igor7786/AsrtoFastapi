@@ -14,6 +14,7 @@ python-multipart==0.0.20
 pydantic==2.11.7
 pydantic[settings]==2.11.7
 pydantic[email]==2.11.7
+psycopg[bynary]==3.2.9
 #httpx==0.28.1
 openai==1.82.0
 groq==0.25.0

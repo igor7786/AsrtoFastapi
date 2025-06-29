@@ -1,0 +1,133 @@
+#Setup Postgresql
+run postgresql with systemctl
+
+#Install postgres
+sudo pacman -S postgresql
+
+#specific version
+#find version & build from source
+
+#Check version
+postgres --version
+
+#Confirm psql is not running
+sudo systemctl status postgresql --> should not be running
+
+#Login as the postgres user
+#Note: always do this any time you are doing any type of admin work on psql
+
+sudo su - postgres
+
+#Initialize data directory
+#Note: default db for psql is /var/lib/postgres/data
+
+#initdb --locale-provider=icu --icu-locale=en-US -D /var/lib/postgres/data
+initdb --locale=en_GB.UTF-8 -D /var/lib/postgres/data
+#Logout of postgres user
+exit
+#Confirm psql is still not running
+sudo systemctl status postgresql --> should not be running
+
+#Start psql
+sudo systemctl start postgresql
+
+C#onfirm psql is running
+sudo systemctl status postgresql --> should be active
+
+Create user
+Log into postgres
+sudo su - postgres
+
+Create a new user
+Note: user can be called anything however if you create a PostgreSQL user with the same name as your Linux username, it allows you to access the PostgreSQL database shell without having to specify a user to login (which makes it quite convenient).
+
+createuser --interactive
+
+Enter name of role to add: MY_LINUX_USERNAME
+Shall the new role be a superuser?: y
+Logout of postgres user
+exit
+
+Restart psql
+sudo systemctl restart postgresql
+
+Confirm psql is running
+Note: can see that it was restarted by looking at the timestamp on the Active field
+
+sudo systemctl status postgresql
+
+# Step 1: Connect to the default postgres database
+psql -U postgres -d postgres
+
+# Step 2: Create a new database
+CREATE DATABASE astro_fastapi_db;
+
+# Step 3: Connect to the newly created database
+psql -U postgres -d astro_fastapi_db
+
+### for Alembic
+ALTER DATABASE astro_fastapi_db OWNER TO igor7786;
+GRANT CREATE ON SCHEMA public TO igor7786;
+ALTER SCHEMA public OWNER TO igor7786;
+###########
+
+
+# Step 4: Create a new user
+CREATE USER my_user WITH PASSWORD 'my_password';
+
+# Step 5: Grant all privileges on the database to the new user
+GRANT ALL PRIVILEGES ON DATABASE astro_fastapi_db TO igor7786;
+
+url -->psql -d "postgres://my_user:my_password@localhost:5432/mydb"
+timescale -> CREATE EXTENSION IF NOT EXISTS timescaledb;
+\dx
+
+# Step 6: Connect to the database as the new user
+psql -U my_user -d my_database
+
+# Step 7: Create a new table
+CREATE TABLE my_table (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    age INTEGER
+);
+
+# Step 8: Insert data into the table
+INSERT INTO my_table (name, age) VALUES ('John Doe', 30);
+
+# Step 9: Query the table
+SELECT * FROM my_table;
+
+# Step 10: Update data in the table
+UPDATE my_table SET age = 31 WHERE name = 'John Doe';
+
+# Step 11: Delete data from the table
+DELETE FROM my_table WHERE name = 'John Doe';
+
+# Step 12: Drop the table
+DROP TABLE my_table;
+
+# Step 13: Drop the database
+DROP DATABASE my_database;
+
+# Step 14: Drop the user
+DROP USER my_user;
+
+# Step 15: Disconnect from the database
+\q
+
+# Step 16: Restart psql
+sudo systemctl restart postgresql
+
+# Step 17: Confirm psql is running
+sudo systemctl status postgresql
+
+
+# Step 18: Connect to the default postgres database
+psql -U postgres -d postgres
+
+delete postgres ->
+sudo systemctl stop postgresql
+sudo pacman -Rns postgresql
+sudo rm -rf /var/lib/postgres/
+sudo rm -rf /var/lib/postgres/data/
