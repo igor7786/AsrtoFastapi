@@ -69,7 +69,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl gcc libc-dev python3-dev libpq-dev libjpeg-dev libcairo2 \
+    curl gcc libc-dev python3-dev libpq-dev libjpeg-dev libcairo2 postgresql-client \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 

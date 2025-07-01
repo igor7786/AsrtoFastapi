@@ -91,12 +91,22 @@ class DatabaseManager:
 		if self._engine:
 			await self._engine.dispose()
 
+def get_db_env_var():
+	if settings.ENV.startswith('prod') and settings.ENV_DOCKER.startswith('between'):
+		logger.error(f"Using docker path {settings.POSTGRES_SQL_PATH_DOCKER_BETWEEN}")
+		return settings.POSTGRES_SQL_PATH_DOCKER_BETWEEN
+	if settings.ENV.startswith('prod'):
+		return settings.POSTGRES_SQL_PATH
+	elif settings.ENV.startswith('dev'):
+		return settings.SQLITE_PATH
+	return None
+
+
+db_var = get_db_env_var()
+get_db = DatabaseManager(db_url=db_var)
 
 def get_current_datetime():
 	return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-
-get_db = DatabaseManager(settings.POSTGRES_SQL_PATH if settings.ENV.startswith('prod') else settings.SQLITE_PATH)
 dependency_db = Annotated[AsyncSession, Depends(get_db.get_session)]
 dependency_time_now = Annotated[str, Depends(get_current_datetime)]
 dependency_form_data = Annotated[OAuth2PasswordRequestForm, Depends()]

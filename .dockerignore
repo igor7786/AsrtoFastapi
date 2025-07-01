@@ -12,11 +12,8 @@ React
 SSH
 **/node_modules
 **/.astro
-**/astro-app.dockerfile
+**/*.dockerfile
 **/.venv
-**/fastapi-app.dockerfile
-**/n8n-app.dockerfile
-**/nginx-app.dockerfile
 **/.idea
 **/fflask.py
 **/backend/.python-version
@@ -26,5 +23,5 @@ SSH
 **/*.pyc
 **/*.pyo
 **/*.pyd
-**/.env
+**/*.env
 **/.git/

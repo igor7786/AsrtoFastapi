@@ -1,6 +1,50 @@
-version: "3.9"
-
+#version: "3.9"
+#
 services:
+  postgres_db:
+    build:
+      context: .
+      dockerfile: postgres/postgres-app.dockerfile
+    image: my-postgres
+    container_name: my-postgres-container
+    env_file:
+      - ./postgres/.env
+    volumes:
+      - ./postgres/pg_data:/var/lib/postgresql/data
+    ports:
+      - 5678:5432
+    networks:
+      my_network:
+        ipv4_address: 192.168.1.22
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
+    restart: unless-stopped
+    #  adminer:
+    #    image: adminer
+    #    restart: always
+    #    ports:
+    #      - 8080:8080
+
+  redis_cache:
+    build:
+      context: .
+      dockerfile: redis/redis-app.dockerfile
+    image: my-redis
+    container_name: my-redis-container
+    restart: unless-stopped
+    command: ["/runredis.sh"]
+    env_file:
+      - ./redis/.env
+    ports:
+      - '6379:6379'
+#    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - ./redis/data_redis:/data
+    networks:
+      - my_network  # Use the custom network
+    dns:
+      - 8.8.8.8  # Use Google Public DNS
+
   # FastAPI application 1
   app1:
     build:
@@ -12,7 +56,7 @@ services:
       - ./backend/.env
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
-      - ./backend/app_db:/backend/app_db  # Shared database
+      - ./backend/app_dbs/sqlite:/backend/app_dbs/sqlite  # Shared database
       - ./backend/app_main:/backend/app_main:ro  # Read-only codebase
     networks:
       - my_network  # Use the custom network
@@ -28,8 +72,11 @@ services:
             - __pycache__/
         - action: rebuild
           path: ./backend/requirements.txt
+    depends_on:
+      - postgres_db
+      - redis_cache
 
-  #FastAPI application 2
+#  FastAPI application 2
   app2:
     build:
       context: .
@@ -40,7 +87,7 @@ services:
       - ./backend/.env
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
-      - ./backend/app_db:/backend/app_db
+      - ./backend/app_dbs/sqlite:/backend/app_dbs/sqlite  # Shared database
       - ./backend/app_main:/backend/app_main:ro
     networks:
       - my_network  # Use the custom network
@@ -56,8 +103,11 @@ services:
             - __pycache__/
         - action: rebuild
           path: ./backend/requirements.txt
+    depends_on:
+      - postgres_db
+      - redis_cache
 
-  #FastAPI application 3
+#  FastAPI application 3
   app3:
     build:
       context: .
@@ -68,7 +118,7 @@ services:
       - ./backend/.env
     command: ["/backend/boot/run-fastapi.sh"]
     volumes:
-      - ./backend/app_db:/backend/app_db
+      - ./backend/app_dbs/sqlite:/backend/app_dbs/sqlite  # Shared database
       - ./backend/app_main:/backend/app_main:ro
     networks:
       - my_network  # Use the custom network
@@ -84,8 +134,11 @@ services:
             - __pycache__/
         - action: rebuild
           path: ./backend/requirements.txt
+    depends_on:
+      - postgres_db
+      - redis_cache
 
-  #My Astro app (Node.js app)
+#  My Astro app (Node.js app)
   astro-app:
     build:
       context: .
@@ -103,12 +156,12 @@ services:
     networks:
 #      - my_network
       my_network:
-        ipv4_address: 192.168.1.7
+        ipv4_address: 192.168.1.21
     dns:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
 
-  # N8n application
+#   N8n application
   n8n:
     build:
       context: .
@@ -137,7 +190,7 @@ services:
 #      - portainer_data:/data
     networks:
       - my_network  # Use the custom network
-  # Nginx web server (acting as a reverse proxy)
+#   Nginx web server (acting as a reverse proxy)
   nginx:
     build:
       context: .
@@ -170,7 +223,6 @@ services:
       - 8.8.8.8  # Use Google Public DNS
     restart: unless-stopped
 
-
 # Define the shared network between all containers
 networks:
   my_network:
@@ -179,12 +231,15 @@ networks:
       config:
         - subnet: 192.168.1.0/24
           gateway: 192.168.1.1
-
 # Define the volume shared for database persistence
 volumes:
-  app_db:
+  sqlite:
     driver: local
   n8n_data:
     driver: local
   portainer_data:
+    driver: local
+  pg_data:
+    driver: local
+  data_redis:
     driver: local

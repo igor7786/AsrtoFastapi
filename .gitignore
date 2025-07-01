@@ -676,3 +676,6 @@ pip-selfcheck.json
 **/proxmox/
 ### db ###
 **/*.db
+**/pg_data
+### redis ###
+**/data_redis

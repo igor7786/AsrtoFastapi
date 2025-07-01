@@ -131,3 +131,11 @@ sudo systemctl stop postgresql
 sudo pacman -Rns postgresql
 sudo rm -rf /var/lib/postgres/
 sudo rm -rf /var/lib/postgres/data/
+
+#Permissions
+getent group postgres
+sudo usermod -aG postgres igor7786
+groups igor7786
+ls -ld /var/lib/postgres
+sudo chmod 750 /var/lib/postgres
+newgrp postgres
