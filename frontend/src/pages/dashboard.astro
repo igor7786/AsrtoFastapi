@@ -1,0 +1,14 @@
+---
+import Page from '@/components/reactcomp/page';
+import { SkeletonPage } from '../components/reactcomp/loading-skeleton';
+import Layout from '../layouts/Layout.astro';
+import data from '@/components/reactcomp/data.json';
+---
+
+<Layout>
+  <Page data={data} client:only="react">
+    <div slot="fallback">
+      <SkeletonPage />
+    </div>
+  </Page>
+</Layout>

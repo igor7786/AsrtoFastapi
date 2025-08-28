@@ -18,8 +18,13 @@ pkg/
 ### Astro ###
 # Gitignore template for Astro projects
 # Ignore content collection generated files
-.astro
-
+*/.astro
+*/dist/
+*/src/data
+*/npm-debug.log*
+*/yarn-debug.log*
+*/yarn-error.log*
+*/pnpm-debug.log*
 ### CompressedArchive ###
 
 ### Mostly from https://en.wikipedia.org/wiki/List_of_archive_formats
@@ -156,7 +161,10 @@ pkg/
 
 
 ### dotenv ###
+*/.env
 .env
+.env.production
+.DS_Store
 
 ### Fish ###
 fishd.*
@@ -309,6 +317,7 @@ bower_components
 build/Release
 
 # Dependency directories
+*/node_modules/
 node_modules/
 jspm_packages/
 
@@ -477,7 +486,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+backend/lib/
 lib64/
 parts/
 sdist/
@@ -676,6 +685,13 @@ pip-selfcheck.json
 **/proxmox/
 ### db ###
 **/*.db
+**/*.sqlite
+**/*.sqlite3
 **/pg_data
 ### redis ###
 **/data_redis
+
+
+### exclude ###
+!**/frontend/src/lib
+!**/frontend/src/scripts

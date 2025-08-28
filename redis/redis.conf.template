@@ -4,8 +4,16 @@ dir /data
 logfile ""
 requirepass ${REDIS_PASSWORD}
 protected-mode no
+
+# Save snapshot if at least 1 change in 20 seconds
 save 20 1
-appendonly no
+
+# ✅ Enable AOF persistence
+appendonly yes
+
+# Optional: appendfsync every second (default is "everysec")
+# appendfsync everysec
+
 maxmemory 256mb
 maxmemory-policy allkeys-lru
 tcp-keepalive 300

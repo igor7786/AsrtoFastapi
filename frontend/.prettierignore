@@ -4,3 +4,4 @@ public/scripts-lib/
 src/assets/
 .astro
 README.md
+biome.jsonc

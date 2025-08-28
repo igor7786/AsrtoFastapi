@@ -14,6 +14,7 @@ else
   uv run gunicorn app_main:app \
     --workers 4 \
     --bind $RUN_HOST:$RUN_PORT \
-    --worker-class uvicorn.workers.UvicornWorker
+    --worker-class uvicorn.workers.UvicornWorker \
+    --preload
 fi
 

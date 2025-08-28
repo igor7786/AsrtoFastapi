@@ -1,44 +1,52 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
-import node from '@astrojs/node';
-import qwikdev from '@qwikdev/astro';
-// @ts-ignore
-// import htmx from 'astro-htmx';
 import react from '@astrojs/react';
+import vercel from '@astrojs/vercel';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
+import path from 'node:path';
+import url from 'node:url';
+
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server', // server-side render output
-  adapter: node({
-    mode: 'standalone', // You can keep this for production usage if required
+  output: 'server',
+  adapter: vercel({
+    imageService: true,
+    devImageService: 'sharp',
+    imagesConfig: {
+      sizes: [320, 640, 1280],
+    },
+    edgeMiddleware: true,
+    maxDuration: 60,
+    skewProtection: true,
+    isr: {
+      expiration: 60 * 60 * 24,
+      bypassToken: '005556d774a9',
+      exclude: [
+        '/preview', // dynamic preview pages
+        '/auth/[page]', // auth pages
+        /^\/api\/.+/, // ✅ exclude all API routes
+      ], // cache each page for 1 day
+    },
   }),
-  server: {
-    host: '0.0.0.0', // Allow access from any interface. Change to 'localhost' for local use
-    port: 4321, // Port number for your Astro server
-  },
-  integrations: [
-    tailwind({ applyBaseStyles: false }),
-    react({ include: ['**/reactcomp/**/*'] }),
-    qwikdev({ include: ['**/qwikcomp/**/*'] }),
-  ],
   vite: {
+    plugins: [
+      tailwindcss(),
+      {
+        name: 'print-auth-url',
+        configureServer(server) {
+          server.httpServer?.once('listening', () => {
+            console.log('scalar api served: http://localhost:4321/api/auth/reference');
+          });
+        },
+      },
+    ],
     resolve: {
       alias: {
-        '/scripts-lib': '/public/scripts-lib', // Path aliasing for convenience
-      },
-    },
-
-    server: {
-      allowedHosts: ['astro-cluster', 'igorfastapi.co.uk', 'localhost', '127.0.0.1'],
-      host: 'igorfastapi.co.uk', // Listen on all interfaces (use localhost if you prefer security)
-      port: 5173, // Vite default port, make sure it's not conflicting
-      hmr: {
-        protocol: 'wss', // WebSocket Secure (use if required for secure connections)
-        host: 'igorfastapi.co.uk', // Your domain or IP
-        port: 5173,
-        clientPort: 443, // Set the same port as the main port above
+        '@': path.resolve(__dirname, './src'),
       },
     },
   },
+  integrations: [react({ include: ['**/reactcomp/**/*'] })],
 });

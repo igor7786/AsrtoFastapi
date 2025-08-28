@@ -1,0 +1,7 @@
+-Implament Redis for Gunicorn workers -> mcp-> sse
+-Check snowlake Id for database
+-Redis -> Nginx
+-weakref --> memory leaks
+-punq -> for dependancies ->not recomended with Fastapi
+-lifespan -> wth AsyncExitStack -> done;
+-sigleton -> in class shared engine -> recomended better lifspan for fastapi

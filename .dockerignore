@@ -11,7 +11,7 @@ Poetry
 React
 SSH
 **/node_modules
-**/.astro
+frontend/Astro-old/.astro
 **/*.dockerfile
 **/.venv
 **/.idea

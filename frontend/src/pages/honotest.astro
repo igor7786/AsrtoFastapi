@@ -1,0 +1,10 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import TimeHono from '@/components/reactcomp/TimeHono';
+---
+
+<Layout title="Hono-Test">
+  <main>
+    <TimeHono client:only="react" />
+  </main>
+</Layout>

@@ -1,0 +1,23 @@
+{
+  "name": "asrtofastapi",
+  "version": "1.0.0",
+  "description": "loading script for astro and fastapi",
+  "type": "module",
+  "scripts": {
+    "dev:frontend": "cd frontend/Astro-new && npm run dev",
+    "dev:backend": "uv run backend/run.py",
+    "dev": "concurrently \"bun run dev:frontend\" \"bun run dev:backend\"",
+    "start:frontend": "cd frontend/Astro-new && npm run build && npm run preview",
+    "start:backend": "uv run backend/run.py",
+    "start": "concurrently \"bun run start:frontend\" \"bun run start:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/igor7786/AsrtoFastapi.git"
+  },
+  "private": true,
+  "instructions": "Use `bun install` to install deps, `bun run dev` for development, `bun run start` for production."
+}

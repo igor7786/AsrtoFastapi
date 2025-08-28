@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { SkeletonPage } from '../components/reactcomp/loading-skeleton';
+import { LoginForm } from '../components/reactcomp/login-form';
+import ThemeToggleShell from '@/components/reactcomp/theme-mode-toggle';
+---
+
+<Layout title="Login-shadcn">
+  <!--<Page client:visible />-->
+  <main>
+    <header>
+      <ThemeToggleShell className="absolute top-4 right-4" client:only="react" />
+      <!-- Logo, nav menu, site title -->
+    </header>
+    <LoginForm client:only="react">
+      <div slot="fallback">
+        <SkeletonPage />
+      </div>
+    </LoginForm>
+    <footer>
+      <!-- Footer info, links, copyrights -->
+    </footer>
+  </main>
+</Layout>

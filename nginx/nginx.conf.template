@@ -345,6 +345,19 @@ http {
             proxy_set_header X-Forwarded-Proto https;
             proxy_set_header X-Forwarded-port 443;
         }
+        location /session/ {
+             # required for browsers to direct them to quic port
+            proxy_pass http://mcp_cluster/session/;
+            proxy_cache off;
+            proxy_http_version 1.1;           # Ensure HTTP/1.1 for streaming
+            proxy_set_header Connection "";    # Prevent connection closure issues
+            # Standard headers
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Real-IP ${DOLLAR}remote_addr;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Forwarded-Port 443;# Enable chunked encoding
+        }
         location /openapi.json {
             proxy_pass http://fastapi_cluster/openapi.json;  # Assuming Astro app runs on port 4321
             # Standard headers

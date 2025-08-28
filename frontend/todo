@@ -1,0 +1,30 @@
+formaters
+--biome
+--ultracite
+shadcn
+    themes:
+        --tweakcn
+        --styleglide.ai/themes
+    components:
+        --originui
+        --mvpblocks ->https://blocks.mvp-subha.me/
+        --shadcnui-blocks.com
+        --https://ui.shadcn.com/blocks/sidebar
+        -- https://v0.dev/chat/open-in-v0-LpKxY2gtRGg -> vercel
+
+global store
+--nanostores
+
+fetchdata
+--tanstack query
+-- tanstack spa react
+data validation
+--zod, zod formhook
+--conform
+--astro actions -> server validation
+
+db -> diagrmas
+-- Eraser
+
+auth
+--better auth

@@ -1,0 +1,14 @@
+---
+import { SkeletonPage } from '../components/reactcomp/loading-skeleton';
+import LoginForm1 from '../components/reactcomp/login-form1';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Login">
+  <!--<Page client:visible />-->
+  <LoginForm1 client:only="react">
+    <div slot="fallback">
+      <SkeletonPage />
+    </div>
+  </LoginForm1>
+</Layout>

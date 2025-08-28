@@ -1,4 +1,4 @@
-from app_main.app_imports import BaseSettings, SettingsConfigDict, lru_cache, Path
+from app_main.imports import BaseSettings, SettingsConfigDict, lru_cache, Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -9,11 +9,13 @@ class Settings(BaseSettings):
 	SECRET_KEY: str
 	FAST_API_HOST: str
 	FAST_API_PORT: int
-	SQLMODEL_MIGRATE_PTH: str
-	POSTGRES_SQL_PATH: str
-	POSTGRES_SQL_PATH_DOCKER: str
-	POSTGRES_SQL_PATH_DOCKER_BETWEEN: str
-	SQLITE_PATH: str
+	SQLITE_MIGRATE_URL: str
+	SQLITE_URL: str
+	POSTGRES_URL: str
+	POSTGRES_URL_DOCKER: str
+	POSTGRES_URL_DOCKER_BETWEEN: str
+	REDIS_URL_DOCKER_BETWEEN: str
+	REDIS_URL_DOCKER: str
 	API_AI_KEY_GEMMINI: str
 	API_AI_MODEL_GEMMINI: str
 	API_AI_KEY_QWEN: str

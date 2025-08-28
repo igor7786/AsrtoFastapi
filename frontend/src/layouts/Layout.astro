@@ -1,16 +1,21 @@
 ---
-import '@/styles/globals.css';
-import Head from './Head.astro';
-import Body from './Body.astro';
-import { ModeToggle } from '@/components/reactcomp/ModeToggle';
+import themeScript from '../scripts/theme-checker.js?raw';
+const { title } = Astro.props;
+import '../styles/global.css';
 ---
 
 <!doctype html>
 <html lang="en">
-  <Head title="Main page" />
-  <Body>
-    <ModeToggle client:only="react" />
-    <div>Layout</div>
-    <script is:inline src="/scripts-lib/theme-dark-white.js"></script>
-  </Body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+  <!-- Inline the theme-checker.js script -->
+  <script set:html={themeScript} />
 </html>

@@ -1,4 +1,4 @@
-/** @type {import("prettier").Config} */
+/** @type {import('prettier').Config} */
 export default {
   plugins: [
     'prettier-plugin-astro',
@@ -15,7 +15,8 @@ export default {
   trailingComma: 'es5',
   bracketSpacing: true,
   arrowParens: 'always',
-  tailwindConfig: './tailwind.config.mjs',
+  // tailwindConfig: './tailwind.config.mjs',
+  tailwindStylesheet: './src/styles/global.css',
   overrides: [
     {
       files: '*.astro',
