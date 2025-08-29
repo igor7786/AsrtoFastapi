@@ -2,8 +2,7 @@
 
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { type FieldValues, useForm } from 'react-hook-form';
 import { cn } from '@/components/reactcomp/lib/utils';
 import { Button } from '@/components/reactcomp/ui/button';
 import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
@@ -14,7 +13,7 @@ import { useEffect } from 'react';
 // import { Toaster, toast } from 'sonner';
 import toast, { Toaster, ToastBar } from 'react-hot-toast';
 import { startTransition } from 'react';
-import { loginSchema } from '@/lib/types-schemas/login-schema.ts';
+import { loginSchema, type LoginSchema } from '@/lib/types-schemas/login-schema';
 import {
   Card,
   CardContent,
@@ -40,7 +39,7 @@ import { CustomToaster } from '@/components/reactcomp/custom-toast.tsx';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   // 1. Define your form.
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       name: '',

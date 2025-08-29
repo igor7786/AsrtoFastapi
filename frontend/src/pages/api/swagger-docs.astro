@@ -1,0 +1,21 @@
+---
+// src/pages/docs.astro
+import ApiDocs from '@/components/reactcomp/ApiDocs';
+import Layout from '@/layouts/Layout.astro';
+import ThemeToggleShell from '@/components/reactcomp/theme-mode-toggle';
+import { SkeletonPage } from '../../components/reactcomp/loading-skeleton';
+---
+
+<Layout title="Api Docs">
+  <main>
+    <header>
+      <ThemeToggleShell className="absolute top-4 right-4" client:only="react" />
+      <!-- Logo, nav menu, site title -->
+    </header>
+    <ApiDocs client:only="react">
+      <div slot="fallback">
+        <SkeletonPage />
+      </div><ApiDocs />
+    </ApiDocs>
+  </main>
+</Layout>

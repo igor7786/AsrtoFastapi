@@ -10,3 +10,5 @@ export const loginSchema = z.object({
     .min(4, { message: 'Password must be at least 4 characters long.' })
     .max(20, { message: 'Password cannot exceed 20 characters.' }),
 });
+
+export type LoginSchema = z.infer<typeof loginSchema>;
