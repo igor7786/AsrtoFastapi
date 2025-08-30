@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 // import { Toaster, toast } from 'sonner';
 import toast, { Toaster, ToastBar } from 'react-hot-toast';
 import { startTransition } from 'react';
-import { loginSchema, type LoginSchema } from '@/lib/types-schemas/login-schema';
+import { loginSchema, type LoginSchema } from '@/lib/types-schemas-validator/login-schema';
 import {
   Card,
   CardContent,

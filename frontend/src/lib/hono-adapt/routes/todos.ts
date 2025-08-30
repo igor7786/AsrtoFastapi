@@ -1,39 +1,36 @@
 import { Hono } from 'hono';
-import { todoSchema } from '@/lib/types-schemas/todo-schema.ts';
+import { authMiddleware } from '@/lib/hono-adapt/auth-middleware';
+import { getTodosByUserId, createTodo } from '@db/queries/queries';
+import type { HonoEnv } from '@db/types';
 import { z } from 'zod';
+import { createTodoValidator } from '@/lib/types-schemas-validator/create-todo.validator';
+const todosApi = new Hono<HonoEnv>();
 
-const todosApi = new Hono();
+todosApi.use(authMiddleware);
 
-// Sample data (type inferred)
-const todos = [
-  { id: 1, title: 'Learn Astro Nowsas' },
-  { id: 2, title: 'Integrate React' },
-  { id: 3, title: 'Use TanStack Query' },
-];
-
-// Zod schema for array
-const todosArraySchema = z.array(todoSchema);
-
-// GET /:id
-todosApi.get('/:id', (c) => {
-  const id = Number(c.req.param('id'));
-  const todo = todos.find((t) => t.id === id);
-
-  if (!todo) {
-    return c.json({ error: 'Todo not found' }, 404);
+// GET /todos by user id
+todosApi.get('/', async (c) => {
+  const user = c.get('user');
+  try {
+    const todosList = await getTodosByUserId(user.id);
+    return c.json(todosList, 200);
+  } catch (error) {
+    return c.json({ error: 'Failed to fetch todos' }, 500);
   }
-
-  // Validate single todo
-  const parsed = todoSchema.parse(todo);
-  return c.json(parsed, 200);
 });
-
-// GET /
-todosApi.get('/', (c) => {
-  // Validate array of todos
-  const parsed = todosArraySchema.parse(todos);
-  return c.json(parsed, 200);
+// POST /todos create new todo
+todosApi.post('/', createTodoValidator, async (c) => {
+  const user = c.get('user');
+  const todoData = c.req.valid('json');
+  try {
+    const newTodo = await createTodo({
+      userId: user.id,
+      ...todoData,
+    });
+    return c.json(newTodo, 201);
+  } catch (error) {
+    return c.json({ error: 'Failed to create todo' }, 500);
+  }
 });
-
 export default todosApi;
 export type TodosType = typeof todosApi;

@@ -1,5 +1,5 @@
 import { defineAction, ActionError } from 'astro:actions';
-import { loginSchema } from '@/lib/types-schemas/login-schema.ts';
+import { loginSchema } from '@/lib/types-schemas-validator/login-schema.ts';
 
 export const server = {
   submitPerson: defineAction({

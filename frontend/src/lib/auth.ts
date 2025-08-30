@@ -1,8 +1,8 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { db } from '../../db/db-instance'; // your drizzle instance
+import { db } from '@db/db-instance'; // your drizzle instance
 import { openAPI } from 'better-auth/plugins';
-import * as schema from '../../db/shema-index';
+import * as schema from '@db/shema-index';
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

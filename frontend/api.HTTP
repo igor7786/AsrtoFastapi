@@ -1,1 +1,40 @@
+### Test
 GET http://localhost:4321/api/
+### Sign up
+POST http://localhost:4321/api/auth/sign-up/email
+Content-Type: application/json
+
+{
+    "email": "igor@gmail.com",
+    "password": "11",
+    "name": "Igor"
+}
+### Sign In
+POST http://localhost:4321/api/auth/sign-in/email
+Content-Type: application/json
+
+{
+    "email": "igor@gmail.com",
+    "password": "11"
+}
+### Delete User
+POST http://localhost:4321/api/auth/delete-user
+Content-Type: application/json
+
+{
+    "password": "11"
+}
+
+
+### Create Todo
+POST http://localhost:4321/api/todos
+Content-Type: application/json
+
+{
+    "title": "Todo ",
+    "description": "Description 1",
+    "completed": false
+}
+### Get Todos
+GET http://localhost:4321/api/todos
+Content-Type: application/json

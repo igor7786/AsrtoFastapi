@@ -9,7 +9,17 @@ import { auth } from '@/lib/auth';
 const app = new Hono().basePath('/api');
 
 //? CORS middleware
-app.use('/*', cors());
+app.use(
+  '/auth/*', // or replace with "*" to enable cors for all routes
+  cors({
+    origin: 'http://localhost:4321', // replace with your origin
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
+  })
+);
 
 //? Trailing slash middleware
 app.use('/*', async (c, next) => {

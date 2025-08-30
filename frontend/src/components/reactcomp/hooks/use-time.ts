@@ -1,9 +1,9 @@
 // src/components/reactcomp/hooks/useTime.ts
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import type { TimeResponse } from '@/lib/types-schemas/time-type.ts';
+import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
 import { client } from '@/utils/tanstack-query';
-import type { Todo } from '@/lib/types-schemas/todo-schema.ts';
+import type { Todo } from '@/lib/types-schemas-validator/todo-schema.ts';
 
 export function useTime() {
   return useQuery(

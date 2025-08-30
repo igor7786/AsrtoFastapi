@@ -1,4 +1,4 @@
-import ThemeToggleShell from '@/components/reactcomp/theme-mode-toggle.tsx';
+import ThemeToggleShell from '@rcomp/ThemeModeToogle.tsx';
 import { Button } from '@/components/reactcomp/ui/button';
 import { Separator } from '@/components/reactcomp/ui/separator';
 import { SidebarTrigger } from '@/components/reactcomp/ui/sidebar';
