@@ -234,6 +234,7 @@ export function ChartAreaInteractive() {
             />
             <ChartTooltip
               content={
+                // @ts-ignore
                 <ChartTooltipContent
                   indicator="dot"
                   labelFormatter={(value) => {

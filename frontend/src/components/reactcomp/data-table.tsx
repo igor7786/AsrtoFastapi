@@ -629,7 +629,14 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     tickLine={false}
                     tickMargin={8}
                   />
-                  <ChartTooltip content={<ChartTooltipContent indicator="dot" />} cursor={false} />
+
+                  <ChartTooltip
+                    content={
+                      // @ts-ignore
+                      <ChartTooltipContent indicator="dot" />
+                    }
+                    cursor={false}
+                  />
                   <Area
                     dataKey="mobile"
                     fill="var(--color-mobile)"

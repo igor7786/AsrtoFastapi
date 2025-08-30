@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/bun-sqlite';
 // @ts-ignore
 import { Database } from 'bun:sqlite';
+// import { SQL } from 'bun';
 
 // import Database from 'better-sqlite3';
 // import { drizzle } from 'drizzle-orm/better-sqlite3';
