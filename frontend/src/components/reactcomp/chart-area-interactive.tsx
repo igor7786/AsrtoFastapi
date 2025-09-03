@@ -208,10 +208,12 @@ export function ChartAreaInteractive() {
         <ChartContainer className="aspect-auto h-[250px] w-full" config={chartConfig}>
           <AreaChart data={filteredData}>
             <defs>
+              {/** biome-ignore lint/correctness/useUniqueElementIds: <explanation> */}
               <linearGradient id="fillDesktop" x1="0" x2="0" y1="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={1.0} />
                 <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
               </linearGradient>
+              {/** biome-ignore lint/correctness/useUniqueElementIds: <explanation> */}
               <linearGradient id="fillMobile" x1="0" x2="0" y1="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
@@ -234,7 +236,7 @@ export function ChartAreaInteractive() {
             />
             <ChartTooltip
               content={
-                // @ts-ignore
+                // @ts-expect-error
                 <ChartTooltipContent
                   indicator="dot"
                   labelFormatter={(value) => {
