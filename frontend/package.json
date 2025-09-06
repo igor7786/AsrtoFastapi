@@ -58,7 +58,7 @@
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tabler/icons-react": "^3.34.1",
-    "@tailwindcss/vite": "^4.1.12",
+    "@tailwindcss/vite": "^4.1.13",
     "@tanstack/react-query": "^5.85.5",
     "@tanstack/react-table": "^8.21.3",
     "astro": "^5.13.4",
@@ -91,13 +91,12 @@
     "sonner": "^2.0.7",
     "swagger-ui-react": "^5.28.0",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.12",
+    "tailwindcss": "^4.1.13",
     "vaul": "^1.1.2",
     "zod": "^4.1.5"
   },
   "devDependencies": {
     "@better-auth/cli": "^1.3.7",
-    "@biomejs/biome": "2.1.2",
     "@types/autocannon": "^7.12.7",
     "@types/bun": "latest",
     "@types/react": "^19.1.12",
@@ -113,5 +112,19 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tw-animate-css": "^1.3.7",
     "ultracite": "5.0.49"
-  }
+  },
+  "trustedDependencies": [
+    "@prisma/client",
+    "@prisma/engines",
+    "@scarf/scarf",
+    "@tailwindcss/oxide",
+    "@tree-sitter-grammars/tree-sitter-yaml",
+    "better-sqlite3",
+    "core-js-pure",
+    "esbuild",
+    "prisma",
+    "sharp",
+    "tree-sitter",
+    "tree-sitter-json"
+  ]
 }

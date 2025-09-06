@@ -11,7 +11,7 @@
       "@db/*": ["./db/*"],
       "@rcomp/*": ["./src/components/reactcomp/*"],
       "@layout/*": ["./src/layouts/*"],
-      "@acomp/*": ["./src/components/astrocomp/*"],
+      "@acomp/*": ["./src/components/astrocomp/*"]
     },
     "strictNullChecks": true,
     "esModuleInterop": true,

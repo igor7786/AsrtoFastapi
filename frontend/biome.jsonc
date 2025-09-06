@@ -1,7 +1,24 @@
-{
-	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
-	"extends": ["ultracite"],
-	"files": {
-		"experimentalScannerIgnores": [".astro"]
-	}
-}
+// {
+// 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+// 	"extends": ["ultracite"],
+// 	"files": {
+// 		"experimentalScannerIgnores": ["**/src/**/*.astro"]
+// 	},
+// 	"overrides": [
+// 		{
+// 			"includes": ["**/*.svelte", "**/src/**/*.astro", "**/*.vue"],
+// 			"linter": {
+// 				"rules": {
+// 					"style": {
+// 						"useConst": "off",
+// 						"useImportType": "off"
+// 					},
+// 					"correctness": {
+// 						"noUnusedVariables": "off",
+// 						"noUnusedImports": "off"
+// 					}
+// 				}
+// 			}
+// 		}
+// 	]
+// }
