@@ -179,7 +179,7 @@ export const ThemeToggleButton = ({
       size={showLabel ? 'default' : 'icon'}
       onClick={handleClick}
       className={cn(
-        'relative overflow-hidden bg-primary transition-all',
+        'bg-primary relative overflow-hidden transition-all',
         showLabel && 'gap-2',
         className
       )}
@@ -188,13 +188,11 @@ export const ThemeToggleButton = ({
     >
       <div className="relative flex h-5 w-5 items-center justify-center">
         <Sun
-          className={`absolute h-[1.2rem] w-[1.2rem] transition-all ease-in-out
-            ${theme === 'dark' ? 'scale-0 -rotate-90' : 'scale-100 rotate-0'}`}
+          className={`absolute h-[1.2rem] w-[1.2rem] transition-all ease-in-out ${theme === 'dark' ? 'scale-0 -rotate-90' : 'scale-100 rotate-0'}`}
           style={{ transformOrigin: '50% 50%' }}
         />
         <Moon
-          className={`absolute h-[1.2rem] w-[1.2rem] transition-all ease-in-out
-            ${theme === 'dark' ? 'scale-100 rotate-0' : 'scale-0 rotate-90'}`}
+          className={`absolute h-[1.2rem] w-[1.2rem] transition-all ease-in-out ${theme === 'dark' ? 'scale-100 rotate-0' : 'scale-0 rotate-90'}`}
           style={{ transformOrigin: '50% 50%' }}
         />
       </div>

@@ -46,9 +46,8 @@ export default function LoginForm1() {
     if (strengthScore === 3) return 'Medium password';
     return 'Strong password';
   };
-
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-background sm:px-4">
+    <main className="bg-background flex min-h-screen w-full flex-col items-center justify-center sm:px-4">
       <div className="w-full space-y-12 sm:max-w-md">
         <div className="text-center">
           <img alt={'Logo'} className="mx-auto" src="/favicon.svg" width={120} />
@@ -66,10 +65,7 @@ export default function LoginForm1() {
         <div className="space-y-8 p-4 py-6 shadow sm:rounded-lg sm:p-6">
           <div className="grid grid-cols-3 gap-x-3">
             {/* Social buttons (unchanged) */}
-            <button
-              className="flex items-center justify-center rounded-lg border py-2.5 duration-150
-                hover:bg-secondary active:bg-secondary/40"
-            >
+            <button className="hover:bg-secondary active:bg-secondary/40 flex items-center justify-center rounded-lg border py-2.5 duration-150">
               <svg
                 className="h-5 w-5"
                 fill="none"
@@ -101,10 +97,7 @@ export default function LoginForm1() {
                 </defs>
               </svg>
             </button>
-            <button
-              className="flex items-center justify-center rounded-lg border py-2.5 duration-150
-                hover:bg-secondary active:bg-secondary/40"
-            >
+            <button className="hover:bg-secondary active:bg-secondary/40 flex items-center justify-center rounded-lg border py-2.5 duration-150">
               <svg
                 className="h-5 w-5"
                 fill="none"
@@ -117,10 +110,7 @@ export default function LoginForm1() {
                 />
               </svg>
             </button>
-            <button
-              className="flex items-center justify-center rounded-lg border py-2.5 duration-150
-                hover:bg-secondary active:bg-secondary/40"
-            >
+            <button className="hover:bg-secondary active:bg-secondary/40 flex items-center justify-center rounded-lg border py-2.5 duration-150">
               <Github size={24} />
             </button>
           </div>
@@ -141,8 +131,7 @@ export default function LoginForm1() {
               <div className="relative">
                 <input
                   autoComplete="email"
-                  className="mt-2 w-full rounded-lg border px-3 py-2 pr-10 text-foreground shadow-sm
-                    outline-none autofill:text-input focus:border-primary/50"
+                  className="text-foreground autofill:text-input focus:border-primary/50 mt-2 w-full rounded-lg border px-3 py-2 pr-10 shadow-sm outline-none"
                   id="email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
@@ -166,7 +155,7 @@ export default function LoginForm1() {
                 </span>
               </div>
               {email.length > 0 && !emailValid && (
-                <p className="mt-1 text-sm text-destructive/90">Please enter a valid email.</p>
+                <p className="text-destructive/90 mt-1 text-sm">Please enter a valid email.</p>
               )}
             </div>
 
@@ -177,8 +166,7 @@ export default function LoginForm1() {
               </label>
               <div className="relative">
                 <input
-                  className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 pr-10 shadow-sm
-                    outline-none focus:border-primary/50"
+                  className="focus:border-primary/50 mt-2 w-full rounded-lg border bg-transparent px-3 py-2 pr-10 shadow-sm outline-none"
                   id={id}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -187,7 +175,7 @@ export default function LoginForm1() {
                 />
                 {/* 👁 Toggle visibility */}
                 <button
-                  className="absolute inset-y-0 right-3 mt-2 flex items-center text-muted-foreground"
+                  className="text-muted-foreground absolute inset-y-0 right-3 mt-2 flex items-center"
                   onClick={toggleVisibility}
                   type="button"
                 >
@@ -202,7 +190,7 @@ export default function LoginForm1() {
                     aria-valuemax={4}
                     aria-valuemin={0}
                     aria-valuenow={strengthScore}
-                    className="mb-2 h-1 w-full overflow-hidden rounded-full bg-border"
+                    className="bg-border mb-2 h-1 w-full overflow-hidden rounded-full"
                     role="progressbar"
                   >
                     <div
@@ -236,10 +224,7 @@ export default function LoginForm1() {
               )}
             </div>
 
-            <button
-              className="w-full rounded-lg bg-primary px-4 py-2 font-medium text-white duration-150
-                hover:bg-primary/80 active:bg-primary/60"
-            >
+            <button className="bg-primary hover:bg-primary/80 active:bg-primary/60 w-full rounded-lg px-4 py-2 font-medium text-white duration-150">
               Sign in
             </button>
           </form>

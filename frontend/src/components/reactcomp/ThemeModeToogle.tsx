@@ -28,11 +28,11 @@ function ModeToggle({ className }: { className?: string }) {
       <ThemeToggleButton
         theme={resolvedTheme}
         onClick={toggleTheme}
-        className="relative bg-primary text-primary-foreground"
+        className="bg-primary text-primary-foreground relative"
         showLabel
         variant="polygon"
       />
-      <div className="mt-1 text-sm text-muted-foreground capitalize">
+      <div className="text-muted-foreground mt-1 text-sm capitalize">
         {theme === 'dark' ? 'Dark mode' : 'Light mode'}
       </div>
     </div>

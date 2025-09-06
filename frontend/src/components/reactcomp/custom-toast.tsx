@@ -47,7 +47,7 @@ export function CustomToaster({ position = 'bottom-right', isDark = false }: Cus
                 toastRefs.current[t.id] = { element: el, toast: t };
               }}
               className={`flex items-center gap-2 rounded-md px-3 py-2 transition-colors ${
-                t.type !== 'loading' ? 'cursor-pointer hover:bg-muted/40' : ''
+                t.type !== 'loading' ? 'hover:bg-muted/40 cursor-pointer' : ''
               }`}
               onClick={t.type !== 'loading' ? () => toast.dismiss(t.id) : undefined}
               role={t.type !== 'loading' ? 'button' : undefined}
