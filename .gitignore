@@ -685,8 +685,6 @@ pip-selfcheck.json
 
 ###bun###
 **/bun.lock
-bun.lock
-
 
 
 ### proxmox ###
