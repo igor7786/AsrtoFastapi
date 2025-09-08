@@ -11,7 +11,7 @@ export const createTodoSchema = z
     completed: z.boolean().default(false),
   })
   .strict();
-
+// ✅ validator for Hono
 export const createTodoValidator = zValidator('json', createTodoSchema, (result, c) => {
   if (!result.success) {
     return c.json(

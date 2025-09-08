@@ -45,6 +45,7 @@ app.use('/*', async (c, next) => {
 
 const routes = app
   .get('/', (c) => c.json({ message: 'server is healthy' }))
+  .route('/decoys', decoys)
   .on(['POST', 'GET'], '/auth/**', (c) => auth.handler(c.req.raw))
   .route('/openapi', apiShema as ApiShemaType)
   .route('/todos', todosApi as TodosType)
