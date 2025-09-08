@@ -397,6 +397,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+**/.vscode
 .vscode
 
 # yarn v2
@@ -681,6 +682,12 @@ pip-selfcheck.json
 **/.python-version
 ### env ###
 **/*.env
+
+###bun###
+**/bun.lock
+bun.lock
+
+
 
 ### proxmox ###
 **/proxmox/
