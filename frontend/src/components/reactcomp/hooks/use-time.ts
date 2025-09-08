@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
 import { client } from '@/utils/tanstack-query';
-import type { Todo } from '@/lib/types-schemas-validator/todo-schema.ts';
+import type { createTodoSchema } from '@/lib/types-schemas-validator/create-todo.validator';
+import type z from 'zod';
 
 export function useTime() {
   return useQuery(
@@ -19,7 +20,7 @@ export function useTime() {
   );
 }
 
-async function fetchTodo(id: number, signal?: AbortSignal): Promise<Todo> {
+async function fetchTodo(id: number, signal?: AbortSignal): Promise<z.infer<typeof createTodoSchema>> {
   const res = await axios.get(`/api/todos/${id}`, { signal });
   return res.data;
 }
