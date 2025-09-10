@@ -17,5 +17,13 @@
     "lib": "@/components/reactcomp/lib",
     "hooks": "@/components/reactcomp/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+
+  "registries": {
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@originui": "https://originui.com/r/{name}.json",
+    "@cult": "https://cult-ui.com/r/{name}.json",
+    "@kibo": "https://www.kibo-ui.com/r/{name}.json",
+    "@reui": "https://reui.io/r/{name}.json"
+  }
 }
