@@ -1,4 +1,4 @@
-####gloabal git config#####
+####gloabal git config####
 git config --global user.name "User Name"
 git config --global user.email "User Email"
 git config --global init.defaultBranch main
