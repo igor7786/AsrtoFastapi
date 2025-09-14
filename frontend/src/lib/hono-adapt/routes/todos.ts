@@ -2,7 +2,6 @@ import { Hono } from 'hono';
 import { authMiddleware } from '@/lib/hono-adapt/auth-middleware';
 import { getTodosByUserId, createTodo } from '@db/queries/queries';
 import type { HonoEnv } from '@db/types';
-import { z } from 'zod';
 import { createTodoValidator } from '@/lib/types-schemas-validator/create-todo.validator';
 const todosApi = new Hono<HonoEnv>();
 

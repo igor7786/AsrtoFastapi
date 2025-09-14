@@ -6,7 +6,7 @@ import todosApi, { type TodosType } from '@/lib/hono-adapt/routes/todos';
 import timeApi, { type TimeType } from '@/lib/hono-adapt/routes/time';
 import apiShema, { type ApiShemaType } from '@/lib/hono-adapt/routes/openapi';
 import { auth } from '@/lib/auth';
-const app = new Hono().basePath('/api');
+const app = new Hono({ strict: false }).basePath('/api');
 
 //? CORS middleware
 app.use(
@@ -20,15 +20,6 @@ app.use(
     credentials: true,
   })
 );
-
-//? Trailing slash middleware
-app.use('/*', async (c, next) => {
-  const path = new URL(c.req.url).pathname;
-  if (path !== '/' && path.endsWith('/')) {
-    return c.redirect(path.slice(0, -1));
-  }
-  await next();
-});
 
 //? Routes
 // ########## //
