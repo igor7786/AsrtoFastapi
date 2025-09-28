@@ -1,5 +1,4 @@
 // src/lib/hono-adapt/index.ts
-import decoys from '@/lib/hono-adapt/routes/decoys';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import todosApi, { type TodosType } from '@/lib/hono-adapt/routes/todos';
@@ -22,29 +21,27 @@ app.use(
 );
 
 //? Routes
-// ########## //
-//? Better-Auth
+// // ########## //
+// //? Better-Auth
 // app.on(['POST', 'GET'], '/auth/**', (c) => auth.handler(c.req.raw));
-// // //? Serve OpenAPI JSON at /api/openapi
+// //? Serve OpenAPI JSON at /api/openapi
 // app.route('/openapi', apiShema as ApiShemaType);
-// // //? Health check
+// //? Health check
 // app.get('/', (c) => c.json({ message: 'server is healthy' }));
-// // //? Test routes //
+// //? Test routes //
 // app.route('/todos', todosApi as TodosType);
 // app.route('/time', timeApi as TimeType);
 // export type AppType = typeof app;
+// export default app;
 
-const routes = app
-  .get('/', (c) => c.json({ message: 'server is healthy' }))
-  .route('/decoys', decoys)
-  .on(['POST', 'GET'], '/auth/**', (c) => auth.handler(c.req.raw))
+const routers = app
+  .get('/', async (c) => c.json({ message: 'server is healthy' }))
+  .on(['POST', 'GET'], '/auth/*', (c) => auth.handler(c.req.raw))
   .route('/openapi', apiShema as ApiShemaType)
   .route('/todos', todosApi as TodosType)
-  .route('/time', timeApi as TimeType);
-
-// Catch-all 404 for unmatched /api/* routes
-app.all('/*', (c) => {
-  return c.json({ code: 404, message: 'Page not found' }, 404);
-});
+  .route('/time', timeApi as TimeType) // <-- use .route, not .get
+  .all('/*', async (c) => {
+    return c.json({ code: 404, message: 'Page not found' }, 404);
+  });
+export type AppType = typeof routers;
 export default app;
-export type AppType = typeof routes;

@@ -2,9 +2,7 @@
 import { Hono } from 'hono';
 import { auth } from '@/lib/auth';
 
-const apiShema = new Hono();
-
-apiShema.get('/', async (c) => {
+const apiShema = new Hono().get('/', async (c) => {
   const openAPISchema = await auth.api.generateOpenAPISchema();
   return c.json(openAPISchema, 200);
 });
