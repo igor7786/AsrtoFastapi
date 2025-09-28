@@ -39,9 +39,9 @@ const routers = app
   .on(['POST', 'GET'], '/auth/*', (c) => auth.handler(c.req.raw))
   .route('/openapi', apiShema as ApiShemaType)
   .route('/todos', todosApi as TodosType)
-  .route('/time', timeApi as TimeType) // <-- use .route, not .get
+  .route('/time', timeApi as TimeType)
   .all('/*', async (c) => {
     return c.json({ code: 404, message: 'Page not found' }, 404);
   });
 export type AppType = typeof routers;
-export default app;
+export default routers;
