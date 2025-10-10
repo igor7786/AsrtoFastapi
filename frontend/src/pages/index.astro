@@ -10,5 +10,10 @@ import Layout from '@/layouts/Layout.astro';
 <Layout title="Welcome to Astro">
   <TodoList client:only="react" />
   <ThemeToggleShell client:only="react" />
-  <Welcome />
+  <a href="/dashboard" class="text-sm text-gray-500 hover:underline dark:text-gray-400">
+    Powered by Astro
+    <Welcome />
+  </a>
 </Layout>
+<!-- target="_blank" -->
+<!-- rel="noopener noreferrer" -->

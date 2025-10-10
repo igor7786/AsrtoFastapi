@@ -1,6 +1,6 @@
 // src/components/Todos.tsx
 'use client';
-import { useTime, useTodo } from '@/components/reactcomp/hooks/use-time.ts';
+import { useTime, useTodo } from '@/components/reactcomp/hooks/use-time';
 import { useState } from 'react';
 export default function TimeHono() {
   const [id, setId] = useState(1); // start with todo #1
@@ -11,11 +11,16 @@ export default function TimeHono() {
       <div className="flex gap-2">
         <button
           onClick={() => setId((prev) => Math.max(prev - 1, 1))}
-          className="rounded bg-gray-200 px-3 py-1"
+          className="rounded bg-red-700 px-3 py-1"
+          disabled={isLoading}
         >
           -1
         </button>
-        <button onClick={() => setId((prev) => prev + 1)} className="rounded bg-gray-200 px-3 py-1">
+        <button
+          onClick={() => setId((prev) => prev + 1)}
+          disabled={isLoading}
+          className="rounded bg-green-700 px-3 py-1"
+        >
           +1
         </button>
       </div>

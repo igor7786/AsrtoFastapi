@@ -1,6 +1,7 @@
 ---
 import themeScript from '@/scripts/theme-checker.js?raw';
 
+import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 import '../styles/global.css';
 ---
@@ -13,10 +14,10 @@ import '../styles/global.css';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <script set:html={themeScript} />
+    <ClientRouter />
   </head>
   <body>
     <slot />
-  </body>
-  <!-- Inline the theme-checker.js script -->
-  <script set:html={themeScript} />
+  </body><!-- Inline the theme-checker.js script -->
 </html>
