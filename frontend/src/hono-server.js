@@ -2,8 +2,8 @@
 
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/bun';
-import { handler as ssrHandler } from '../dist/server/entry.mjs';
-import { page as apiPage } from '../dist/server/pages/api/_---path_.astro.mjs';
+import { handler as ssrHandler } from '../dist/server/entry';
+import { page as apiPage } from '../dist/server/pages/api/_---path_.astro';
 
 const app = new Hono();
 
