@@ -6,6 +6,7 @@ import { cn } from '@/components/reactcomp/lib/utils.ts';
 import { ThemeProvider } from 'next-themes';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { nanoTheme } from '@/lib/stores/themes';
 function ModeToggle({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme(); // 👈 use the hook
@@ -20,6 +21,7 @@ function ModeToggle({ className }: { className?: string }) {
   const toggleTheme = () => {
     startTransition(() => {
       setTheme(theme === 'dark' ? 'light' : 'dark');
+      nanoTheme.setKey('theme', theme === 'dark' ? 'light' : 'dark');
     });
   };
 
