@@ -1,13 +1,14 @@
 // noinspection D
 
 'use client';
+import { navigate } from 'astro:transitions/client';
 import { actions, isInputError } from 'astro:actions';
 import { withState } from '@astrojs/react/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GalleryVerticalEnd, X } from 'lucide-react';
 import { startTransition, useActionState, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { type FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // import { Toaster, toast } from 'sonner';
 import toast, { ToastBar, Toaster } from 'react-hot-toast';
 import { CustomToaster } from '@/components/reactcomp/custom-toast.tsx';
@@ -110,18 +111,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         id: 'login-toast',
       });
 
-      setTimeout(() => {
-        window.location.href = '/dashboard';
+      const timer = setTimeout(() => {
+        navigate('/dashboard');
       }, 1000);
-    }
 
-    // Cleanup
-    return () => {
-      if (toastIdRef.current) {
-        toast.dismiss(toastIdRef.current);
-        toastIdRef.current = null;
-      }
-    };
+      return () => clearTimeout(timer);
+    }
+    // ✅ No toast dismiss in cleanup
   }, [state]);
 
   return (
