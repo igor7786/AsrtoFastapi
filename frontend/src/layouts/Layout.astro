@@ -1,6 +1,6 @@
 ---
 import themeScript from '@/scripts/theme-checker.js?raw';
-
+import persistentScript from '@/scripts/astro-transition-client-theme-persistent.js?raw';
 import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 import '../styles/global.css';
@@ -22,6 +22,5 @@ import CacheManager from '@/components/reactcomp/CacheManager';
     <slot />
     <CacheManager client:load />
   </body><!-- Inline the theme-checker.js script -->
-  <script data-astro-rerun is:inline src="src/scripts/astro-transition-client-theme-persistent.js"
-  ></script>
+  <script is:inline set:html={persistentScript} data-astro-rerun />
 </html>
