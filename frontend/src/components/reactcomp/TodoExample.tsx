@@ -18,8 +18,6 @@ const TodoList = () => {
     {
       queryKey: ['todos'],
       queryFn: async ({ signal }) => fetchTodos(signal),
-      staleTime: 5000,
-      retry: false,
     },
     queryClient
   );

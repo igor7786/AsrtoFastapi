@@ -11,6 +11,10 @@ export const getQueryClient = () => {
         queries: {
           staleTime: 1000 * 60 * 5, // Cache queries for 5 minutes
           gcTime: 1000 * 60 * 30, // Keep cache for 30 minutes
+          retry: 1, // Retry failed requests once
+          refetchOnWindowFocus: false, // Disable refetch on window focus
+          refetchOnReconnect: 'always', // Refetch on reconnect
+          refetchOnMount: false, // Disable refetch on mount
         },
       },
     });
