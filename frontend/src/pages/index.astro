@@ -3,13 +3,16 @@ import Welcome from '@acomp/Welcome.astro';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
 import TodoList from '@rcomp/TodoExample';
 import Layout from '@/layouts/Layout.astro';
+import TanstackDevWrapper from '@/components/reactcomp/TanstackDevWrapper';
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title="Welcome to Astro">
-  <TodoList client:only="react" />
-  <ThemeToggleShell client:only="react" />
+  <TanstackDevWrapper client:only="react">
+    <TodoList client:only="react" />
+    <ThemeToggleShell client:only="react" />
+  </TanstackDevWrapper>
   <a href="/dashboard" class="text-sm text-gray-500 hover:underline dark:text-gray-400">
     Powered by Astro
   </a>

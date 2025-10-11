@@ -6,9 +6,9 @@ import Page from '@rcomp/Page';
 ---
 
 <Layout>
-  <Page data={data} client:only="react">
-    <div slot="fallback">
-      <SkeletonPage />
-    </div>
-  </Page>
+    <Page data={data} client:only="react">
+      <div slot="fallback">
+        <SkeletonPage />
+      </div>
+    </Page>
 </Layout>

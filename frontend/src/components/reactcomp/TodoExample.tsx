@@ -3,7 +3,6 @@ import { getQueryClient } from '@/utils/tanstack-query';
 import type { Todo } from '@db/types';
 import axios from 'axios';
 
-const queryClient = getQueryClient();
 async function fetchTodos(signal?: AbortSignal): Promise<Todo[]> {
   const res = await axios.get<Todo[]>('/api/todos', { signal }); // ✅ typed response
 
@@ -14,12 +13,13 @@ async function fetchTodos(signal?: AbortSignal): Promise<Todo[]> {
   return res.data; // now TS knows it's Todo[]
 }
 const TodoList = () => {
+  const client = getQueryClient();
   const { data, isLoading, error } = useQuery<Todo[], Error>(
     {
       queryKey: ['todos'],
       queryFn: async ({ signal }) => fetchTodos(signal),
     },
-    queryClient
+    client
   );
 
   if (isLoading) return <div>Loading...</div>;

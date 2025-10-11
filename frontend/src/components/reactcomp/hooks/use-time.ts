@@ -1,11 +1,12 @@
 // src/components/reactcomp/hooks/useTime.ts
 import { useQuery } from '@tanstack/react-query';
+import { getQueryClient } from '@/utils/tanstack-query';
 import axios from 'axios';
 import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
-import { getQueryClient } from '@/utils/tanstack-query';
 import type { createTodoSchema } from '@/lib/types-schemas-validator/create-todo.validator';
 import type z from 'zod';
-const queryClient = getQueryClient();
+
+const client = getQueryClient();
 export function useTime() {
   return useQuery(
     {
@@ -16,7 +17,7 @@ export function useTime() {
         return res.data;
       },
     },
-    queryClient
+    client
   );
 }
 
