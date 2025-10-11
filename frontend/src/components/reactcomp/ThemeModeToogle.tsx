@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { ThemeToggleButton, useThemeTransition } from '@/components/reactcomp/ui/theme-toggle-button';
 import { cn } from '@/components/reactcomp/lib/utils.ts';
 import { ThemeProvider } from 'next-themes';

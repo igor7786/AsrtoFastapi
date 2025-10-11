@@ -1,3 +1,4 @@
+import { envConfig } from '@/lib/env-vars';
 import app from '@/lib/hono-adapt';
 import { hc } from 'hono/client';
 
@@ -5,5 +6,5 @@ import { hc } from 'hono/client';
 export type Client = ReturnType<typeof hc<typeof app>>;
 
 export const hcWithType = (...args: Parameters<typeof hc>): Client => hc<typeof app>(...args);
-const client = hcWithType('http://localhost:4321');
-console.log('client', client.api.time.$get());
+const clientHonoRpC = hcWithType(envConfig.PUBLIC_URL);
+export default clientHonoRpC;

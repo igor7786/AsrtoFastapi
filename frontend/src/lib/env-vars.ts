@@ -9,12 +9,17 @@ const BETTER_AUTH_URL_SCHEMA = z
   .string()
   .min(1, { message: 'BETTER_AUTH_URL must be a non-empty string' })
   .url({ message: 'BETTER_AUTH_URL must be a valid URL' });
+const PUBLIC_URL_SCHEMA = z
+  .string()
+  .min(1, { message: 'PUBLIC_URL must be a non-empty string' })
+  .url({ message: 'PUBLIC_URL must be a valid URL' });
 
 // Create an LRU cache instance (e.g., max 100 entries, TTL 5 minutes = 300,000 ms)
 type EnvVars = {
   DB_FILE_NAME: string;
   BETTER_AUTH_SECRET: string;
   BETTER_AUTH_URL: string;
+  PUBLIC_URL: string;
 };
 
 const cache = new LRUCache<string, EnvVars>({
@@ -33,12 +38,14 @@ function getEnvVars() {
   const DB_FILE_NAME = DB_FILE_NAME_SCHEMA.parse(process.env.DB_FILE_NAME);
   const BETTER_AUTH_SECRET = BETTER_AUTH_SECRET_SCHEMA.parse(process.env.BETTER_AUTH_SECRET);
   const BETTER_AUTH_URL = BETTER_AUTH_URL_SCHEMA.parse(process.env.BETTER_AUTH_URL);
+  const PUBLIC_URL = PUBLIC_URL_SCHEMA.parse(process.env.PUBLIC_URL);
 
   // Cache the validated values
   const envVars = {
     DB_FILE_NAME,
     BETTER_AUTH_SECRET,
     BETTER_AUTH_URL,
+    PUBLIC_URL,
   };
 
   cache.set('envVars', envVars);
@@ -53,4 +60,5 @@ export const envConfig = {
   DB_FILE_NAME: envVars!.DB_FILE_NAME,
   BETTER_AUTH_SECRET: envVars!.BETTER_AUTH_SECRET,
   BETTER_AUTH_URL: envVars!.BETTER_AUTH_URL,
+  PUBLIC_URL: envVars!.PUBLIC_URL,
 };
