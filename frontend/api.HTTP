@@ -6,8 +6,8 @@ POST http://localhost:4321/api/auth/sign-up/email
 Content-Type: application/json
 
 {
-    "email": "igor@gmail.com",
-    "password": "11",
+    "email": "igor7786@gmail.com",
+    "password": "1234",
     "name": "Igor"
 }
 
@@ -16,8 +16,8 @@ POST http://localhost:4321/api/auth/sign-in/email
 Content-Type: application/json
 
 {
-    "email": "igor@gmail.com",
-    "password": "11"
+    "email": "igor7786@gmail.com",
+    "password": "1234"
 }
 
 ###* Delete User
