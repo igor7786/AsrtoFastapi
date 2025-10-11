@@ -1,4 +1,4 @@
-import { getQueryClient } from '@/utils/tanstack-query';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function TanstackDevWrapper({ children }: { children: React.ReactNode }) {

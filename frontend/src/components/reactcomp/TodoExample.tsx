@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getQueryClient } from '@/utils/tanstack-query';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import type { Todo } from '@db/types';
 import axios from 'axios';
 

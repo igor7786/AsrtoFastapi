@@ -4,6 +4,7 @@ import themeScript from '@/scripts/theme-checker.js?raw';
 import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 import '../styles/global.css';
+import CacheManager from '@/components/reactcomp/CacheManager';
 ---
 
 <!doctype html>
@@ -19,19 +20,8 @@ import '../styles/global.css';
   </head>
   <body>
     <slot />
+    <CacheManager client:load />
   </body><!-- Inline the theme-checker.js script -->
-  <script data-astro-rerun is:inline>
-    function applyTheme() {
-      const stored = localStorage.getItem('settings:theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (stored === 'dark' || (!stored && prefersDark)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-
-    document.addEventListener('astro:after-swap', applyTheme);
-    applyTheme();
-  </script>
+  <script data-astro-rerun is:inline src="src/scripts/astro-transition-client-theme-persistent.js"
+  ></script>
 </html>
