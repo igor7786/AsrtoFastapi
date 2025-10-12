@@ -1,20 +1,16 @@
-// noinspection D
-
-'use client';
 import { navigate } from 'astro:transitions/client';
 import { actions, isInputError } from 'astro:actions';
 import { withState } from '@astrojs/react/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GalleryVerticalEnd, X } from 'lucide-react';
-import { startTransition, useActionState, useEffect, useRef, useState } from 'react';
+import { startTransition, useActionState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-// import { Toaster, toast } from 'sonner';
-import toast, { ToastBar, Toaster } from 'react-hot-toast';
-import { CustomToaster } from '@/components/reactcomp/custom-toast.tsx';
+import toast from 'react-hot-toast';
+import { CustomToaster } from '@/components/reactcomp/custom-toast';
 import { cn } from '@/components/reactcomp/lib/utils';
 import { BorderBeam } from '@/components/reactcomp/magicui/border-beam';
-import { Spinner } from '@/components/reactcomp/spinner.tsx';
+import { Spinner } from '@/components/reactcomp/spinner';
 import { Button } from '@/components/reactcomp/ui/button';
 import { AuroraText } from '@/components/reactcomp/magicui/aurora-text';
 import {
