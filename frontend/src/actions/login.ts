@@ -24,9 +24,6 @@ export const login = {
           body: { email: name, password },
           asResponse: true,
         });
-
-        console.log('Auth response status:', authResponse.statusText);
-
         // 🧠 If the response failed, extract its message & status
         if (!authResponse.ok) {
           let errorMessage = authResponse.statusText; // fallback
@@ -40,7 +37,6 @@ export const login = {
             message: errorMessage,
           });
         }
-
         // ✅ Copy cookies to Astro context
         const setCookieHeader = authResponse.headers.get('set-cookie');
         if (setCookieHeader) {
@@ -65,7 +61,6 @@ export const login = {
           console.error('Login action error:', err.message);
           throw err;
         }
-
         console.error('Unexpected login error:', err);
         throw new ActionError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -74,5 +69,4 @@ export const login = {
       }
     },
   }),
-
 };

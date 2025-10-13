@@ -15,7 +15,9 @@ const user = Astro.locals.user;
     <TodoList client:only="react" />
     <ThemeToggleShell client:only="react" />
   </TanstackDevWrapper>
-  <div class="text-2xl text-amber-700">Hello {user?.name}</div>
+  <div class="text-2xl text-amber-700">
+    {user?.name ? `Hello ${user.name}` : null}
+  </div>
   <a href="/dashboard" class="text-sm text-gray-500 hover:underline dark:text-gray-400">
     Powered by Astro
   </a>

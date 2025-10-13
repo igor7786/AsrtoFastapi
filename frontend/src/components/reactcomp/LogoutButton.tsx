@@ -17,6 +17,7 @@ export default function LogoutButton() {
   const queryClient = getQueryClient();
 
   const handleLogout = () => {
+    queryClient.clear();
     const htmlClass = document.documentElement.className;
     isDark.current = htmlClass.includes('dark');
     toastIdRef.current = toast.loading('Logging you out.....', {

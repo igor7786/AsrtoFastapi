@@ -10,6 +10,8 @@ export const logout = {
           headers: ctx.request.headers,
           request: ctx.request,
         });
+        // ✅ Delete the session cookie
+        ctx.cookies.delete('better-auth.session_token', { path: '/' });
         return { success: true };
       } catch (err) {
         if (err instanceof ActionError) {
