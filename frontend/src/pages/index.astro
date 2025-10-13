@@ -4,6 +4,8 @@ import ThemeToggleShell from '@rcomp/ThemeModeToogle';
 import TodoList from '@rcomp/TodoExample';
 import Layout from '@/layouts/Layout.astro';
 import TanstackDevWrapper from '@/components/reactcomp/TanstackDevWrapper';
+import LogoutButton from '@/components/reactcomp/LogoutButton';
+const user = Astro.locals.user;
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
@@ -13,12 +15,20 @@ import TanstackDevWrapper from '@/components/reactcomp/TanstackDevWrapper';
     <TodoList client:only="react" />
     <ThemeToggleShell client:only="react" />
   </TanstackDevWrapper>
+  <div class="text-2xl text-amber-700">Hello {user?.name}</div>
   <a href="/dashboard" class="text-sm text-gray-500 hover:underline dark:text-gray-400">
     Powered by Astro
   </a>
-  <a href="/loginshadcn" class="text-sm text-green-500 hover:underline dark:text-green-400">
-    Login shad cn
-  </a>
+  {
+    !user ? (
+      <a href="/loginshadcn" class="text-sm text-green-500 hover:underline dark:text-green-400">
+        Login shad cn
+      </a>
+    ) : (
+      <LogoutButton client:only="react" />
+    )
+  }
+
   <Welcome />
 </Layout>
 <!-- target="_blank" -->

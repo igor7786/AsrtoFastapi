@@ -65,7 +65,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     },
   };
   // 2. Define your astro action.
-  const [state, action, pending] = useActionState(withState(actions.submitPerson), {
+  const [state, action, pending] = useActionState(withState(actions.login.loginUser), {
     // 👇 must match the return shape of your action
     data: {
       name: '',
@@ -96,8 +96,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   useEffect(() => {
     if (state.error) {
       if (isInputError(state.error)) {
-        const fieldErrors = state.error.fields;
-        const messages = [...(fieldErrors.name || []), ...(fieldErrors.password || [])];
+        const fieldErrors = state.error.fields as Record<string, string[] | undefined>;
+        const messages = [...(fieldErrors.name ?? []), ...(fieldErrors.password ?? [])];
         toast.error(messages.join('\n'), { id: 'login-toast' });
       } else {
         toast.error(state.error.message, { id: 'login-toast' });
@@ -108,7 +108,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       });
 
       const timer = setTimeout(() => {
-        navigate('/dashboard');
+        navigate('/');
       }, 1000);
 
       return () => clearTimeout(timer);

@@ -1,4 +1,4 @@
-import { z } from 'astro:schema';
+import { z } from 'zod';
 
 export const loginSchema = z.object({
   name: z
@@ -7,7 +7,7 @@ export const loginSchema = z.object({
     .max(20, { message: 'Username cannot exceed 20 characters.' }),
   password: z
     .string()
-    .min(4, { message: 'Password must be at least 4 characters long.' })
+    .min(2, { message: 'Password must be at least 4 characters long.' })
     .max(20, { message: 'Password cannot exceed 20 characters.' }),
 });
 
