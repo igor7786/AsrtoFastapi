@@ -1,13 +1,11 @@
-import { navigate } from 'astro:transitions/client';
-import { actions, isInputError } from 'astro:actions';
+import { actions } from 'astro:actions';
 import { withState } from '@astrojs/react/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GalleryVerticalEnd, X } from 'lucide-react';
-import { startTransition, useActionState, useEffect, useRef } from 'react';
+import { GalleryVerticalEnd, X, Check } from 'lucide-react';
+import { startTransition, useActionState, useEffect, useRef, useTransition } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { CustomToaster } from '@/components/reactcomp/custom-toast';
+import { toast } from 'sonner';
 import { cn } from '@/components/reactcomp/lib/utils';
 import { BorderBeam } from '@/components/reactcomp/magicui/border-beam';
 import { Spinner } from '@/components/reactcomp/spinner';
@@ -66,60 +64,66 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   };
   // 2. Define your astro action.
   const [state, action, pending] = useActionState(withState(actions.login.loginUser), {
-    // 👇 must match the return shape of your action
-    data: {
-      name: '',
-      success: false,
-    },
+    data: { name: '', success: false },
     error: undefined,
   });
-  // Inside your component
-  const toastIdRef = useRef<string | null>(null);
-  const isDark = useRef<boolean | null>(null);
-  // 3. Define your submit handler.
+  useEffect(() => {
+    const idToast = 'login-toast';
+    if (pending) {
+      toast(
+        <div className="flex items-center gap-2">
+          <Spinner className="text-orange-500" />
+          <span>Saving your information...</span>
+        </div>,
+        {
+          id: idToast,
+          duration: Infinity,
+        }
+      );
+    } else if (state?.error) {
+      toast(
+        <div className="flex items-center gap-2">
+          <X className="text-red-500" />
+          <span>{state.error.message ?? 'Failed to update account.'}</span>
+        </div>,
+        {
+          id: idToast,
+          duration: 1000,
+        }
+      );
+    } else if (state?.data?.success) {
+      toast(
+        <div className="flex items-center gap-2">
+          <Check className="text-green-500" />
+          <span>{`Welcome ${state.data.name}.`}</span>
+        </div>,
+        {
+          id: idToast,
+          duration: 1000,
+        }
+      );
+      const timer = setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+
+    // ✅ Clean up toast on component unmount
+  }, [pending, state]);
   const onSubmit = form.handleSubmit((formData) => {
     const fd = new FormData();
     fd.append('name', formData.name);
     fd.append('password', formData.password);
-    // Show loading toast and save its ID
-    const htmlClass = document.documentElement.className;
-    isDark.current = htmlClass.includes('dark');
-    toastIdRef.current = toast.loading('Logging you in.....', {
-      id: 'login-toast',
-    });
     startTransition(() => {
       action(fd);
     });
   });
   // 4. Error handling with Soner
 
-  useEffect(() => {
-    if (state.error) {
-      if (isInputError(state.error)) {
-        const fieldErrors = state.error.fields as Record<string, string[] | undefined>;
-        const messages = [...(fieldErrors.name ?? []), ...(fieldErrors.password ?? [])];
-        toast.error(messages.join('\n'), { id: 'login-toast' });
-      } else {
-        toast.error(state.error.message, { id: 'login-toast' });
-      }
-    } else if (state.data?.success) {
-      toast.success(`Welcome, ${state.data.name}! Redirecting...`, {
-        id: 'login-toast',
-      });
-
-      const timer = setTimeout(() => {
-        navigate('/');
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-    // ✅ No toast dismiss in cleanup
-  }, [state]);
-
   return (
     <>
-      <CustomToaster isDark={isDark.current} />
-
       <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div className="flex w-full max-w-sm flex-col gap-6">
           <a href="#" className="flex items-center gap-2 self-center font-medium">

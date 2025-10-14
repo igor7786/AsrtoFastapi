@@ -1,10 +1,10 @@
 ---
 import themeScript from '@/scripts/theme-checker.js?raw';
 import persistentScript from '@/scripts/astro-transition-client-theme-persistent.js?raw';
-import { ClientRouter } from 'astro:transitions';
+import { Toaster } from '@rcomp/ui/sonner';
 const { title } = Astro.props;
 import '../styles/global.css';
-import CacheManager from '@/components/reactcomp/CacheManager';
+import CacheManager from '@rcomp/CacheManager';
 ---
 
 <!doctype html>
@@ -16,11 +16,10 @@ import CacheManager from '@/components/reactcomp/CacheManager';
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script set:html={themeScript} />
-    <ClientRouter />
   </head>
   <body>
     <slot />
+    <Toaster client:only="react" />
     <CacheManager client:only="react" />
   </body><!-- Inline the theme-checker.js script -->
-  <script is:inline set:html={persistentScript} data-astro-rerun />
 </html>

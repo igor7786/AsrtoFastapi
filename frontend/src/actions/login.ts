@@ -9,6 +9,7 @@ export const login = {
     handler: async (input, ctx) => {
       const data = Object.fromEntries(input.entries());
       const parsed = loginSchema.safeParse(data);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (!parsed.success) {
         throw new ActionError({
