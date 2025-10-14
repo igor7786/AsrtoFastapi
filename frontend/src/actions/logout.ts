@@ -12,6 +12,7 @@ export const logout = {
         });
         // ✅ Delete the session cookie
         ctx.cookies.delete('better-auth.session_token', { path: '/' });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         return { success: true };
       } catch (err) {
         if (err instanceof ActionError) {

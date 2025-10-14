@@ -1,55 +1,69 @@
-import { actions, isInputError } from 'astro:actions';
+import { actions } from 'astro:actions';
+import { Spinner } from '@/components/reactcomp/spinner';
 import { withState } from '@astrojs/react/actions';
-import { startTransition, useActionState, useEffect, useRef } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
-
-import toast from 'react-hot-toast';
-import { navigate } from 'astro:transitions/client';
-import { CustomToaster } from './custom-toast';
+import { toast } from 'sonner';
+import { Check, X } from 'lucide-react';
 
 export default function LogoutButton() {
   const [state, action, pending] = useActionState(withState(actions.logout.logoutUser), {
     data: { success: false },
     error: undefined,
   });
-  const toastIdRef = useRef<string | null>(null);
-  const isDark = useRef<boolean | null>(null);
+
   const queryClient = getQueryClient();
 
   const handleLogout = () => {
     queryClient.clear();
-    const htmlClass = document.documentElement.className;
-    isDark.current = htmlClass.includes('dark');
-    toastIdRef.current = toast.loading('Logging you out.....', {
-      id: 'login-toast',
-    });
     startTransition(() => action(new FormData()));
   };
 
-  // 🧹 Clear client cache when logout succeeds
-
   useEffect(() => {
-    if (state.error) {
-      if (isInputError(state.error)) {
-        const fieldErrors = state.error.fields as Record<string, string[] | undefined>;
-        const messages = [...(fieldErrors.name ?? []), ...(fieldErrors.password ?? [])];
-        toast.error(messages.join('\n'), { id: 'logout-toast' });
-      } else {
-        toast.error(state.error.message, { id: 'logout-toast' });
-      }
-    } else if (state.data?.success) {
-      toast.success(`Signed out successfully! Redirecting...`, {
-        id: 'login-toast',
-      });
-
+    const idToast = 'logout-toast';
+    if (pending) {
+      toast(
+        <div className="flex items-center gap-2">
+          <Spinner className="text-orange-500" />
+          <span>Logging out...</span>
+        </div>,
+        {
+          id: idToast,
+          duration: Infinity,
+        }
+      );
+    } else if (state?.error) {
+      toast(
+        <div className="flex items-center gap-2">
+          <X className="text-red-500" />
+          <span>{state.error.message ?? 'Failed to logout.'}</span>
+        </div>,
+        {
+          id: idToast,
+          duration: 1000,
+        }
+      );
+    } else if (state?.data?.success) {
+      toast(
+        <div className="flex items-center gap-2">
+          <Check className="text-green-500" />
+          <span>Logged out successfully.</span>
+        </div>,
+        {
+          id: idToast,
+          duration: 1000,
+        }
+      );
       const timer = setTimeout(() => {
-        navigate('/');
-      }, 1000);
-
-      return () => clearTimeout(timer);
+        window.location.href = '/';
+      }, 500);
+      return () => {
+        clearTimeout(timer);
+      };
     }
-    // ✅ No toast dismiss in cleanup
-  }, [state, queryClient]);
+
+    // ✅ Clean up toast on component unmount
+  }, [pending, state]);
 
   return (
     <button
