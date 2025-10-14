@@ -20,7 +20,7 @@ import CacheManager from '@/components/reactcomp/CacheManager';
   </head>
   <body>
     <slot />
-    <CacheManager client:load />
+    <CacheManager client:only="react" />
   </body><!-- Inline the theme-checker.js script -->
   <script is:inline set:html={persistentScript} data-astro-rerun />
 </html>

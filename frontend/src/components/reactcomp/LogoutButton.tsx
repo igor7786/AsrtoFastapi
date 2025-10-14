@@ -52,15 +52,13 @@ export default function LogoutButton() {
   }, [state, queryClient]);
 
   return (
-    <>
-      <button
-        type="submit"
-        onClick={handleLogout}
-        disabled={pending}
-        className="text-sm text-green-500 hover:underline disabled:opacity-50 dark:text-green-400"
-      >
-        Logout
-      </button>
-    </>
+    <button
+      type="submit"
+      onClick={handleLogout}
+      disabled={pending}
+      className="text-sm text-green-500 hover:underline disabled:opacity-50 dark:text-green-400"
+    >
+      Logout
+    </button>
   );
 }
