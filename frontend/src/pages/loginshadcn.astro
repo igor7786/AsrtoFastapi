@@ -3,10 +3,10 @@ import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import { LoginForm } from '@rcomp/LoginForm';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
-if (Astro.locals.user) {
-  console.log('Astro.locals.user:', Astro.locals.user);
-  return Astro.redirect('/');
-}
+// if (Astro.locals.user) {
+//   console.log('Astro.locals.user:', Astro.locals.user);
+//   return Astro.redirect('/');
+// }
 ---
 
 <Layout title="Login-shadcn">

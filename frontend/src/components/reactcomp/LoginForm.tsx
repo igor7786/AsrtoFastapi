@@ -103,7 +103,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         }
       );
       const timer = setTimeout(() => {
-        window.location.href = '/';
+        window.location.replace('/');
       }, 500);
       return () => {
         clearTimeout(timer);

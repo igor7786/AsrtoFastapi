@@ -18,12 +18,20 @@ const user = Astro.locals.user;
   <div class="text-2xl text-amber-700">
     {user?.name ? `Hello ${user.name}` : null}
   </div>
-  <a href="/dashboard" class="text-sm text-gray-500 hover:underline dark:text-gray-400">
+  <a
+    href="/dashboard"
+    data-astro-reload
+    class="text-sm text-gray-500 hover:underline dark:text-gray-400"
+  >
     Powered by Astro
   </a>
   {
     !user ? (
-      <a href="/loginshadcn" class="text-sm text-green-500 hover:underline dark:text-green-400">
+      <a
+        href="/loginshadcn"
+        data-astro-reload
+        class="text-sm text-green-500 hover:underline dark:text-green-400"
+      >
         Login shad cn
       </a>
     ) : (
