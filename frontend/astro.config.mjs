@@ -11,6 +11,8 @@ import honoAstro from 'hono-astro-adapter';
 import viteCompression from 'vite-plugin-compression';
 import TanStackRouterVite from '@tanstack/router-plugin/vite';
 
+import typesafeRoutes from 'astro-typesafe-routes';
+
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 // https://astro.build/config
@@ -123,5 +125,5 @@ export default defineConfig({
       },
     },
   },
-  integrations: [react({ include: ['**/reactcomp/**/*'] })],
+  integrations: [react({ include: ['**/reactcomp/**/*'] }), typesafeRoutes()],
 });

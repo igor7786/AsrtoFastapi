@@ -11,7 +11,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // Redirect logged-in users away from login page
     if (context.routePattern === '/loginshadcn') {
       return new Response(null, {
-        status: 302,
+        status: 307,
         headers: {
           Location: '/?reload=' + Date.now(), // hard refresh
           'Cache-Control': 'no-store, no-cache, must-revalidate',
