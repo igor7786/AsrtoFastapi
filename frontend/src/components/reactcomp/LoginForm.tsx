@@ -103,7 +103,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         }
       );
       const timer = setTimeout(() => {
-        window.location.replace('/');
+        window.location.replace('/midpage');
       }, 500);
       return () => {
         clearTimeout(timer);
