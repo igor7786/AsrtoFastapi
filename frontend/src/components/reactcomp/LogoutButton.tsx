@@ -55,7 +55,7 @@ export default function LogoutButton() {
         }
       );
       const timer = setTimeout(() => {
-        window.location.replace('/loginshadcn');
+        window.location.replace('/midpage');
       }, 500);
       return () => {
         clearTimeout(timer);
