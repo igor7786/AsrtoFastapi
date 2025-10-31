@@ -38,6 +38,12 @@ export default defineConfig({
   //   },
   // }),
   adapter: honoAstro(),
+  // session: {
+  //   driver: 'redis',
+  //   options: {
+  //     url: 'redis://:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t82@localhost:6379',
+  //   },
+  // },
   vite: {
     plugins: [
       tailwindcss(),

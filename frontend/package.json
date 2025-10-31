@@ -82,6 +82,7 @@
     "hono": "^4.9.11",
     "hono-astro-adapter": "^1.0.18",
     "input-otp": "^1.4.2",
+    "ioredis": "^5.8.1",
     "lru-cache": "^11.2.2",
     "lucide-react": "^0.545.0",
     "motion": "^12.23.24",
