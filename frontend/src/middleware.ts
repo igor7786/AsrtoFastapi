@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { defineMiddleware } from 'astro:middleware';
-
+console.log('Middleware loaded');
 export const onRequest = defineMiddleware(async (context, next) => {
   const isAuthed = await auth.api.getSession({
     headers: context.request.headers,
@@ -13,7 +13,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
       return new Response(null, {
         status: 307,
         headers: {
-          Location: '/?reload=' + Date.now(), // hard refresh
+          Location: '/', // Redirect to home or dashboard
+          // Location: '/?reload=' + Date.now(), // hard refresh
           'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
       });
@@ -22,5 +23,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.user = null;
     context.locals.session = null;
   }
-  return next();
+  const response = await next();
+  // 🔒 Ensure no cached HTML pages (especially for auth-sensitive pages)
+  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  response.headers.set('Pragma', 'no-cache');
+  return response;
 });

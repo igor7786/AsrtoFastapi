@@ -55,7 +55,7 @@ export default function LogoutButton() {
         }
       );
       const timer = setTimeout(() => {
-        window.location.replace('/midpage');
+        window.location.reload();
       }, 500);
       return () => {
         clearTimeout(timer);

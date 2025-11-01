@@ -2,7 +2,7 @@ import { actions } from 'astro:actions';
 import { withState } from '@astrojs/react/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GalleryVerticalEnd, X, Check } from 'lucide-react';
-import { startTransition, useActionState, useEffect, useRef, useTransition } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -103,7 +103,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         }
       );
       const timer = setTimeout(() => {
-        window.location.replace('/midpage');
+        window.location.reload();
       }, 500);
       return () => {
         clearTimeout(timer);
