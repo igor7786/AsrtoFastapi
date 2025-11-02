@@ -25,6 +25,7 @@ export const login = {
         const authResponse = await auth.api.signInEmail({
           body: { email: name, password },
           asResponse: true,
+          returnHeaders: true,
         });
         // 🧠 If the response failed, extract its message & status
         if (!authResponse.ok) {
@@ -38,8 +39,7 @@ export const login = {
             code: mapStatusToAstroCode(authResponse.status),
             message: errorMessage,
           });
-        }
-        // ✅ Copy cookies to Astro context
+        } // ✅ Copy cookies to Astro context
         const setCookieHeader = authResponse.headers.get('set-cookie');
 
         if (setCookieHeader) {
@@ -79,7 +79,6 @@ export const login = {
             ctx.cookies.set(name, decodeURIComponent(value), cookieOptions);
           }
         }
-
         return { success: true, name };
       } catch (err) {
         if (err instanceof ActionError) {
