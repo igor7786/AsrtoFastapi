@@ -16,6 +16,14 @@ export const auth = betterAuth({
     minPasswordLength: 2,
     requireEmailVerification: false,
   },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 24, // 1 day — recheck session validity daily
+    },
+    expiresIn: 60 * 60 * 24 * 7, // 7 days — total DB session lifetime
+    updateAge: 60 * 60 * 24, // 1 day — refresh session expiry if user active
+  },
   user: {
     deleteUser: {
       enabled: true,

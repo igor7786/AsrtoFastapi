@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth';
 import { loginSchema } from '@/lib/types-schemas-validator/login-schema';
 import { ActionError, defineAction } from 'astro:actions';
 import { mapStatusToAstroCode } from '@/actions/error-helper';
+import { set } from 'zod';
 
 export const login = {
   loginUser: defineAction({
@@ -40,19 +41,42 @@ export const login = {
         }
         // ✅ Copy cookies to Astro context
         const setCookieHeader = authResponse.headers.get('set-cookie');
+
         if (setCookieHeader) {
+          // Split multiple cookies
           const cookies = setCookieHeader.split(/,(?=[^;]+=[^;]+)/);
+
           for (const cookieString of cookies) {
-            const [cookiePair] = cookieString.split(';');
+            const [cookiePair, ...attributes] = cookieString.split(';').map((s) => s.trim());
             const [name, value] = cookiePair.split('=');
-            if (name && value) {
-              ctx.cookies.set(name.trim(), decodeURIComponent(value.trim()), {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 7,
-              });
+            if (!name || !value) continue;
+
+            const cookieOptions: Record<string, any> = {};
+
+            for (const attr of attributes) {
+              const [attrName, attrValue] = attr.split('=');
+              switch (attrName.toLowerCase()) {
+                case 'path':
+                  cookieOptions.path = attrValue || '/';
+                  break;
+                case 'max-age':
+                  cookieOptions.maxAge = attrValue ? parseInt(attrValue, 10) : undefined;
+                  break;
+                case 'expires':
+                  cookieOptions.expires = attrValue ? new Date(attrValue) : undefined;
+                  break;
+                case 'httponly':
+                  cookieOptions.httpOnly = true;
+                  break;
+                case 'samesite':
+                  cookieOptions.sameSite =
+                    (attrValue?.toLowerCase() as 'lax' | 'strict' | 'none') || 'lax';
+                  break;
+              }
             }
+
+            // Set the cookie with all attributes from the header
+            ctx.cookies.set(name, decodeURIComponent(value), cookieOptions);
           }
         }
 
