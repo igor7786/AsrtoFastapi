@@ -14,8 +14,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
         status: 307,
         headers: {
           Location: '/', // Redirect to home or dashboard
-          // Location: '/?reload=' + Date.now(), // hard refresh
-          'Cache-Control': 'no-store, no-cache, must-revalidate',
         },
       });
     }

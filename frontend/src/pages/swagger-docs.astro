@@ -9,10 +9,10 @@ import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 <Layout title="Api Docs">
   <main>
     <header>
-      <ThemeToggleShell className="absolute top-4 right-4" client:only="react" />
+      <ThemeToggleShell className="absolute top-4 right-4" client:load />
       <!-- Logo, nav menu, site title -->
     </header>
-    <ApiDocs client:only="react">
+    <ApiDocs client:idle>
       <div slot="fallback">
         <SkeletonPage />
       </div><ApiDocs />

@@ -9,12 +9,12 @@ import ThemeToggleShell from '@rcomp/ThemeModeToogle';
   <!--<Page client:visible />-->
   <main>
     <header>
-      <ThemeToggleShell className="absolute top-4 right-4" client:only="react" />
+      <ThemeToggleShell className="absolute top-4 right-4" client:idle />
       <!-- Logo, nav menu, site title -->
     </header>
     <LoginForm client:only="react">
       <div slot="fallback">
-        <SkeletonPage />
+        <SkeletonPage client:visible />
       </div>
     </LoginForm>
     <footer>

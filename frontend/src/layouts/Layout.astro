@@ -19,7 +19,7 @@ import CacheManager from '@rcomp/CacheManager';
   </head>
   <body>
     <slot />
-    <Toaster client:only="react" />
-    <CacheManager client:only="react" />
+    <Toaster client:load />
+    <CacheManager client:load />
   </body><!-- Inline the theme-checker.js script -->
 </html>

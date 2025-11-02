@@ -6,7 +6,7 @@ import Layout from '@/layouts/Layout.astro';
 
 <Layout title="Login">
   <!--<Page client:visible />-->
-  <LoginForm1 client:only="react">
+  <LoginForm1 client:load>
     <div slot="fallback">
       <SkeletonPage />
     </div>
