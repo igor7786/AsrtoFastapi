@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import { LoginForm } from '@rcomp/LoginForm';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
+import type { loadRenderers } from 'astro:container';
 ---
 
 <Layout title="Login-shadcn">
@@ -12,7 +13,7 @@ import ThemeToggleShell from '@rcomp/ThemeModeToogle';
       <ThemeToggleShell className="absolute top-4 right-4" client:idle />
       <!-- Logo, nav menu, site title -->
     </header>
-    <LoginForm client:only="react">
+    <LoginForm client:load>
       <div slot="fallback">
         <SkeletonPage client:visible />
       </div>

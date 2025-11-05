@@ -133,12 +133,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             Acme Inc.
           </a>
           <div className={cn('flex flex-col gap-6', className)} {...props}>
-            <Card className="relative overflow-hidden">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
-              >
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <Card className="relative overflow-hidden">
                 <CardHeader className="text-center">
                   <CardTitle className="text-xl">
                     <AuroraText className="mb-2 text-3xl font-bold">Welcome Back</AuroraText>
@@ -268,23 +271,24 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     </motion.form>
                   </Form>
                 </CardContent>
-              </motion.div>
-              <CardFooter className={'flex-col'}>
-                <div className="gap-2 py-4 text-center text-sm">
-                  Don&apos;t have an account?{' '}
-                  <a href="#" className="underline underline-offset-4">
-                    Sign up
-                  </a>
-                </div>
-              </CardFooter>
-              <BorderBeam
-                duration={8}
-                // delay={3}
-                size={150}
-                borderWidth={2}
-                className="from-transparent to-transparent"
-              />
-            </Card>
+
+                <CardFooter className={'flex-col'}>
+                  <div className="gap-2 py-4 text-center text-sm">
+                    Don&apos;t have an account?{' '}
+                    <a href="#" className="underline underline-offset-4">
+                      Sign up
+                    </a>
+                  </div>
+                </CardFooter>
+                <BorderBeam
+                  duration={8}
+                  // delay={3}
+                  size={150}
+                  borderWidth={2}
+                  className="from-transparent to-transparent"
+                />
+              </Card>
+            </motion.div>
             <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
               By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
               <a href="#">Privacy Policy</a>.
