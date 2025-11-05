@@ -5,6 +5,7 @@ import todosApi, { type TodosType } from '@/lib/hono-adapt/routes/todos';
 import timeApi, { type TimeType } from '@/lib/hono-adapt/routes/time';
 import apiShema, { type ApiShemaType } from '@/lib/hono-adapt/routes/openapi';
 import { auth } from '@/lib/auth';
+import todoApi, { type TodoType } from '@/lib/hono-adapt/routes/todo';
 const app = new Hono({ strict: false }).basePath('/api');
 
 //? CORS middleware
@@ -39,6 +40,7 @@ const routers = app
   .on(['POST', 'GET'], '/auth/*', (c) => auth.handler(c.req.raw))
   .route('/openapi', apiShema as ApiShemaType)
   .route('/todos', todosApi as TodosType)
+  .route('/todo', todoApi as TodoType)
   .route('/time', timeApi as TimeType)
   .all('/*', async (c) => {
     return c.json({ code: 404, message: 'Page not found' }, 404);

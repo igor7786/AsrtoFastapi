@@ -22,7 +22,7 @@ export function useTime() {
 }
 
 async function fetchTodo(id: number, signal?: AbortSignal): Promise<z.infer<typeof createTodoSchema>> {
-  const res = await axios.get(`/api/todos/${id}`, { signal });
+  const res = await axios.get(`/api/todo/${id}`, { signal });
   return res.data;
 }
 
