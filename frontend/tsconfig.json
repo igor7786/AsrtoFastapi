@@ -13,6 +13,7 @@
       "@layout/*": ["./src/layouts/*"],
       "@acomp/*": ["./src/components/astrocomp/*"]
     },
+    "strict": true,
     "composite": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
