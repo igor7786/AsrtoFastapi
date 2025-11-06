@@ -6,5 +6,9 @@ import { hc } from 'hono/client';
 export type Client = ReturnType<typeof hc<AppType>>;
 
 export const hcWithType = (...args: Parameters<typeof hc>): Client => hc<AppType>(...args);
-const clientHonoRpC = hcWithType(envConfig.PUBLIC_URL);
+const clientHonoRpC = hcWithType(envConfig.PUBLIC_URL, {
+  init: {
+    credentials: 'include',
+  },
+});
 export default clientHonoRpC;

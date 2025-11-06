@@ -25,8 +25,12 @@ export default function TimeHono() {
         </button>
       </div>
 
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error fetching todo</p>}
+      {isLoading && <p>Loading...{id}</p>}
+      {error && (
+        <p>
+          Error fetching todo {id}: {error.message}
+        </p>
+      )}
       {data && (
         <p>
           <b>Todo #{id}:</b> {data.title}

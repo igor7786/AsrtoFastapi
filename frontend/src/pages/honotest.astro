@@ -1,10 +1,13 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import TimeHono from '@rcomp/TimeHono';
+import TanstackDevWrapper from '@/components/reactcomp/TanstackDevWrapper';
 ---
 
 <Layout title="Hono-Test">
   <main>
-    <TimeHono client:only="react" />
+    <TanstackDevWrapper client:load>
+      <TimeHono client:only="react" />
+    </TanstackDevWrapper>
   </main>
 </Layout>

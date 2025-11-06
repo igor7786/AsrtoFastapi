@@ -23,10 +23,26 @@ export function useTime() {
 }
 
 async function fetchTodo(id: number, signal?: AbortSignal): Promise<z.infer<typeof createTodoSchema>> {
-  const resTime = await clientHonoRpC.api.time.$get();
-  console.log('Time from Hono client:', await resTime.json());
   const res = await axios.get(`/api/todo/${id}`, { signal });
   return res.data;
+}
+
+export async function fetchTodoRPC(
+  id: number,
+  signal?: AbortSignal
+): Promise<z.infer<typeof createTodoSchema>> {
+  // Fetch the todo by ID via RPC
+  const idStr = String(id);
+  const res = await clientHonoRpC.api.todo[':id'].$get(
+    { param: { id: idStr } }, // path params
+    { init: { signal } } // pass the AbortSignal for cancellation
+  );
+  // Handle errors based on status
+  if (res.status !== 200) {
+    throw new Error(` ${res.status} ${res.statusText}`);
+  }
+  // Parse JSON and return the typed todo
+  return res.json() as Promise<z.infer<typeof createTodoSchema>>;
 }
 
 export const useTodo = (id: number) => {
@@ -34,7 +50,7 @@ export const useTodo = (id: number) => {
   return useQuery(
     {
       queryKey: ['todo', id],
-      queryFn: ({ signal }) => fetchTodo(id, signal),
+      queryFn: ({ signal }) => fetchTodoRPC(id, signal),
       placeholderData: (previousData) => previousData,
       staleTime: 5000,
       enabled: !cachedData,
