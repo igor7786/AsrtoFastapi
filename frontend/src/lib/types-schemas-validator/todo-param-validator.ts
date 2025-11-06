@@ -5,10 +5,12 @@ import { zValidator } from '@hono/zod-validator';
 export const todoIdParamSchema = z.object({
   id: z
     .string()
-    .regex(/^\d+$/, 'Todo ID must be a positive integer') // must be digits only
-    .transform((val) => Number(val)), // convert to number
+    .regex(/^\d+$/, 'Todo ID must be a number')
+    .transform((val) => Number(val))
+    .refine((val) => val > 0, {
+      message: 'Todo ID must be a positive number, starting from 1',
+    }),
 });
-
 // Wrap it in a zValidator for Hono
 export const todoIdParamValidator = zValidator('param', todoIdParamSchema, (result, c) => {
   if (!result.success) {

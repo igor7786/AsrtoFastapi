@@ -5,18 +5,15 @@ import type { NewTodo, Todo } from '../types';
 
 export const getTodoByUserIdAndOffset = async (userId: string, offset: number) => {
   // Validate offset
-  if (!Number.isInteger(offset) || offset < 0) {
-    return null;
-  }
-
-  return await db
+  const offsetInt = Math.floor(offset - 1);
+  const [todo] = await db
     .select()
     .from(todos)
     .where(eq(todos.userId, userId))
-    .orderBy(todos.createdAt) // or todos.id — always order!
+    .orderBy(todos.createdAt)
     .limit(1)
-    .offset(offset)
-    .then((rows) => rows[0] ?? null); // return single todo or null
+    .offset(offsetInt);
+  return todo ?? null; // return single todo or null
 };
 
 export const getTodosByUserId = async (userId: string) => {
