@@ -1,4 +1,4 @@
-import { envConfig } from '@/lib/env-vars';
+import { envConfig } from '@/lib/env';
 import type { AppType } from '@/lib/hono-adapt';
 import { hc } from 'hono/client';
 

@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/bun-sqlite';
 import { Database } from 'bun:sqlite';
-import { envConfig } from '@/lib/env-vars';
+import { envConfig } from '@/lib/env';
 import { LRUCache } from 'lru-cache';
 
 // Define cache type

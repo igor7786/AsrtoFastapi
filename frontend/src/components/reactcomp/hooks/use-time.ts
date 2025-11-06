@@ -5,6 +5,7 @@ import axios from 'axios';
 import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
 import type { createTodoSchema } from '@/lib/types-schemas-validator/create-todo.validator';
 import type z from 'zod';
+import clientHonoRpC from '@/lib/hono-adapt/client';
 
 const client = getQueryClient();
 export function useTime() {
@@ -22,6 +23,8 @@ export function useTime() {
 }
 
 async function fetchTodo(id: number, signal?: AbortSignal): Promise<z.infer<typeof createTodoSchema>> {
+  const resTime = await clientHonoRpC.api.time.$get();
+  console.log('Time from Hono client:', await resTime.json());
   const res = await axios.get(`/api/todo/${id}`, { signal });
   return res.data;
 }
