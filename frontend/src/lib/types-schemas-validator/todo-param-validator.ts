@@ -5,7 +5,7 @@ import { zValidator } from '@hono/zod-validator';
 export const todoIdParamSchema = z.object({
   id: z
     .string()
-    .regex(/^\d+$/, 'Todo ID must be a number') // must be digits only
+    .regex(/^\d+$/, 'Todo ID must be a positive integer') // must be digits only
     .transform((val) => Number(val)), // convert to number
 });
 
