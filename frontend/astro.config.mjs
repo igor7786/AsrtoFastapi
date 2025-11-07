@@ -55,6 +55,12 @@ export default defineConfig({
           });
         },
       },
+      TanStackRouterVite({
+        routesDirectory: './src/dash/routes', // Adjust to your routes folder
+        generatedRouteTree: './src/dash/routeTree.gen.ts',
+        routeFileIgnorePrefix: '-',
+        quoteStyle: 'double',
+      }),
       // Gzip compression
       viteCompression({
         algorithm: 'brotliCompress',

@@ -1,0 +1,28 @@
+---
+// src/pages/dashboard/[...page].astro
+import Layout from '../../layouts/Layout.astro';
+import { Dashboard as ReactDashboard } from '../../dash/main.tsx';
+import { type Route } from '@tanstack/react-router';
+import { routeTree } from '../../dash/routeTree.gen.ts';
+
+export async function getStaticPaths() {
+  const mapChildren = (route: Route): any => {
+    if (!route?.options) return [];
+    return [route.options, ...Object.values(route?.children || []).flatMap(mapChildren)];
+  };
+
+  const asMapped = mapChildren(routeTree as unknown as Route);
+  return asMapped.map((route: { path?: string }) => ({
+    params: {
+      // Remove prefixed '/dashboard' from paths
+      page: route.path?.split('/')?.splice(2)?.join('/'),
+    },
+  }));
+}
+---
+
+<Layout title="Dashboard">
+  <main>
+    <ReactDashboard client:only="react" />
+  </main>
+</Layout>
