@@ -134,6 +134,7 @@ export default defineConfig({
         '@rcomp': path.resolve(__dirname, './src/components/reactcomp'),
         '@layout': path.resolve(__dirname, './src/layouts'),
         '@acomp': path.resolve(__dirname, './src/components/astrocomp'),
+        '@hono-adapt/': path.resolve(__dirname, './src/lib/hono-adapter/*'),
       },
     },
   },

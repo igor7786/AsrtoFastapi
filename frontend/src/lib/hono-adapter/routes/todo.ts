@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { authMiddleware } from '@/lib/hono-adapt/auth-middleware';
+import { authMiddleware } from '@/lib/hono-adapter/auth-middleware';
 import { getTodoByUserIdAndOffset } from '@db/queries/queries';
 import type { HonoEnv } from '@db/types';
 import { todoIdParamValidator } from '@/lib/types-schemas-validator/todo-param-validator';
