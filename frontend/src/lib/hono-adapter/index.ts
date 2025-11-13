@@ -55,6 +55,6 @@ app
 // ------------------------------
 // 3️⃣ Health check endpoint
 // ------------------------------
-app.get('/api/rcp', (c) => c.json({ message: 'Server healthy' }));
+app.get('/api/test', (c) => c.json({ message: 'Server healthy' }));
 
 export default app;
