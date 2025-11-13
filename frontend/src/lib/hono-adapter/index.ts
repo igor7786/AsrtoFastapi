@@ -12,7 +12,7 @@ const app = new Hono({ strict: false });
 
 // Enable CORS globally for /api routes
 app.use(
-  '/api/*',
+  '/api/rpc/auth/*',
   cors({
     origin: 'http://localhost:4321', // replace with your origin
     allowHeaders: ['Content-Type', 'Authorization'],
