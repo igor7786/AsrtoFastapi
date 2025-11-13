@@ -2,7 +2,6 @@
 import { os } from '@orpc/server';
 import * as z from 'zod';
 import { PlanetSchema } from '@/lib/hono-adapter/orpc/schemas/schema';
-
 // Define the Planet schema with metadata for OpenAPI
 
 // GET route to list planets

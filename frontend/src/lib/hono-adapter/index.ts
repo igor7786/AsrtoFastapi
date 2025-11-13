@@ -1,7 +1,9 @@
 // src/orpc/server.ts
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { openApiHandler } from './orpc/open-api-spec';
+import { openApiHandler } from './orpc/open-api-docs/open-api-spec';
+import { auth } from '@/lib/auth';
+import { Scalar } from '@scalar/hono-api-reference';
 
 // ------------------------------
 // 1️⃣ Create Hono app
@@ -12,28 +14,47 @@ const app = new Hono({ strict: false });
 app.use(
   '/api/*',
   cors({
-    origin: '*', // replace with your frontend origin in production
-    allowHeaders: ['Content-Type'],
+    origin: 'http://localhost:4321', // replace with your origin
+    allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
+    exposeHeaders: ['Content-Length'],
+    maxAge: 600,
+    credentials: true,
   })
 );
 
 // ------------------------------
 // 2️⃣ Mount RPC routes via OpenAPI handler
-// ------------------------------
-app.use('/api/rpc/*', async (c, next) => {
-  const { matched, response } = await openApiHandler.handle(c.req.raw, {
-    prefix: '/api/rpc',
-    context: {}, // You can inject user/session context here
-  });
 
-  if (matched) return c.newResponse(response.body, response);
-  await next();
-});
+// ------------------------------
+
+app
+  .use('/api/rpc/*', async (c, next) => {
+    const { matched, response } = await openApiHandler.handle(c.req.raw, {
+      prefix: '/api/rpc',
+      context: {}, // You can inject user/session context here
+    });
+
+    if (matched) return c.newResponse(response.body, response);
+    await next();
+  })
+  .on(['POST', 'GET'], '/api/rpc/auth/*', (c) => auth.handler(c.req.raw))
+  .get(
+    'api/rcp/docs',
+    Scalar({
+      pageTitle: 'API Documentation',
+      sources: [
+        // ORCP OpenAPI spec endpoint
+        { url: '/api/rpc/generate-schema', title: 'ORCP API' },
+        // Better Auth schema generation endpoint
+        { url: '/api/rpc/auth/open-api/generate-schema', title: 'Better Auth API' },
+      ],
+    })
+  );
 
 // ------------------------------
 // 3️⃣ Health check endpoint
 // ------------------------------
-app.get('/api', (c) => c.json({ message: 'Server healthy' }));
+app.get('/api/rcp', (c) => c.json({ message: 'Server healthy' }));
 
 export default app;

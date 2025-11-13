@@ -1,8 +1,8 @@
 ###* Test
-GET http://localhost:4321/api/
+GET http://localhost:4321/api/rpc
 
 ###* Sign up
-POST http://localhost:4321/api/auth/sign-up/email
+POST http://localhost:4321/api/rpc/auth/sign-up/email
 Content-Type: application/json
 
 {
