@@ -1,5 +1,4 @@
 // src/components/Todos.tsx
-'use client';
 import { useTime, useTodo } from '@/components/reactcomp/hooks/use-time';
 import { useState } from 'react';
 export default function TimeHono() {

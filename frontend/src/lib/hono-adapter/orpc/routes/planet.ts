@@ -17,7 +17,6 @@ export const listPlanet = os
   .input(PlanetSchema) // optional input for pagination
   .output(z.array(PlanetSchema)) // array of PlanetSchema
   .handler(async ({ input }) => {
-    console.log('Fetching planets for page:', input);
     // Normally you'd fetch this from DB
     return [
       { id: 1, name: 'Earth' },

@@ -11,7 +11,7 @@ import { PlanetSchema } from '@hono-adapt/orpc/schemas/schema';
 export const openApiHandler = new OpenAPIHandler(router, {
   interceptors: [onError((err) => console.error('RPC error:', err))],
   plugins: [
-    new CORSPlugin(),
+    new CORSPlugin({ exposeHeaders: ['Content-Disposition'] }),
 
     new SmartCoercionPlugin({
       schemaConverters: [new ZodToJsonSchemaConverter()],
