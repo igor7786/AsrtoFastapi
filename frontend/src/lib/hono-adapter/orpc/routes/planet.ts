@@ -13,6 +13,7 @@ export const listPlanet = os
     summary: 'Get all planets',
     tags: ['planets'],
     successDescription: 'A list of planets',
+    successStatus: 201,
   })
   .input(PlanetSchema) // optional input for pagination
   .output(z.array(PlanetSchema)) // array of PlanetSchema
