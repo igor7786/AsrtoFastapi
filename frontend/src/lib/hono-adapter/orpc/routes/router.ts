@@ -1,11 +1,12 @@
 import { listPlanet } from '@hono-adapt/orpc/routes/planet';
-import { listTodos } from '@hono-adapt/orpc/routes/todos';
+import { getTodoById, listTodos } from '@hono-adapt/orpc/routes/todos';
 
 export const router = {
   planet: {
     list: listPlanet,
   },
-  todo : {
+  todos: {
     list: listTodos,
-  }
+    todo: getTodoById,
+  },
 };

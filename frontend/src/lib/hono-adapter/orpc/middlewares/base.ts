@@ -1,7 +1,7 @@
 import { os } from '@orpc/server';
 import { type RequestHeadersPluginContext } from '@orpc/server/plugins';
 export const base = os.$context<RequestHeadersPluginContext>().errors({
-  RATE_LIMIT_EXCEEDED: {
+  RATE_LIMIT: {
     message: 'Rate limit exceeded',
     code: 429,
   },

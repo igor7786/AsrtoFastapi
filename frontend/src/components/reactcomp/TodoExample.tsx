@@ -4,7 +4,7 @@ import type { Todo } from '@db/types';
 import axios from 'axios';
 
 async function fetchTodos(signal?: AbortSignal): Promise<Todo[]> {
-  const res = await axios.get<Todo[]>('/api/todos', { signal }); // ✅ typed response
+  const res = await axios.get<Todo[]>('/api/rpc/get-todos', { signal }); // ✅ typed response
 
   if (res.status !== 200) {
     throw new Error(`code ${res.status} error ${res.statusText}`);
