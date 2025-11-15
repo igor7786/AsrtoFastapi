@@ -21,3 +21,5 @@ JSON_SCHEMA_OUTPUT_REGISTRY.add(PlanetSchema, {
 });
 
 export type typePlanets = z.infer<typeof PlanetSchema>;
+
+
