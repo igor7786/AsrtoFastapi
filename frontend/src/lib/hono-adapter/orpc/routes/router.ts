@@ -1,5 +1,12 @@
 import { listPlanet } from '@hono-adapt/orpc/routes/planet';
-import { createTodo, getTodoById, listTodos } from '@hono-adapt/orpc/routes/todos';
+import {
+  createTodo,
+  deleteAllTodos,
+  deleteTodo,
+  getTodoById,
+  listTodos,
+} from '@hono-adapt/orpc/routes/todos';
+import { de } from 'date-fns/locale';
 
 export const router = {
   planet: {
@@ -9,5 +16,7 @@ export const router = {
     list: listTodos,
     getTodo: getTodoById,
     createTodo: createTodo,
+    deleteTodo: deleteTodo,
+    deleteAllTodos: deleteAllTodos,
   },
 };

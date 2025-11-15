@@ -1,9 +1,16 @@
-import { getTodosByUserId, getTodoByUserIdAndOffset, createTodo as cTodo } from '@db/queries/queries';
+import { deeAllTodos } from './../../../../../db/queries/queries';
+import {
+  getTodosByUserId,
+  getTodoByUserIdAndOffset,
+  createTodo as cTodo,
+  deleteTodo as dTodo,
+  deleteAllTodos as daTodos,
+} from '@db/queries/queries';
 // router.ts
 import * as z from 'zod';
 import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { base } from '@hono-adapt/orpc/middlewares/base';
-import { createTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
+import { createTodoSchema, deleteTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
 // Define the Planet schema with metadata for OpenAPI
 
 // GET route to list planets
@@ -85,11 +92,61 @@ export const createTodo = base
   .handler(async ({ input, context, errors }) => {
     try {
       const newTodo = await cTodo({
-              userId: context.user.id,
-              ...input,
-            });
+        userId: context.user.id,
+        ...input,
+      });
       return newTodo; // ✔ RETURN the data
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
+  });
+
+export const deleteTodo = base
+  .use(authMiddleware)
+  .route({
+    method: 'DELETE',
+    path: '/delete-todo',
+    description: 'Delete todo',
+    summary: 'Delete one todo',
+    tags: ['todos'],
+    successDescription: 'Deleted single todo',
+    successStatus: 204,
+  })
+  .input(deleteTodoSchema)
+  .handler(async ({ input, context, errors }) => {
+    let deleted;
+    try {
+      deleted = await dTodo(input.id, context.user.id);
+      console.log(deleted);
+    } catch (err) {
+      throw errors.INTERNAL_SERVER_ERROR();
+    }
+    if (!deleted) {
+      throw errors.NOT_FOUND();
+    }
+    return null;
+  });
+export const deleteAllTodos = base
+  .use(authMiddleware)
+  .route({
+    method: 'DELETE',
+    path: '/delete-all-todos',
+    description: 'Delete todos',
+    summary: 'Delete all todos',
+    tags: ['todos'],
+    successDescription: 'Deleted all todos',
+    successStatus: 204,
+  })
+  .handler(async ({ context, errors }) => {
+    let deleted;
+    try {
+      deleted = await daTodos(context.user.id);
+      console.log(deleted);
+    } catch (err) {
+      throw errors.INTERNAL_SERVER_ERROR();
+    }
+    if (!deleted) {
+      throw errors.NOT_FOUND();
+    }
+    return null;
   });
