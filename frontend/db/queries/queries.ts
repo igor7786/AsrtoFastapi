@@ -69,7 +69,6 @@ export const deleteTodo = async (todoId: string, userId: string) => {
 };
 export const deleteAllTodos = async (userId: string) => {
   const deleted = await db.delete(todos).where(eq(todos.userId, userId)).run();
-  console.log(deleted);
   // @ts-ignore
   if (deleted.changes === 0) {
     return false;

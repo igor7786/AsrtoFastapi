@@ -128,11 +128,6 @@ export const putTodo = base
     }
   });
 
-
-
-
-
-
 export const deleteTodo = base
   .use(authMiddleware)
   .route({
@@ -149,7 +144,6 @@ export const deleteTodo = base
     let deleted;
     try {
       deleted = await dTodo(input.id, context.user.id);
-      console.log(deleted);
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR();
     }
@@ -173,7 +167,6 @@ export const deleteAllTodos = base
     let deleted;
     try {
       deleted = await daTodos(context.user.id);
-      console.log(deleted);
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR();
     }
