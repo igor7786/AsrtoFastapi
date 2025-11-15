@@ -40,7 +40,7 @@ app
   })
   .on(['POST', 'GET'], '/api/rpc/auth/*', (c) => auth.handler(c.req.raw))
   .get(
-    'api/rcp/docs',
+    'api/rpc/docs',
     Scalar({
       pageTitle: 'API Documentation',
       sources: [

@@ -42,7 +42,13 @@ export const getTodoById = base
   })
   .input(
     z.object({
-      id: z.string().regex(/^\d+$/, 'Todo ID must be a number'), // Flat structure: id directly here
+      id: z
+        .string()
+        .regex(/^\d+$/, 'Todo ID must be a number')
+        .transform((val) => Number(val))
+        .refine((val) => val > 0, {
+          message: 'Todo ID must be a positive number, starting from 1',
+        }), // Flat structure: id directly here
     })
   )
   .output(
@@ -53,7 +59,7 @@ export const getTodoById = base
     try {
       todo = await getTodoByUserIdAndOffset(
         context.user.id,
-        Number(input.id) // Access input.id directly
+        input.id // Access input.id directly
       );
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR();

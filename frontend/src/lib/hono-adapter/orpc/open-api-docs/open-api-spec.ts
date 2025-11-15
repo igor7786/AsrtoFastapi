@@ -15,10 +15,6 @@ export const openApiHandler = new OpenAPIHandler(router, {
     new RequestHeadersPlugin(),
     new CORSPlugin({
       exposeHeaders: ['Content-Disposition'],
-      // origin: ['http://localhost:4321', 'http://localhost:5173'],
-      // credentials: true,
-      // allowHeaders: ['Content-Type', 'Authorization', 'Content-Length'],
-      // allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
     }),
 
     new SmartCoercionPlugin({
@@ -27,7 +23,7 @@ export const openApiHandler = new OpenAPIHandler(router, {
 
     new OpenAPIReferencePlugin({
       docsProvider: 'scalar', // ← better than swagger
-      docsPath: '/orcp-docs',
+      docsPath: '/orpc-docs',
       specPath: '/generate-schema',
       schemaConverters: [new ZodToJsonSchemaConverter()],
       specGenerateOptions: {
