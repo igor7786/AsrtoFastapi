@@ -14,7 +14,7 @@ const app = new Hono({ strict: false });
 app.use(
   '/api/rpc/auth/*',
   cors({
-    origin: 'http://localhost:4321', // replace with your origin
+    origin: ['http://localhost:4321', 'http://localhost:5173', 'http://localhost:3000'], // replace with your
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],

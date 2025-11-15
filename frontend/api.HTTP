@@ -1,9 +1,10 @@
 ###* Test
-GET http://localhost:4321/api/rpc
+GET http://localhost:4321/api/test
 
 ###* Sign up
 POST http://localhost:4321/api/rpc/auth/sign-up/email
 Content-Type: application/json
+Origin: http://localhost:4321
 
 {
     "email": "igor@gmail.com",
@@ -12,17 +13,26 @@ Content-Type: application/json
 }
 
 ###* Sign In
-POST http://localhost:4321/api/auth/sign-in/email
+POST http://localhost:4321/api/rpc/auth/sign-in/email
 Content-Type: application/json
+Origin: http://localhost:4321
 
 {
-    "email": "igor@gmail.com",
+    "email": "igor7786@gmail.com",
+    "password": "1234"
+}
+###* Sign out
+POST  http://localhost:4321/api/rpc/auth/sign-out
+Content-Type: application/json
+Origin: http://localhost:4321
+
+{
     "password": "11"
 }
-
 ###* Delete User
 POST http://localhost:4321/api/auth/delete-user
 Content-Type: application/json
+Origin: http://localhost:4321
 
 {
     "password": "11"
@@ -31,6 +41,7 @@ Content-Type: application/json
 ###* Create Todo
 POST http://localhost:4321/api/todos
 Content-Type: application/json
+Origin: http://localhost:4321
 
 {
     "title": "Todo ",
@@ -39,5 +50,6 @@ Content-Type: application/json
 }
 
 ###* Get Todos
-GET http://localhost:4321/api/todos
+GET http://localhost:4321/api/rpc/get-todos
 Content-Type: application/json
+Origin: http://localhost:4321

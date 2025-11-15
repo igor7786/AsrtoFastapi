@@ -6,6 +6,7 @@ import * as schema from '@db/shema-index';
 
 export const auth = betterAuth({
   basePath: '/api/rpc/auth',
+  trustedOrigins: ['http://localhost:4321', 'http://localhost:5173', 'http://localhost:3000'],
   database: drizzleAdapter(db, {
     provider: 'sqlite', // or "mysql", "sqlite"
     schema: schema,
