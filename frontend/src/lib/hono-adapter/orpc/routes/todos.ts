@@ -11,6 +11,7 @@ import * as z from 'zod';
 import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { base } from '@hono-adapt/orpc/middlewares/base';
 import { createTodoSchema, deleteTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
+
 // Define the Planet schema with metadata for OpenAPI
 const baseTodo = base.errors({
   INTERNAL_SERVER_ERROR: {
@@ -119,34 +120,36 @@ export const createTodo = baseTodo
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
-export const putTodo = baseTodo
+export const putTodo = base
   .use(authMiddleware)
   .route({
-    method: 'PUT',
-    path: '/todos', // no :id param
-    description: 'Replace an entire todo',
-    summary: 'PUT todo',
+    method: 'PATCH',
+    path: '/todos/{id}', // Dynamic route for the todo ID
+    description: 'Update a todo by ID',
+    summary: 'Partially update a todo',
     tags: ['todos'],
-    successDescription: 'Todo updated',
-    successStatus: 204, // No Content
+    successDescription: 'The updated todo',
+    successStatus: 200,
   })
-  .input(outputTodoSchema) // entire todo in body
-  .handler(async ({ input, context, errors }) => {
+  .input(outputTodoSchema)
+  .output(
+    outputTodoSchema // Your Zod schema for the updated todo (or full select schema if preferred)
+  )
+  .handler(async ({ context, input, errors }) => {
+    let updatedTodo;
     try {
-      const { id, ...data } = input;
-
-      const updated = await updateTodo(id, context.user.id, data);
-
-      if (!updated) {
-        throw errors.NOT_FOUND({
-          message: 'Todo not found',
-        });
-      }
-
-      return null; // 204 → no content
+      // Assuming you have an update function; adjust based on your DB layer (e.g., Drizzle)
+      updatedTodo = await updateTodo(
+        input.id,
+        context.user.id,
+        { title: input.title, completed: input.completed, description: input.description } // Pass only provided fields
+      );
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR();
     }
+    if (!updatedTodo) throw errors.NOT_FOUND();
+
+    return updatedTodo;
   });
 
 export const deleteTodo = baseTodo
