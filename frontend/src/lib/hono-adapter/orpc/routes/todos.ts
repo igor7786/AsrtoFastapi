@@ -120,7 +120,7 @@ export const createTodo = baseTodo
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
-export const putTodo = base
+export const putTodo = baseTodo
   .use(authMiddleware)
   .route({
     method: 'PATCH',
