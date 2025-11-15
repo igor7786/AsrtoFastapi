@@ -12,10 +12,29 @@ import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { base } from '@hono-adapt/orpc/middlewares/base';
 import { createTodoSchema, deleteTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
 // Define the Planet schema with metadata for OpenAPI
-
+const baseTodo = base.errors({
+  INTERNAL_SERVER_ERROR: {
+    message: 'Failed to fetch data from database',
+    code: 500,
+  },
+  NOT_FOUND: {
+    message: 'Failed to find any data',
+    code: 404,
+  },
+});
 // GET route to list planets
-export const listTodos = base
+export const listTodos = baseTodo
   .use(authMiddleware)
+  .errors({
+    INTERNAL_SERVER_ERROR: {
+      message: 'Failed to fetch data',
+      code: 500,
+    },
+    NOT_FOUND: {
+      message: 'Failed to find any data',
+      code: 404,
+    },
+  })
   .route({
     method: 'GET',
     path: '/get-todos',
@@ -36,7 +55,7 @@ export const listTodos = base
     }
   });
 
-export const getTodoById = base
+export const getTodoById = baseTodo
   .use(authMiddleware)
   .route({
     method: 'GET',
@@ -76,7 +95,7 @@ export const getTodoById = base
     }
     return todo;
   });
-export const createTodo = base
+export const createTodo = baseTodo
   .use(authMiddleware)
   .route({
     method: 'POST',
@@ -100,7 +119,7 @@ export const createTodo = base
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
-export const putTodo = base
+export const putTodo = baseTodo
   .use(authMiddleware)
   .route({
     method: 'PUT',
@@ -119,7 +138,9 @@ export const putTodo = base
       const updated = await updateTodo(id, context.user.id, data);
 
       if (!updated) {
-        throw errors.NOT_FOUND();
+        throw errors.NOT_FOUND({
+          message: 'Todo not found',
+        });
       }
 
       return null; // 204 → no content
@@ -128,7 +149,7 @@ export const putTodo = base
     }
   });
 
-export const deleteTodo = base
+export const deleteTodo = baseTodo
   .use(authMiddleware)
   .route({
     method: 'DELETE',
@@ -152,7 +173,7 @@ export const deleteTodo = base
     }
     return null;
   });
-export const deleteAllTodos = base
+export const deleteAllTodos = baseTodo
   .use(authMiddleware)
   .route({
     method: 'DELETE',
