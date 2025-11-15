@@ -1,9 +1,9 @@
-import { getTodosByUserId, createTodo, getTodoByUserIdAndOffset } from '@db/queries/queries';
+import { getTodosByUserId, getTodoByUserIdAndOffset, createTodo as cTodo } from '@db/queries/queries';
 // router.ts
 import * as z from 'zod';
-import { authMiddleware } from '../middlewares/auth-middleware';
-import { base } from '../middlewares/base';
-import { outputTodoSchema } from '@db/types';
+import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
+import { base } from '@hono-adapt/orpc/middlewares/base';
+import { createTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
 // Define the Planet schema with metadata for OpenAPI
 
 // GET route to list planets
@@ -68,4 +68,28 @@ export const getTodoById = base
       throw errors.NOT_FOUND();
     }
     return todo;
+  });
+export const createTodo = base
+  .use(authMiddleware)
+  .route({
+    method: 'POST',
+    path: '/create-todo',
+    description: 'Create todo',
+    summary: 'Create one todo',
+    tags: ['todos'],
+    successDescription: 'Created single todo',
+    successStatus: 201,
+  })
+  .input(createTodoSchema)
+  .output(outputTodoSchema)
+  .handler(async ({ input, context, errors }) => {
+    try {
+      const newTodo = await cTodo({
+              userId: context.user.id,
+              ...input,
+            });
+      return newTodo; // ✔ RETURN the data
+    } catch (err) {
+      throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
+    }
   });

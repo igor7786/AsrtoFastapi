@@ -18,13 +18,6 @@ import { todos as todosSchema } from '@db/todos-shema';
 // Generate full Zod schema for selecting (reading) todos
 export const selectTodoSchema = createSelectSchema(todosSchema);
 
-// Create a partial schema with only the fields you need
-export const outputTodoSchema = selectTodoSchema.pick({
-  id: true,
-  title: true,
-  completed: true,
-});
-
 // Optionally, for inserting new todos (full or partial)
 export const insertTodoSchema = createInsertSchema(todosSchema);
 // Or a partial insert schema: insertTodoSchema.pick({ title: true, completed: true });
