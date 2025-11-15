@@ -172,7 +172,9 @@ export const deleteTodo = baseTodo
       throw errors.INTERNAL_SERVER_ERROR();
     }
     if (!deleted) {
-      throw errors.NOT_FOUND();
+      throw errors.NOT_FOUND({
+        message: 'No todo found to delete',
+      });
     }
     return null;
   });
@@ -195,7 +197,9 @@ export const deleteAllTodos = baseTodo
       throw errors.INTERNAL_SERVER_ERROR();
     }
     if (!deleted) {
-      throw errors.NOT_FOUND();
+      throw errors.NOT_FOUND({
+        message: 'No todos to delete',
+      });
     }
     return null;
   });
