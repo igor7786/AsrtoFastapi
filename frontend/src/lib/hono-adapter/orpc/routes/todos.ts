@@ -1,10 +1,10 @@
-import { deeAllTodos } from './../../../../../db/queries/queries';
 import {
   getTodosByUserId,
   getTodoByUserIdAndOffset,
   createTodo as cTodo,
   deleteTodo as dTodo,
   deleteAllTodos as daTodos,
+  updateTodo,
 } from '@db/queries/queries';
 // router.ts
 import * as z from 'zod';
@@ -100,6 +100,38 @@ export const createTodo = base
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
+export const putTodo = base
+  .use(authMiddleware)
+  .route({
+    method: 'PUT',
+    path: '/todos', // no :id param
+    description: 'Replace an entire todo',
+    summary: 'PUT todo',
+    tags: ['todos'],
+    successDescription: 'Todo updated',
+    successStatus: 204, // No Content
+  })
+  .input(outputTodoSchema) // entire todo in body
+  .handler(async ({ input, context, errors }) => {
+    try {
+      const { id, ...data } = input;
+
+      const updated = await updateTodo(id, context.user.id, data);
+
+      if (!updated) {
+        throw errors.NOT_FOUND();
+      }
+
+      return null; // 204 → no content
+    } catch (err) {
+      throw errors.INTERNAL_SERVER_ERROR();
+    }
+  });
+
+
+
+
+
 
 export const deleteTodo = base
   .use(authMiddleware)

@@ -5,6 +5,7 @@ import {
   deleteTodo,
   getTodoById,
   listTodos,
+  putTodo,
 } from '@hono-adapt/orpc/routes/todos';
 import { de } from 'date-fns/locale';
 
@@ -18,5 +19,6 @@ export const router = {
     createTodo: createTodo,
     deleteTodo: deleteTodo,
     deleteAllTodos: deleteAllTodos,
+    putTodo: putTodo,
   },
 };

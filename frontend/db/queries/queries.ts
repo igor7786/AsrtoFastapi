@@ -2,6 +2,9 @@ import { eq, desc, and } from 'drizzle-orm';
 import { db } from '@db/db-instance';
 import { todos } from '@db/todos-shema';
 import type { NewTodo, Todo } from '../types';
+import { outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
+import type z from 'zod';
+type OutputTodo = z.infer<typeof outputTodoSchema>;
 
 export const getTodoByUserIdAndOffset = async (userId: string, offset: number) => {
   // Validate offset
@@ -38,6 +41,24 @@ export const createTodo = async (todo: NewTodo) => {
   const [res] = await db.insert(todos).values(todo).returning();
   return res;
 };
+
+export const updateTodo = async (
+  todoId: string,
+  userId: string,
+  data: Partial<Omit<OutputTodo, 'id'>>
+) => {
+  const [updated] = await db
+    .update(todos)
+    .set({
+      ...data,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(todos.id, todoId), eq(todos.userId, userId)))
+    .returning();
+
+  return updated;
+};
+
 export const deleteTodo = async (todoId: string, userId: string) => {
   const [deleted] = await db
     .delete(todos)
@@ -48,6 +69,10 @@ export const deleteTodo = async (todoId: string, userId: string) => {
 };
 export const deleteAllTodos = async (userId: string) => {
   const deleted = await db.delete(todos).where(eq(todos.userId, userId)).run();
-
+  console.log(deleted);
+  // @ts-ignore
+  if (deleted.changes === 0) {
+    return false;
+  }
   return true;
 };
