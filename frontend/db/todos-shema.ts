@@ -7,7 +7,7 @@ export const todos = sqliteTable('todos', {
     .primaryKey()
     .$defaultFn(() => uuidv4()),
   title: text('title', { length: 255 }).notNull(),
-  description: text('description', { length: 1000 }),
+  description: text('description', { length: 1000 }).notNull(),
   completed: integer('completed', { mode: 'boolean' })
     .$default(() => false)
     .notNull(),

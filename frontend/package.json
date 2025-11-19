@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "bun:dev": "bun --bun run dev -- --host",
+    "generate:auth": "bunx --bun @better-auth/cli@latest generate --output ./db/auth-schema.ts",
     "db:generate:migrations": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
