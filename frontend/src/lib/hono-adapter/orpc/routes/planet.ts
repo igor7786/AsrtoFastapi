@@ -11,7 +11,7 @@ export const listPlanet = os
     path: '/get-planets',
     description: 'List planets with pagination',
     summary: 'Get all planets',
-    tags: ['planets'],
+    tags: ['Test'],
     successDescription: 'A list of planets',
     successStatus: 201,
   })

@@ -41,7 +41,7 @@ export const listTodos = baseTodo
     path: '/get-todos',
     description: 'List todos',
     summary: 'Get all todos',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'A list of todos',
     successStatus: 200,
   })
@@ -63,7 +63,7 @@ export const getTodoById = baseTodo
     path: '/todos/{id}', // Dynamic route (unchanged)
     description: 'Get a todo by ID',
     summary: 'Fetch one todo',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'A single todo',
     successStatus: 200,
   })
@@ -103,7 +103,7 @@ export const createTodo = baseTodo
     path: '/create-todo',
     description: 'Create todo',
     summary: 'Create one todo',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'Created single todo',
     successStatus: 201,
   })
@@ -127,7 +127,7 @@ export const putTodo = baseTodo
     path: '/todos/{id}', // Dynamic route for the todo ID
     description: 'Update a todo by ID',
     summary: 'Partially update a todo',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'The updated todo',
     successStatus: 200,
   })
@@ -159,7 +159,7 @@ export const deleteTodo = baseTodo
     path: '/delete-todo',
     description: 'Delete todo',
     summary: 'Delete one todo',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'Deleted single todo',
     successStatus: 204,
   })
@@ -185,7 +185,7 @@ export const deleteAllTodos = baseTodo
     path: '/delete-all-todos',
     description: 'Delete todos',
     summary: 'Delete all todos',
-    tags: ['todos'],
+    tags: ['Todos'],
     successDescription: 'Deleted all todos',
     successStatus: 204,
   })
