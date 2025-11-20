@@ -10,7 +10,12 @@ import {
 import * as z from 'zod';
 import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { base } from '@hono-adapt/orpc/middlewares/base';
-import { createTodoSchema, deleteTodoSchema, outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
+import {
+  createTodoSchema,
+  deleteTodoSchemabyId,
+  findTodoByNumber,
+  outputTodoSchema,
+} from '@hono-adapt/orpc/schemas/todos';
 
 // Define the Planet schema with metadata for OpenAPI
 const baseTodo = base.errors({
@@ -49,7 +54,6 @@ export const listTodos = baseTodo
   .handler(async ({ context, errors }) => {
     try {
       const todos = await getTodosByUserId(context.user.id);
-
       return todos; // ✔ RETURN the data
     } catch (err) {
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
@@ -67,19 +71,9 @@ export const getTodoById = baseTodo
     successDescription: 'A single todo',
     successStatus: 200,
   })
-  .input(
-    z.object({
-      id: z
-        .string()
-        .regex(/^\d+$/, 'Todo ID must be a number')
-        .transform((val) => Number(val))
-        .refine((val) => val > 0, {
-          message: 'Todo ID must be a positive number, starting from 1',
-        }), // Flat structure: id directly here
-    })
-  )
+  .input(findTodoByNumber)
   .output(
-    outputTodoSchema || null // Your Zod schema for a single todo (unchanged)
+    outputTodoSchema // Your Zod schema for a single todo (unchanged)
   )
   .handler(async ({ context, input, errors }) => {
     let todo;
@@ -163,7 +157,7 @@ export const deleteTodo = baseTodo
     successDescription: 'Deleted single todo',
     successStatus: 204,
   })
-  .input(deleteTodoSchema)
+  .input(deleteTodoSchemabyId)
   .handler(async ({ input, context, errors }) => {
     let deleted;
     try {
