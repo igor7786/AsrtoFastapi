@@ -1,7 +1,6 @@
 import { z } from 'zod';
-
-export const outputTodoSchema = z.object({
-  id: z.string().trim().min(1, { message: 'ID must be at least 1 character long' }),
+// outputTodoSchema
+export const createTodoSchema = z.object({
   title: z
     .string()
     .trim()
@@ -14,10 +13,8 @@ export const outputTodoSchema = z.object({
     .max(1000, { message: 'Description must be at most 1000 characters long' }),
   completed: z.boolean().default(false),
 });
-export const createTodoSchema = outputTodoSchema.pick({
-  title: true,
-  description: true,
-  completed: true,
+export const outputTodoSchema = createTodoSchema.extend({
+  id: z.string().trim().min(1, { message: 'ID must be at least 1 character long' }),
 });
 export const deleteTodoSchemabyId = outputTodoSchema.pick({
   id: true,
