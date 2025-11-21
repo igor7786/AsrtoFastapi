@@ -25,22 +25,12 @@ const baseTodo = base.errors({
   },
   NOT_FOUND: {
     message: 'Failed to find any data',
-    code: 404,
+    status: 404,
   },
 });
 // GET route to list planets
 export const listTodos = baseTodo
   .use(authMiddleware)
-  .errors({
-    INTERNAL_SERVER_ERROR: {
-      message: 'Failed to fetch data',
-      code: 500,
-    },
-    NOT_FOUND: {
-      message: 'Failed to find any data',
-      code: 404,
-    },
-  })
   .route({
     method: 'GET',
     path: '/get-todos',

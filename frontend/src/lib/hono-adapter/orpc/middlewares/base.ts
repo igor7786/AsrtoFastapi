@@ -1,6 +1,10 @@
 import { os } from '@orpc/server';
 import { type RequestHeadersPluginContext } from '@orpc/server/plugins';
 export const base = os.$context<RequestHeadersPluginContext>().errors({
+  BAD_REQUEST: {
+    message: 'Bad Request',
+    code: 400,
+  },
   UNAUTHORIZED: {
     message: 'You are Unauthorized',
     code: 401,
