@@ -4,6 +4,8 @@ import { cors } from 'hono/cors';
 import { openApiHandler } from './orpc/open-api-docs/open-api-spec';
 import { auth } from '@/lib/auth';
 import { Scalar } from '@scalar/hono-api-reference';
+import { minifyContractRouter } from '@orpc/contract';
+import { router } from '@hono-adapt/orpc/routes/router';
 
 // ------------------------------
 // 1️⃣ Create Hono app
@@ -37,6 +39,10 @@ app
 
     if (matched) return c.newResponse(response.body, response);
     await next();
+  })
+  .on(['GET'], '/api/rpc/generate-contract-json', (c) => {
+    const minified = minifyContractRouter(router);
+    return c.json(minified);
   })
   .on(['POST', 'GET'], '/api/rpc/auth/*', (c) => auth.handler(c.req.raw))
   .get(

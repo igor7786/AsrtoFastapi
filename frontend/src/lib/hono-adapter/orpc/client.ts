@@ -2,13 +2,16 @@ import type { JsonifiedClient } from '@orpc/openapi-client';
 import type { ContractRouterClient } from '@orpc/contract';
 import { createORPCClient, onError } from '@orpc/client';
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
-import { router } from '@hono-adapt/orpc/routes/router';
-import { envConfig } from '@/lib/env';
+import type { Router } from '@hono-adapt/orpc/routes/router';
 
-const link = new OpenAPILink(router, {
+const contract = await fetch('http://localhost:4321/api/rpc/generate-contract-json').then((res) =>
+  res.json()
+);
+
+const link = new OpenAPILink(contract as any, {
   // ✅ Dynamically resolve URL for server or client
   url: () => {
-    return envConfig.PUBLIC_API_URL;
+    return 'http://localhost:4321/api/rpc';
   },
 
   // ✅ Custom fetch ensures cookies/sessions are included for cross-origin calls
@@ -25,4 +28,4 @@ const link = new OpenAPILink(router, {
     }),
   ],
 });
-export const client: JsonifiedClient<ContractRouterClient<typeof router>> = createORPCClient(link);
+export const client: JsonifiedClient<ContractRouterClient<Router>> = createORPCClient(link);
