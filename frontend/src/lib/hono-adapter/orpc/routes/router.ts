@@ -7,7 +7,6 @@ import {
   listTodos,
   putTodo,
 } from '@hono-adapt/orpc/routes/todos';
-import { de } from 'date-fns/locale';
 
 export const router = {
   planet: {
@@ -22,3 +21,4 @@ export const router = {
     putTodo: putTodo,
   },
 };
+export type Router = typeof router;

@@ -1,0 +1,14 @@
+---
+import { SkeletonPage } from '@rcomp/LoadingSkeleton';
+import GetTodoById from '@rcomp/TESTORCP';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Login">
+  <!--<Page client:visible />-->
+  <GetTodoById client:load>
+    <div slot="fallback">
+      <SkeletonPage />
+    </div>
+  </GetTodoById>
+</Layout>
