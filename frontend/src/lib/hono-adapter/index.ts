@@ -1,7 +1,7 @@
 // src/orpc/server.ts
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { openApiHandler } from './orpc/open-api-docs/open-api-spec';
+import { openApiHandler } from '@hono-adapt/orpc/open-api-docs/open-api-spec';
 import { auth } from '@/lib/auth';
 import { Scalar } from '@scalar/hono-api-reference';
 import { minifyContractRouter } from '@orpc/contract';
@@ -28,7 +28,6 @@ app.use(
 // ------------------------------
 // 2️⃣ Mount RPC routes via OpenAPI handler
 
-// ------------------------------
 
 app
   .use('/api/rpc/*', async (c, next) => {

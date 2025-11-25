@@ -1,6 +1,6 @@
 // orpc/open-api-spec.ts
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
-import { onError } from '@orpc/server';
+import { onError, ORPCError } from '@orpc/server';
 import { CORSPlugin } from '@orpc/server/plugins';
 import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from '@orpc/json-schema';
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
@@ -10,7 +10,15 @@ import { PlanetSchema } from '@hono-adapt/orpc/schemas/schema';
 import { RequestHeadersPlugin } from '@orpc/server/plugins';
 
 export const openApiHandler = new OpenAPIHandler(router, {
-  interceptors: [onError((err) => console.error('RPC error:', err))],
+  interceptors: [
+    onError((err) => {
+      if (err instanceof ORPCError) {
+        console.error('[ORPC Error]:', err.code, err.status);
+        return;
+      }
+      console.error('Unknown error:', err);
+    }),
+  ],
   plugins: [
     new RequestHeadersPlugin(),
     new CORSPlugin({
