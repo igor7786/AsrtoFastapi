@@ -10,11 +10,11 @@ import { router } from '@hono-adapt/orpc/routes/router';
 // ------------------------------
 // 1️⃣ Create Hono app
 // ------------------------------
-const app = new Hono({ strict: false });
+const app = new Hono({ strict: false }).basePath('/api');
 
 // Enable CORS globally for /api routes
 app.use(
-  '/api/rpc/auth/*',
+  '/rpc/auth/*',
   cors({
     origin: ['http://localhost:4321', 'http://localhost:5173', 'http://localhost:3000'], // replace with your
     allowHeaders: ['Content-Type', 'Authorization'],
@@ -28,9 +28,8 @@ app.use(
 // ------------------------------
 // 2️⃣ Mount RPC routes via OpenAPI handler
 
-
 app
-  .use('/api/rpc/*', async (c, next) => {
+  .use('/rpc/*', async (c, next) => {
     const { matched, response } = await openApiHandler.handle(c.req.raw, {
       prefix: '/api/rpc',
       context: {}, // You can inject user/session context here
@@ -39,20 +38,20 @@ app
     if (matched) return c.newResponse(response.body, response);
     await next();
   })
-  .on(['GET'], '/api/rpc/generate-contract-json', (c) => {
+  .on(['GET'], '/rpc/generate-contract-json', (c) => {
     const minified = minifyContractRouter(router);
     return c.json(minified);
   })
-  .on(['POST', 'GET'], '/api/rpc/auth/*', (c) => auth.handler(c.req.raw))
+  .on(['POST', 'GET'], '/auth/*', (c) => auth.handler(c.req.raw))
   .get(
-    'api/rpc/docs',
+    '/rpc/docs',
     Scalar({
       pageTitle: 'API Documentation',
       sources: [
         // ORCP OpenAPI spec endpoint
         { url: '/api/rpc/generate-schema', title: 'ORCP API' },
         // Better Auth schema generation endpoint
-        { url: '/api/rpc/auth/open-api/generate-schema', title: 'Better Auth API' },
+        { url: '/api/auth/open-api/generate-schema', title: 'Better Auth API' },
       ],
     })
   );
@@ -60,6 +59,6 @@ app
 // ------------------------------
 // 3️⃣ Health check endpoint
 // ------------------------------
-app.get('/api/test', (c) => c.json({ message: 'Server healthy' }));
+app.get('/rpc/test', (c) => c.json({ message: 'Server healthy' }));
 
 export default app;
