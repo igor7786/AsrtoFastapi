@@ -40,7 +40,7 @@ export const openApiHandler = new OpenAPIHandler(router, {
           version: '1.0.0',
           description: 'ORPC All endpoints',
         },
-        servers: [{ url: '/api/rpc' }],
+        servers: [{ url: '/api/rpc/orpc-docs' }],
         commonSchemas: {
           Planet: { schema: PlanetSchema },
           UndefinedError: { error: 'UndefinedError' },

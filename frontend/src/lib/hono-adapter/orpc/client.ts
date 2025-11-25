@@ -8,7 +8,7 @@ const contract = await fetch('http://localhost:4321/api/rpc/generate-contract-js
   res.json()
 );
 
-const link = new OpenAPILink(contract as any, {
+const link = new OpenAPILink(contract as Router, {
   // ✅ Dynamically resolve URL for server or client
   url: () => {
     return 'http://localhost:4321/api/rpc';
