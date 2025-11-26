@@ -10,10 +10,10 @@ import {
 
 export const router = {
   planet: {
-    list: listPlanet,
+    listPlanet: listPlanet,
   },
   todos: {
-    list: listTodos,
+    listTodos: listTodos,
     getTodo: getTodoById,
     createTodo: createTodo,
     deleteTodo: deleteTodo,
