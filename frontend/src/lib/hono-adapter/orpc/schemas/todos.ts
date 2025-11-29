@@ -28,3 +28,8 @@ export const findTodoByNumber = z.object({
       message: 'Todo ID must be a positive number, starting from 1',
     }), // Flat structure: id directly here
 });
+
+export type CreateTodo = z.infer<typeof createTodoSchema>;
+export type OutputTodo = z.infer<typeof outputTodoSchema>;
+export type DeleteTodoById = z.infer<typeof deleteTodoSchemabyId>;
+export type FindTodoByNumber = z.infer<typeof findTodoByNumber>;

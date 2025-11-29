@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { client } from '@hono-adapt/orpc/client'; // your ORPC client
-export default function GetTodoById({ result }: { result: any }) {
-  //   type Todo = Awaited<ReturnType<typeof client.todos.getTodo>>;
+import { client } from '@hono-adapt/orpc/client';
+import type { OutputTodo } from '@hono-adapt/orpc/schemas/todos';
 
-  const [id, setId] = useState('');
-  const [todo, setTodo] = useState<any | null>(result);
-  const [errorMessage, setErrorMessage] = useState('');
+interface GetTodoByIdProps {
+  result: OutputTodo | null;
+  findId: string;
+  err: string;
+}
+
+export default function GetTodoById({ result, findId , err}: GetTodoByIdProps) {
+  const [id, setId] = useState(findId);
+  const [todo, setTodo] = useState<OutputTodo | null>(result);
+  const [errorMessage, setErrorMessage] = useState(err);
   const [loading, setLoading] = useState(false);
 
   async function handleFetch() {
@@ -14,33 +20,27 @@ export default function GetTodoById({ result }: { result: any }) {
     setLoading(true);
 
     try {
-      const result = await client.todos.getTodo({ id });
-
-      setTodo(result); // success
+      const data = await client.todos.getTodo({ id });
+      setTodo(data);
     } catch (err: any) {
       console.error('ORPC Error:', err);
 
-      // 🔥 Zod validation errors (input invalid)
       if (err.issues) {
         setErrorMessage(err.issues.map((i: any) => i.message).join(', '));
         setLoading(false);
         return;
       }
 
-      // 🔥 ORPC typed backend errors
       switch (err.code) {
         case 'NOT_FOUND':
           setErrorMessage('Todo not found.');
           break;
-
         case 'BAD_REQUEST':
-          setErrorMessage(err.message || 'Invalid request.');
+          setErrorMessage(err.message ?? 'Invalid request.');
           break;
-
         case 'UNAUTHORIZED':
           setErrorMessage('You are not allowed to access this.');
           break;
-
         default:
           setErrorMessage('Unexpected error. Please try again.');
       }
@@ -50,9 +50,9 @@ export default function GetTodoById({ result }: { result: any }) {
   }
 
   return (
-
     <div className="max-w-md space-y-3 p-4">
-      <div>{result.title}</div>
+      {result && <div>{result.title}</div>}
+
       <h2 className="text-xl font-semibold">Find Todo by ID</h2>
 
       <input
