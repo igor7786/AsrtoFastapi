@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { client } from '@hono-adapt/orpc/client'; // your ORPC client
-export default function GetTodoById() {
+export default function GetTodoById({ result }: { result: any }) {
   //   type Todo = Awaited<ReturnType<typeof client.todos.getTodo>>;
 
   const [id, setId] = useState('');
-  const [todo, setTodo] = useState<any | null>(null);
+  const [todo, setTodo] = useState<any | null>(result);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -50,7 +50,9 @@ export default function GetTodoById() {
   }
 
   return (
+
     <div className="max-w-md space-y-3 p-4">
+      <div>{result.title}</div>
       <h2 className="text-xl font-semibold">Find Todo by ID</h2>
 
       <input

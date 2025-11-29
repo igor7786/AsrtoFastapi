@@ -11,7 +11,12 @@ const contract = await fetch('http://localhost:4321/api/rpc/generate-contract-js
 const link = new OpenAPILink(contract as Router, {
   // ✅ Dynamically resolve URL for server or client
   url: () => {
-    return 'http://localhost:4321/api/rpc';
+    if (typeof window === "undefined") {
+      console.log("RPCLink running on server:", `http://localhost:4321/api/rpc`);
+    }
+    console.log("RPCLink running on client:", `${window.location.origin}/api/rpc`);
+    return `${window.location.origin}/api/rpc`;
+    // return 'http://localhost:4321/api/rpc';
   },
 
   // ✅ Custom fetch ensures cookies/sessions are included for cross-origin calls

@@ -2,11 +2,29 @@
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import GetTodoById from '@rcomp/TESTORCP';
 import Layout from '@/layouts/Layout.astro';
+import { router } from '@/lib/hono-adapter/orpc/routes/router';
+
+import { call, os } from '@orpc/server';
+import { auth } from '@/lib/auth';
+const sessionData = await auth.api.getSession({ headers: Astro.request.headers });
+
+const result = await call(
+  router.todos.getTodo,
+  { id: '1' },
+  {
+    context: {
+      session: sessionData!.session,
+      user: sessionData!.user,
+    },
+  }
+);
+console.log('Result from getTodo in testo.astro:', result);
 ---
 
 <Layout title="Login">
   <!--<Page client:visible />-->
-  <GetTodoById client:load>
+  <GetTodoById result={result} client:load>
+
     <div slot="fallback">
       <SkeletonPage />
     </div>
