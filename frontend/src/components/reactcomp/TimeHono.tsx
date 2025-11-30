@@ -1,5 +1,5 @@
 // src/components/Todos.tsx
-import { useTime, useTodo } from '@/components/reactcomp/hooks/use-time';
+import { useTime, useTodo } from '@/components/reactcomp/hooks/use-fetch';
 import { useState } from 'react';
 export default function TimeHono() {
   const [id, setId] = useState(1); // start with todo #1
