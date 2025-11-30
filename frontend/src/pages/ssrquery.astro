@@ -8,14 +8,12 @@ import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 const fetchTime = async () => {
   try {
     const res = await fetch('http://localhost:4321/api/test');
-    console.log('SSR fetch response:', res);
     if (!res.ok) {
-      const body = await res.text();
-      throw new Error(`SSR fetch failed: ${body}`);
+      throw new Error(`SSR fetch failed: ${res.status} ${res.statusText}`);
     }
-
     return res.json();
   } catch (err: any) {
+    console.error('SSR fetch error:', err.message);
     throw new Error(err?.message || "Unknown SSR error");
   }
 };
