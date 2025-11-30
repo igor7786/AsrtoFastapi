@@ -5,7 +5,7 @@ import { dehydrate } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 
 // SSR-safe fetch
-const fetchTime = async () => {
+const fetchTest = async () => {
   try {
     const res = await fetch('http://localhost:4321/api/test');
     if (!res.ok) {
@@ -22,7 +22,7 @@ const queryClient = getQueryClient();
 
 await queryClient.prefetchQuery({
   queryKey: ['test'],
-  queryFn: fetchTime,
+  queryFn: fetchTest,
 });
 
 const dehydratedState = dehydrate(queryClient);

@@ -2,36 +2,40 @@
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import GetTodoById from '@rcomp/TESTORCP';
 import Layout from '@/layouts/Layout.astro';
-import { router } from '@/lib/hono-adapter/orpc/routes/router';
+import { router } from '@hono-adapt/orpc/routes/router';
 import { call } from '@orpc/server';
-const findId: string = '3';
+import { dehydrate } from '@tanstack/react-query';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
+import QueryProvider from '@/lib/tan-stack/SsrQueryProvider';
+const findId: string = '0';
 
-let result = null;
-let errorMessage: string  = '';
+const fetchTodo = async () => {
+  try {
+    const todo = await call(router.todos.getTodo, { id: findId }, { context: Astro.locals });
+    return todo;
+  } catch (err: any) {
+    console.error('Unexpected error:', err.message);
+    throw new Error(err?.message || 'Unknown error');
+  }
+};
 
-try {
-  result = await call(
-    router.todos.getTodo,
-    { id: findId },
-    { context: Astro.locals }
-  );
-} catch (err: any) {
-  if (err.code === 'UNAUTHORIZED') {
-    return Astro.redirect('/loginshadcn');
-  }
-  else {
-    console.error("Unexpected error:", err.message);
-    errorMessage = err.message;// fallback anyway
-  }
-}
+const queryClient = getQueryClient();
+
+await queryClient.prefetchQuery({
+  queryKey: ['todo', findId],
+  queryFn: fetchTodo,
+});
+
+// Dehydrate the query client for client hydration
+const dehydratedState = dehydrate(queryClient);
 ---
 
-
 <Layout title="Login">
-  <!--<Page client:visible />-->
-  <GetTodoById result={result} findId={findId} err ={errorMessage} client:load>
-    <div slot="fallback">
-      <SkeletonPage />
-    </div>
-  </GetTodoById>
+  <QueryProvider client:load dehydratedState={dehydratedState}>
+    <GetTodoById findId={findId} client:load>
+      <div slot="fallback">
+        <SkeletonPage />
+      </div>
+    </GetTodoById>
+  </QueryProvider>
 </Layout>
