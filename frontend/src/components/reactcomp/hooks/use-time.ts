@@ -23,7 +23,7 @@ export function useTime() {
 }
 
 async function fetchTodo(id: number, signal?: AbortSignal): Promise<z.infer<typeof createTodoSchema>> {
-  const res = await axios.get(`/api/todo/${id}`, { signal });
+  const res = await axios.get(`/api/rpc/todos/${id}`, { signal });
   return res.data;
 }
 
@@ -50,7 +50,7 @@ export const useTodo = (id: number) => {
   return useQuery(
     {
       queryKey: ['todo', id],
-      queryFn: ({ signal }) => fetchTodoRPC(id, signal),
+      queryFn: ({ signal }) => fetchTodo(id, signal),
       placeholderData: (previousData) => previousData,
       staleTime: 5000,
       enabled: !cachedData,

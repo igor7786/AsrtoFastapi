@@ -21,7 +21,7 @@ const link = new OpenAPILink(contract as Router, {
 
   // ✅ Custom fetch ensures cookies/sessions are included for cross-origin calls
   fetch: (request, init) =>
-    globalThis.fetch(request, {
+    fetch(request, {
       ...init,
       credentials: 'include',
     }),

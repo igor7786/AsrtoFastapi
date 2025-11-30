@@ -4,7 +4,6 @@ import GetTodoById from '@rcomp/TESTORCP';
 import Layout from '@/layouts/Layout.astro';
 import { router } from '@/lib/hono-adapter/orpc/routes/router';
 import { call } from '@orpc/server';
-
 const findId: string = '1';
 
 let result = null;
@@ -17,11 +16,14 @@ try {
     { context: Astro.locals }
   );
 } catch (err: any) {
-  if (err.code === 'BAD_REQUEST' || err.code === 'NOT_FOUND') {
+  if (err.code === 'UNAUTHORIZED') {
+    return Astro.redirect('/loginshadcn');
+  } else
+  if (err.code === 'BAD_REQUEST' || err.code === 'NOT_FOUND' ) {
     console.error('ORPC Error:', err.message);
     errorMessage = err.message;
   } else {
-    console.error("Unexpected error:", err);
+    console.error("Unexpected error:", err.message);
     errorMessage = "Unexpected error";// fallback anyway
   }
 }

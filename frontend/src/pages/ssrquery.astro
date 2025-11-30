@@ -1,0 +1,41 @@
+---
+import QueryProvider from './SsrQueryProvider';
+import PostsList from './Postlist';
+import { dehydrate } from '@tanstack/react-query';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
+
+// SSR-safe fetch
+const fetchTime = async () => {
+  try {
+    const res = await fetch('http://localhost:4321/api/test');
+    console.log('SSR fetch response:', res);
+    if (!res.ok) {
+      const body = await res.text();
+      throw new Error(`SSR fetch failed: ${body}`);
+    }
+
+    return res.json();
+  } catch (err: any) {
+    throw new Error(err?.message || "Unknown SSR error");
+  }
+};
+
+const queryClient = getQueryClient();
+
+await queryClient.prefetchQuery({
+  queryKey: ['test'],
+  queryFn: fetchTime,
+});
+
+const dehydratedState = dehydrate(queryClient);
+---
+
+<html lang="en">
+  <body>
+    <h1>Server Time Example</h1>
+
+    <QueryProvider client:load dehydratedState={dehydratedState}>
+      <PostsList client:load />
+    </QueryProvider>
+  </body>
+</html>
