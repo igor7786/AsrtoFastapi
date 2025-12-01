@@ -14,7 +14,6 @@ const fetchTodo = async () => {
     const todo = await call(router.todos.getTodo, { id: findId }, { context: Astro.locals });
     return todo;
   } catch (err: any) {
-    console.error('Unexpected error:', err.message);
     throw new Error(err?.message || 'Unknown error');
   }
 };
