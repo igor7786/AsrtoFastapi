@@ -1,7 +1,6 @@
 import { auth } from '@/lib/auth';
 import { ActionError, defineAction } from 'astro:actions';
-
-export const logout = {
+export const logout: any = {
   logoutUser: defineAction({
     accept: 'form', // Avoid CSRF for simplicity
     handler: async (_, ctx) => {

@@ -14,7 +14,7 @@ const fetchTest = async () => {
     return res.json();
   } catch (err: any) {
     console.error('SSR fetch error:', err.message);
-    throw new Error(err?.message || "Unknown SSR error");
+    throw new Error(err?.message || 'Unknown SSR error');
   }
 };
 

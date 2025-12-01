@@ -13,7 +13,7 @@ export const openApiHandler = new OpenAPIHandler(router, {
   interceptors: [
     onError((err) => {
       if (err instanceof ORPCError) {
-        console.error('[ORPC Error]:', err.status,err.code, err.message);
+        console.error('[ORPC Error]:', err.status, err.code, err.message);
         return;
       }
       console.error('Unexpected error:', err);

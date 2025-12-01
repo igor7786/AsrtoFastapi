@@ -8,73 +8,73 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router';
 
-import { Route as rootRouteImport } from "./routes/__root"
-import { Route as DashHomeRouteImport } from "./routes/dash/home"
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as DashHomeRouteImport } from './routes/dash/home';
 
-const DashIndexLazyRouteImport = createFileRoute("/dash/")()
+const DashIndexLazyRouteImport = createFileRoute('/dash/')();
 
 const DashIndexLazyRoute = DashIndexLazyRouteImport.update({
-  id: "/dash/",
-  path: "/dash/",
+  id: '/dash/',
+  path: '/dash/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import("./routes/dash/index.lazy").then((d) => d.Route))
+} as any).lazy(() => import('./routes/dash/index.lazy').then((d) => d.Route));
 const DashHomeRoute = DashHomeRouteImport.update({
-  id: "/dash/home",
-  path: "/dash/home",
+  id: '/dash/home',
+  path: '/dash/home',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  "/dash/home": typeof DashHomeRoute
-  "/dash": typeof DashIndexLazyRoute
+  '/dash/home': typeof DashHomeRoute;
+  '/dash': typeof DashIndexLazyRoute;
 }
 export interface FileRoutesByTo {
-  "/dash/home": typeof DashHomeRoute
-  "/dash": typeof DashIndexLazyRoute
+  '/dash/home': typeof DashHomeRoute;
+  '/dash': typeof DashIndexLazyRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  "/dash/home": typeof DashHomeRoute
-  "/dash/": typeof DashIndexLazyRoute
+  __root__: typeof rootRouteImport;
+  '/dash/home': typeof DashHomeRoute;
+  '/dash/': typeof DashIndexLazyRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/dash/home" | "/dash"
-  fileRoutesByTo: FileRoutesByTo
-  to: "/dash/home" | "/dash"
-  id: "__root__" | "/dash/home" | "/dash/"
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/dash/home' | '/dash';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/dash/home' | '/dash';
+  id: '__root__' | '/dash/home' | '/dash/';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  DashHomeRoute: typeof DashHomeRoute
-  DashIndexLazyRoute: typeof DashIndexLazyRoute
+  DashHomeRoute: typeof DashHomeRoute;
+  DashIndexLazyRoute: typeof DashIndexLazyRoute;
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/dash/": {
-      id: "/dash/"
-      path: "/dash"
-      fullPath: "/dash"
-      preLoaderRoute: typeof DashIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/dash/home": {
-      id: "/dash/home"
-      path: "/dash/home"
-      fullPath: "/dash/home"
-      preLoaderRoute: typeof DashHomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    '/dash/': {
+      id: '/dash/';
+      path: '/dash';
+      fullPath: '/dash';
+      preLoaderRoute: typeof DashIndexLazyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/dash/home': {
+      id: '/dash/home';
+      path: '/dash/home';
+      fullPath: '/dash/home';
+      preLoaderRoute: typeof DashHomeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   DashHomeRoute: DashHomeRoute,
   DashIndexLazyRoute: DashIndexLazyRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

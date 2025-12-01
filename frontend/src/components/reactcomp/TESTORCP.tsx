@@ -13,13 +13,22 @@ export default function GetTodoById({ findId }: GetTodoByIdProps) {
   const [id, setId] = useState(findId);
 
   // Query to fetch todo by ID
-  const { data:OutputTodo, isLoading, error, refetch, isFetching, } = useQuery({
-    queryKey: ['todo', id],
-    queryFn: async () => client.todos.getTodo({ id }),
-    enabled: !!id, // only run if id exists
-    // optional: show old data while fetching
-    placeholderData: (previousData) => previousData,
-  }, queryClient);
+  const {
+    data: OutputTodo,
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useQuery(
+    {
+      queryKey: ['todo', id],
+      queryFn: async () => client.todos.getTodo({ id }),
+      enabled: !!id, // only run if id exists
+      // optional: show old data while fetching
+      placeholderData: (previousData) => previousData,
+    },
+    queryClient
+  );
 
   return (
     <div className="max-w-md space-y-3 p-4">
@@ -40,11 +49,7 @@ export default function GetTodoById({ findId }: GetTodoByIdProps) {
         {isLoading || isFetching ? 'Loading...' : 'Fetch Todo'}
       </button>
 
-      {error && (
-        <p className="text-sm text-red-600">
-          {(error as any)?.message ?? 'Unexpected error'}
-        </p>
-      )}
+      {error && <p className="text-sm text-red-600">{(error as any)?.message ?? 'Unexpected error'}</p>}
 
       {OutputTodo && (
         <div className="rounded border bg-gray-50 p-3">

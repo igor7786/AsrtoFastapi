@@ -1,5 +1,5 @@
 // src/components/QueryProvider.tsx
-import {  QueryClientProvider, HydrationBoundary } from '@tanstack/react-query';
+import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query';
 import type { DehydratedState } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
@@ -23,4 +23,3 @@ export default function QueryProvider({ children, dehydratedState }: QueryProvid
     </QueryClientProvider>
   );
 }
-

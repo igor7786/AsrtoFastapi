@@ -16,21 +16,25 @@ import {
   findTodoByNumber,
   outputTodoSchema,
 } from '@hono-adapt/orpc/schemas/todos';
+import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
 
 // Define the Planet schema with metadata for OpenAPI
-const baseTodo = base.errors({
-  INTERNAL_SERVER_ERROR: {
-    message: 'Failed to fetch data from database',
-    code: 500,
-  },
-  NOT_FOUND: {
-    message: 'Failed to find any data',
-    status: 404,
-  },
-});
+const baseTodo = base
+  .errors({
+    INTERNAL_SERVER_ERROR: {
+      message: 'Failed to fetch data from database',
+      code: 500,
+    },
+    NOT_FOUND: {
+      message: 'Failed to find any data',
+      status: 404,
+    },
+  })
+  .use(authMiddleware)
+  .use(validationErrorsMiddleware);
 // GET route to list planets
 export const listTodos = baseTodo
-  .use(authMiddleware)
+
   .route({
     method: 'GET',
     path: '/get-todos',
@@ -51,7 +55,6 @@ export const listTodos = baseTodo
   });
 
 export const getTodoById = baseTodo
-  .use(authMiddleware)
   .route({
     method: 'GET',
     path: '/todos/{id}', // Dynamic route (unchanged)
@@ -81,7 +84,6 @@ export const getTodoById = baseTodo
     return todo;
   });
 export const createTodo = baseTodo
-  .use(authMiddleware)
   .route({
     method: 'POST',
     path: '/create-todo',
@@ -105,7 +107,6 @@ export const createTodo = baseTodo
     }
   });
 export const putTodo = baseTodo
-  .use(authMiddleware)
   .route({
     method: 'PATCH',
     path: '/todos/{id}', // Dynamic route for the todo ID
@@ -137,7 +138,6 @@ export const putTodo = baseTodo
   });
 
 export const deleteTodo = baseTodo
-  .use(authMiddleware)
   .route({
     method: 'DELETE',
     path: '/delete-todo',
@@ -163,7 +163,6 @@ export const deleteTodo = baseTodo
     return null;
   });
 export const deleteAllTodos = baseTodo
-  .use(authMiddleware)
   .route({
     method: 'DELETE',
     path: '/delete-all-todos',

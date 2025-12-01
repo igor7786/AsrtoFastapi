@@ -3,9 +3,8 @@ import type { ContractRouterClient } from '@orpc/contract';
 import { createORPCClient, onError } from '@orpc/client';
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
 import type { Router } from '@hono-adapt/orpc/routes/router';
-import {envConfig} from '@/lib/env'
+import { envConfig } from '@/lib/env';
 import { ORPCError } from '@orpc/client';
-
 
 const contract = await fetch('http://localhost:4321/api/rpc/generate-contract-json').then((res) =>
   res.json()
@@ -25,8 +24,8 @@ const link = new OpenAPILink(contract as Router, {
   interceptors: [
     onError((err) => {
       if (err instanceof ORPCError) {
-        console.error('[ORPC Error:]', err.status,err.code, err.message);
-      }else {
+        console.error('[ORPC Error:]', err.status, err.code, err.message);
+      } else {
         console.error('Unexpected Error:', err);
       }
     }),

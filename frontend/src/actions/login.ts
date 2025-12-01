@@ -4,7 +4,7 @@ import { ActionError, defineAction } from 'astro:actions';
 import { mapStatusToAstroCode } from '@/actions/error-helper';
 import { set } from 'zod';
 
-export const login = {
+export const login: any = {
   loginUser: defineAction({
     accept: 'form',
     handler: async (input, ctx) => {

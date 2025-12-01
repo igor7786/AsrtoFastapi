@@ -10,18 +10,17 @@ const fetchPosts = async () => {
 
 export default function PostsList() {
   const client = getQueryClient();
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['test'],
-    queryFn: fetchPosts,
-  }, client);
+  const { data, isLoading, error } = useQuery(
+    {
+      queryKey: ['test'],
+      queryFn: fetchPosts,
+    },
+    client
+  );
 
   if (isLoading) return <div>Loading posts...</div>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
   if (!data || data.length === 0) return <div>No posts found</div>;
 
-  return (
-    <ul>
-      {data.message}
-    </ul>
-  );
+  return <ul>{data.message}</ul>;
 }

@@ -25,9 +25,8 @@ const link = new OpenAPILink<ClientContext>(router, {
     }),
 
   // CRITICAL: send cookies/auth headers to backend
-  headers: async ({ context }) => (
-    {
-      'Content-Type': 'application/json',
+  headers: async ({ context }) => ({
+    'Content-Type': 'application/json',
     ...(context?.cookie ? { Cookie: context.cookie } : {}),
   }),
 
@@ -39,6 +38,5 @@ const link = new OpenAPILink<ClientContext>(router, {
 });
 
 // Export client
-export const client: JsonifiedClient<
-  ContractRouterClient<Router, ClientContext>
-> = createORPCClient(link);
+export const client: JsonifiedClient<ContractRouterClient<Router, ClientContext>> =
+  createORPCClient(link);
