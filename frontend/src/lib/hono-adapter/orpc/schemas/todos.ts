@@ -22,7 +22,7 @@ export const deleteTodoSchemabyId = outputTodoSchema.pick({
 export const findTodoByNumber = z.object({
   id: z
     .string()
-    .regex(/^\d+$/, 'Todo ID must be a number')
+    .regex(/^\d+$/, 'Todo ID must be a positive number')
     .transform((val) => Number(val))
     .refine((val) => val > 0, {
       message: 'Todo ID must be a positive number, starting from 1',
