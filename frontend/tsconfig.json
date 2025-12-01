@@ -12,7 +12,7 @@
       "@rcomp/*": ["./src/components/reactcomp/*"],
       "@layout/*": ["./src/layouts/*"],
       "@acomp/*": ["./src/components/astrocomp/*"],
-      "@hono-adapt": ["./src/lib/hono-adapter/index.ts"], // 👈 add this exact line
+      "@hono-adapt": ["src/lib/hono-adapter/orpc/index.ts"], // 👈 add this exact line
       "@hono-adapt/*": ["./src/lib/hono-adapter/*"]
     },
     "strict": true,

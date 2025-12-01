@@ -1,5 +1,5 @@
 import { envConfig } from '@/lib/env';
-import type { AppType } from '@/lib/hono-adapter';
+import type { AppType } from '@/lib/hono-adapter/orpc';
 import { hc } from 'hono/client';
 
 // this is a trick to calculate the type when compiling

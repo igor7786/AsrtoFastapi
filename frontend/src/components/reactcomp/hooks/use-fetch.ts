@@ -5,7 +5,7 @@ import axios from 'axios';
 import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
 import type { createTodoSchema } from '@/lib/types-schemas-validator/create-todo.validator';
 import type z from 'zod';
-import clientHonoRpC from '@hono-adapt/client';
+import clientHonoRpC from '@/lib/hono-adapter/rpc/client';
 
 const client = getQueryClient();
 export function useTime() {

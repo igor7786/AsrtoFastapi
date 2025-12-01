@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { authMiddleware } from '@/lib/hono-adapter/auth-middleware';
+import { authMiddleware } from '@/lib/hono-adapter/rpc/auth-middleware';
 import { getTodosByUserId, createTodo } from '@db/queries/queries';
 import type { HonoEnv } from '@db/types';
 import { createTodoValidator } from '@/lib/types-schemas-validator/create-todo.validator';
