@@ -1,5 +1,8 @@
 node_modules
+dist
+build
 public/scripts-lib/
+**/meta/*
 *.lock
 src/assets/
 .astro
