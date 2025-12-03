@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BorderBeam } from '@/components/reactcomp/magicui/border-beam';
 import {
   Tabs,
@@ -7,32 +8,38 @@ import {
   TabsTrigger,
 } from '@/components/reactcomp/ui/motion-tabs';
 import { LoginForm } from './LoginForm';
+import { RegisterForm } from './RegisterForm';
+
 const tabs = [
   {
-    name: 'Login',
-    value: 'explore',
-    content: (
-      <>
-        <LoginForm />
-      </>
-    ),
+    name: 'Sign In',
+    value: 'signin',
+    content: <LoginForm />,
   },
   {
     name: 'Sign Up',
-    value: 'explore-2',
-    content: (
-      <div className="p-4 text-2xl">
-        All your <span className="text-foreground font-semibold">favorites</span> are saved here. Revisit
-        articles, collections, and moments you love, any time you want a little inspiration.
-      </div>
-    ),
+    value: 'signup',
+    content: <RegisterForm />,
   },
 ];
 
-const AnimatedTabsDemo = () => {
+const AnimatedTabsDemo = ({ props }: { props: string }) => {
+  const [activeTab, setActiveTab] = useState(props); // track current tab
+
+  // Update URL whenever activeTab changes
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', activeTab);
+    window.history.replaceState({}, '', url);
+  }, [activeTab]);
+
   return (
     <div className="mx-auto flex w-full max-w-md flex-col items-center">
-      <Tabs defaultValue="explore" className="mx-auto w-full gap-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={(val) => setActiveTab(val)}
+        className="mx-auto w-full gap-6"
+      >
         <TabsList className="bg-background/50 w-full justify-center shadow-md">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
@@ -47,7 +54,6 @@ const AnimatedTabsDemo = () => {
               <div className="bg-background text-muted-foreground text-sm">{tab.content}</div>
               <BorderBeam
                 duration={8}
-                // delay={3}
                 size={150}
                 borderWidth={2}
                 className="from-transparent to-transparent"

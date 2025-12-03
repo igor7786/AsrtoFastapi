@@ -1,10 +1,26 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
+// return Astro.redirect('/tabs?tab=signin', 302);
+const title = 'Login';
+
+// Read query parameter "tabs"
+let sign = Astro.url.searchParams.get('tab');
+// Narrow the type so TS knows it's a string
+if (sign !== 'signin' && sign !== 'signup') {
+  sign = 'signin';
+}
+// fallback
+
+if (Astro.url.href.endsWith('/tabs') || Astro.url.href.endsWith('/tabs/')) {
+  // return Astro.redirect('/tabs?tab=signin', 302);
+  console.log('Tabs Demo - sign:', Astro.url.href);
+  return Astro.redirect(`/tabs?tab=${sign}`, 302);
+}
 ---
 
-<Layout title="Login">
+<Layout title={title}>
   <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-    <AnimatedTabsDemo client:load />
+    <AnimatedTabsDemo props={sign} client:load />
   </div>
 </Layout>
