@@ -6,7 +6,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/components/reactcomp/ui/motion-tabs';
-import { LoginForm } from '@rcomp/LoginForm';
+import { LoginForm } from './LoginForm';
 const tabs = [
   {
     name: 'Login',
@@ -18,8 +18,8 @@ const tabs = [
     ),
   },
   {
-    name: 'Favorites',
-    value: 'favorites',
+    name: 'Sign Up',
+    value: 'explore-2',
     content: (
       <div className="p-4 text-2xl">
         All your <span className="text-foreground font-semibold">favorites</span> are saved here. Revisit
@@ -33,7 +33,7 @@ const AnimatedTabsDemo = () => {
   return (
     <div className="mx-auto flex w-full max-w-md flex-col items-center">
       <Tabs defaultValue="explore" className="mx-auto w-full gap-6">
-        <TabsList className="w-full justify-center bg-background/50 shadow-md">
+        <TabsList className="bg-background/50 w-full justify-center shadow-md">
           {tabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
               {tab.name}
@@ -41,7 +41,7 @@ const AnimatedTabsDemo = () => {
           ))}
         </TabsList>
 
-        <TabsContents className="mx-1 -mt-2 mb-1 rounded-lg shadow-md ">
+        <TabsContents className="mx-1 -mt-2 mb-1 rounded-lg shadow-md">
           {tabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
               <div className="bg-background text-muted-foreground text-sm">{tab.content}</div>
@@ -56,7 +56,6 @@ const AnimatedTabsDemo = () => {
           ))}
         </TabsContents>
       </Tabs>
-
     </div>
   );
 };

@@ -7,7 +7,6 @@ import { call } from '@orpc/server';
 import { dehydrate } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import QueryProvider from '@/lib/tan-stack/SsrQueryProvider';
-import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
 const findId: string = '1';
 
 const fetchTodo = async () => {
@@ -32,13 +31,12 @@ const dehydratedState = dehydrate(queryClient);
 
 <Layout title="Login">
   <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-    <AnimatedTabsDemo client:load />
-    <!-- <QueryProvider client:load dehydratedState={dehydratedState}>
+    <QueryProvider client:load dehydratedState={dehydratedState}>
       <GetTodoById findId={findId} client:load>
         <div slot="fallback">
           <SkeletonPage />
         </div>
       </GetTodoById>
-    </QueryProvider> -->
+    </QueryProvider>
   </div>
 </Layout>
