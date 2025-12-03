@@ -1,0 +1,14 @@
+---
+import testfindid from './testfindid.astro';
+import '../styles/global.css';
+import Layout from '@/layouts/Layout.astro';
+import { SkeletonPage } from '@/components/reactcomp/LoadingSkeleton';
+---
+
+<Layout title="Login">
+  <testfindid server:defer>
+    <div slot="fallback">
+      <SkeletonPage />
+    </div>
+  </testfindid>
+</Layout>
