@@ -24,6 +24,13 @@
     "@originui": "https://originui.com/r/{name}.json",
     "@cult": "https://cult-ui.com/r/{name}.json",
     "@kibo": "https://www.kibo-ui.com/r/{name}.json",
-    "@reui": "https://reui.io/r/{name}.json"
+    "@reui": "https://reui.io/r/{name}.json",
+    "@v0": "https://v0.dev/chat/b/{name}",
+    "@acme": "https://registry.acme.com/{name}.json",
+    "@internal": "https://internal.company.com/{name}.json",
+    "@shadcn-studio": "https://shadcnstudio.com/r/{name}.json",
+    "@ss-components": "https://shadcnstudio.com/r/components/{name}.json",
+    "@ss-blocks": "https://shadcnstudio.com/r/blocks/{name}.json",
+    "@ss-themes": "https://shadcnstudio.com/r/themes/{name}.json"
   }
 }
