@@ -50,8 +50,8 @@ const AnimatedTabsDemo = ({ props }: { props: string }) => {
 
         <TabsContents className="mx-1 -mt-2 mb-1 rounded-lg shadow-md">
           {tabs.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value}>
-              <div className="bg-background text-muted-foreground text-sm">{tab.content}</div>
+            <TabsContent className="min-h-full" key={tab.value} value={tab.value}>
+              <div>{tab.content}</div>
               <BorderBeam
                 duration={8}
                 size={150}

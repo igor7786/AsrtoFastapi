@@ -267,17 +267,14 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
               </CardContent>
 
               <CardFooter className={'flex-col'}>
-                <div className="gap-2 py-4 text-center text-sm">
-                  Don&apos;t have an account?{' '}
-                  <a href="#" className="underline underline-offset-4">
-                    Sign up
-                  </a>
+                <div className="text-muted-foreground gap-2 py-4 text-center text-sm">
+                  © {new Date().getFullYear()} Asrto Inc. — All rights reserved.
                 </div>
               </CardFooter>
             </Card>
 
             <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-              By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
+              By clicking Submit, you agree to our <a href="#">Terms of Service</a> and{' '}
               <a href="#">Privacy Policy</a>.
             </div>
           </div>
