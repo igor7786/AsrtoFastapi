@@ -7,7 +7,7 @@ import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import { OpenAPIReferencePlugin } from '@orpc/openapi/plugins';
 import { router } from '@hono-adapt/orpc/routes/router';
 import { PlanetSchema } from '@hono-adapt/orpc/schemas/planet';
-import { RequestHeadersPlugin } from '@orpc/server/plugins';
+import { RequestHeadersPlugin, ResponseHeadersPlugin } from '@orpc/server/plugins';
 
 export const openApiHandler = new OpenAPIHandler(router, {
   interceptors: [
@@ -21,6 +21,7 @@ export const openApiHandler = new OpenAPIHandler(router, {
   ],
   plugins: [
     new RequestHeadersPlugin(),
+    new ResponseHeadersPlugin(),
     new CORSPlugin({
       exposeHeaders: ['Content-Disposition'],
     }),
