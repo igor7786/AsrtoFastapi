@@ -1,20 +1,21 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
-// return Astro.redirect('/tabs?tab=signin', 302);
+import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
+
 const title = 'Login';
 
-// Read query parameter "tabs"
-let sign = Astro.url.searchParams.get('tab');
-// Narrow the type so TS knows it's a string
-if (sign !== 'signin' && sign !== 'signup') {
-  sign = 'signin';
-}
-// fallback
+let sign = Astro.url.searchParams.get('tab') as string;
 
+// Validate tab query param
+try {
+  sign = tabsUrlSchema.parse(sign);
+} catch {
+  sign = 'signin'; // fallback
+}
+
+// Optional fallback redirect if no tab was specified
 if (Astro.url.href.endsWith('/tabs') || Astro.url.href.endsWith('/tabs/')) {
-  // return Astro.redirect('/tabs?tab=signin', 302);
-  console.log('Tabs Demo - sign:', Astro.url.href);
   return Astro.redirect(`/tabs?tab=${sign}`, 302);
 }
 ---
