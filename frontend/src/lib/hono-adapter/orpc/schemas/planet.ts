@@ -1,6 +1,5 @@
 import z from 'zod';
 import { JSON_SCHEMA_OUTPUT_REGISTRY, JSON_SCHEMA_INPUT_REGISTRY } from '@orpc/zod/zod4';
-import { id } from 'date-fns/locale';
 export const PlanetSchema = z.object({
   id: z.number().int().min(1).default(1),
   name: z.string().min(1).max(100).default('Planet1'),

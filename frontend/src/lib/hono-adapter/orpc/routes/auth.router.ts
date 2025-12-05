@@ -7,8 +7,6 @@ import {
 import { auth } from '@/lib/auth';
 import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
-import z from 'zod';
-// Define the user schema with proper transformations
 
 export const register = base
   .use(validationErrorsMiddleware)
@@ -84,7 +82,7 @@ export const login = base
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {
-          message: 'Failed to register user',
+          message: 'Failed to login user',
           code: '400',
           cause: 'Failed to get any cookie',
         });

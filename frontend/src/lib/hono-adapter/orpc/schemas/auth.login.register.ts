@@ -18,11 +18,14 @@ export const registerResponseSchema = z.object({
 
 export const inputLoginSchema = z.object({
   email: z
+    .string()
+    .trim()
     .email()
     .min(6, { message: 'Username must be at least 6 character long.' })
     .max(20, { message: 'Username cannot exceed 20 characters.' }),
   password: z
     .string()
+    .trim()
     .min(2, { message: 'Password must be at least 2 characters long.' })
     .max(20, { message: 'Password cannot exceed 20 characters.' }),
 });
@@ -31,6 +34,7 @@ export type LoginSchema = z.infer<typeof inputLoginSchema>;
 export const inputRegisterSchema = inputLoginSchema.extend({
   name: z
     .string()
+    .trim()
     .min(2, { message: 'Name must be at least 2 characters long.' })
     .max(20, { message: 'Name cannot exceed 20 characters.' }),
 });
@@ -41,6 +45,7 @@ export const registerInputSchemaFrontend = inputLoginSchema
   .extend({
     repeatPassword: z
       .string()
+      .trim()
       .min(2, { message: 'Password must be at least 2 characters long.' })
       .max(20, { message: 'Password cannot exceed 20 characters.' }),
   })
@@ -50,5 +55,5 @@ export const registerInputSchemaFrontend = inputLoginSchema
   });
 export type RegisterInputSchema = z.infer<typeof registerInputSchemaFrontend>;
 export const outputLoginRegisterSchema = z.object({
-  message: z.string(),
+  message: z.string().trim(),
 });
