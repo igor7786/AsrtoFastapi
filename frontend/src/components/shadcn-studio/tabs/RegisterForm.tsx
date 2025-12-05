@@ -185,7 +185,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
-                                Enter your Name (min. 6 characters)
+                                Enter your Name (min. 4 characters)
                               </FormDescription>
                             )}
                           </FormItem>

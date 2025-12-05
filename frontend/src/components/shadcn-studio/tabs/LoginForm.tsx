@@ -196,7 +196,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                             <FormControl>
                               <Input
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                type="email"
+                                type="text"
                                 placeholder="email@com"
                                 autoComplete="email"
                                 {...field}
