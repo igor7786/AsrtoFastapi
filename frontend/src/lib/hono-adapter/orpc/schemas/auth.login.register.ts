@@ -26,32 +26,26 @@ export const inputLoginSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(2, { message: 'Password must be at least 2 characters long.' })
+    .min(4, { message: 'Password must be at least 4 characters long.' })
     .max(20, { message: 'Password cannot exceed 20 characters.' }),
 });
-
 export type LoginSchema = z.infer<typeof inputLoginSchema>;
+
 export const inputRegisterSchema = inputLoginSchema.extend({
   name: z
     .string()
     .trim()
-    .min(2, { message: 'Name must be at least 2 characters long.' })
+    .min(6, { message: 'Name must be at least 6 characters long.' })
     .max(20, { message: 'Name cannot exceed 20 characters.' }),
 });
-
 export type RegisterSchema = z.infer<typeof inputRegisterSchema>;
 
-export const registerInputSchemaFrontend = inputLoginSchema
+export const registerInputSchemaFrontend = inputRegisterSchema
   .extend({
-    name: z
-      .string()
-      .trim()
-      .min(2, { message: 'Name must be at least 2 characters long.' })
-      .max(20, { message: 'Name cannot exceed 20 characters.' }),
     repeatPassword: z
       .string()
       .trim()
-      .min(2, { message: 'Password must be at least 2 characters long.' })
+      .min(4, { message: 'Password must be at least 4 characters long.' })
       .max(20, { message: 'Password cannot exceed 20 characters.' }),
   })
   .refine((data) => data.password === data.repeatPassword, {
@@ -59,6 +53,8 @@ export const registerInputSchemaFrontend = inputLoginSchema
     path: ['repeatPassword'],
   });
 export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFrontend>;
+
 export const outputLoginRegisterSchema = z.object({
   message: z.string().trim(),
 });
+export type OutputLoginRegisterSchema = z.infer<typeof outputLoginRegisterSchema>;

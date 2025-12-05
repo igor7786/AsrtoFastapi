@@ -209,7 +209,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
-                                Enter your username (min. 6 characters)
+                                Enter your Email (min. 6 characters)
                               </FormDescription>
                             )}
                           </FormItem>

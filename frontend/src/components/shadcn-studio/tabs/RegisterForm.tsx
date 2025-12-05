@@ -1,8 +1,5 @@
-import { actions } from 'astro:actions';
-import { withState } from '@astrojs/react/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GalleryVerticalEnd, X, Check } from 'lucide-react';
-import { startTransition, useActionState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -25,13 +22,18 @@ import {
   registerInputSchemaFrontend,
   type RegisterInputSchemaFrontend,
 } from '@hono-adapt/orpc/schemas/auth.login.register';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
+import { useMutation } from '@tanstack/react-query';
+import { client } from '@/lib/hono-adapter/orpc/client';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
+  const queryClient = getQueryClient();
   // 1. Define your form.
   const form = useForm<RegisterInputSchemaFrontend>({
     resolver: zodResolver(registerInputSchemaFrontend),
     defaultValues: {
       name: '',
+      email: '',
       password: '',
       repeatPassword: '',
     },
@@ -58,65 +60,67 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
     },
   };
   // 2. Define your astro action.
-  const [state, action, pending] = useActionState(withState(actions.login.loginUser), {
-    data: { name: '', success: false },
-    error: undefined,
-  });
-  useEffect(() => {
-    const idToast = 'login-toast';
-    if (pending) {
-      toast(
-        <div className="flex items-center gap-2">
-          <Spinner className="text-orange-500" />
-          <span>Saving your information...</span>
-        </div>,
-        {
-          id: idToast,
-          duration: Infinity,
-        }
-      );
-    } else if (state?.error) {
-      toast(
-        <div className="flex items-center gap-2">
-          <X className="text-red-500" />
-          <span>{state.error.message ?? 'Failed to update account.'}</span>
-        </div>,
-        {
-          id: idToast,
-          duration: 1000,
-        }
-      );
-    } else if (state?.data?.success) {
-      toast(
-        <div className="flex items-center gap-2">
-          <Check className="text-green-500" />
-          <span>{`Welcome ${state.data.name}.`}</span>
-        </div>,
-        {
-          id: idToast,
-          duration: 1000,
-        }
-      );
-      const timer = setTimeout(() => {
-        window.location.reload();
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
+  // 2. Define a submit handler.
+  const idToast = 'login-toast';
+  const mutation = useMutation(
+    {
+      mutationFn: ({ email, password, name }: RegisterInputSchemaFrontend) =>
+        client.auth.register({ email, password, name }),
 
-    // ✅ Clean up toast on component unmount
-  }, [pending, state]);
+      onMutate: async () => {
+        toast(
+          <div className="flex items-center gap-2">
+            <Spinner className="text-orange-500" />
+            <span>Saving your information...</span>
+          </div>,
+          {
+            id: idToast,
+            duration: Infinity,
+          }
+        );
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      },
+
+      onError: async (error) => {
+        toast(
+          <div className="flex items-center gap-2">
+            <X className="text-red-500" />
+            <span>{error.message ?? 'Failed to update account.'}</span>
+          </div>,
+          {
+            id: idToast,
+            duration: 1000,
+          }
+        );
+      },
+
+      onSuccess: async (data) => {
+        toast(
+          <div className="flex items-center gap-2">
+            <Check className="text-green-500" />
+            <span>{data.message}</span>
+          </div>,
+          {
+            id: idToast,
+            duration: 1000,
+          }
+        );
+        const timer = setTimeout(() => {
+          window.location.reload();
+        }, 500);
+        return () => {
+          clearTimeout(timer);
+        };
+      },
+    },
+    queryClient
+  );
+
+  // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
-    const fd = new FormData();
-    fd.append('name', formData.name);
-    fd.append('password', formData.password);
-    startTransition(() => {
-      action(fd);
-    });
+    const { email, password, name } = formData;
+    mutation.mutate({ email, password, name, repeatPassword: password });
   });
-  // 4. Error handling with Soner
-
   return (
     <>
       <motion.div
@@ -162,11 +166,45 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                       render={({ field }) => (
                         <motion.div variants={itemVariants}>
                           <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Name</FormLabel>
                             <FormControl>
                               <Input
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                placeholder="email@com"
+                                type="text"
+                                placeholder="John Doe"
+                                autoComplete="off"
+                                {...field}
+                              />
+                            </FormControl>
+                            {/* ✅ Conditionally show FormMessage or FormDescription */}
+                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                              <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
+                            ) : form.formState.errors.name ? (
+                              <FormMessage className="flex items-center text-red-500">
+                                <X className="mr-2 h-4 w-4" />
+                                <span>{form.formState.errors.name.message}</span>
+                              </FormMessage>
+                            ) : (
+                              <FormDescription className="text-foreground">
+                                Enter your Name (min. 6 characters)
+                              </FormDescription>
+                            )}
+                          </FormItem>
+                        </motion.div>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <motion.div variants={itemVariants}>
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                                type="email"
+                                placeholder="example@example.com"
                                 autoComplete="email"
                                 {...field}
                               />
@@ -181,13 +219,14 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
-                                Enter your username (min. 6 characters)
+                                Enter your Email (min. 6 characters)
                               </FormDescription>
                             )}
                           </FormItem>
                         </motion.div>
                       )}
                     />
+
                     <FormField
                       control={form.control}
                       name="password"
@@ -199,7 +238,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                               <Input
                                 type="password"
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                placeholder="Your password"
+                                placeholder="********"
                                 autoComplete="current-password"
                                 {...field}
                               />
@@ -215,7 +254,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
-                                Enter your password (min. 4 characters)
+                                Enter your Password (min. 4 characters)
                               </FormDescription>
                             )}
                           </FormItem>
@@ -262,8 +301,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                     />
 
                     <motion.div variants={itemVariants}>
-                      <RippleButton type="submit" className="w-full" disabled={pending}>
-                        {pending ? (
+                      <RippleButton type="submit" className="w-full" disabled={mutation.isPending}>
+                        {mutation.isPending ? (
                           <div className="disabled:text-primary flex items-center justify-center gap-4">
                             <span>Loading</span>
                             <Spinner className="text-amber-50" size={10} />
