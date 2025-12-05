@@ -40,7 +40,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: '',
+      email: '',
       password: '',
     },
     mode: 'onChange',
@@ -117,7 +117,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   }, [pending, state]);
   const onSubmit = form.handleSubmit((formData) => {
     const fd = new FormData();
-    fd.append('name', formData.name);
+    fd.append('name', formData.email);
     fd.append('password', formData.password);
     startTransition(() => {
       action(fd);
@@ -190,7 +190,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     >
                       <FormField
                         control={form.control}
-                        name="name"
+                        name="email"
                         render={({ field }) => (
                           <motion.div variants={itemVariants}>
                             <FormItem>
@@ -200,18 +200,19 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                                   className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                                   placeholder="email@com"
                                   autoComplete="email"
+                                  type="text"
                                   {...field}
                                 />
                               </FormControl>
                               {/* ✅ Conditionally show FormMessage or FormDescription */}
-                              {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                              {form.watch('email').length > 0 && !form.formState.errors.email ? (
                                 <FormDescription className="text-green-600">
                                   ✓ Looks good!
                                 </FormDescription>
-                              ) : form.formState.errors.name ? (
+                              ) : form.formState.errors.email ? (
                                 <FormMessage className="flex items-center text-red-500">
                                   <X className="mr-2 h-4 w-4" />
-                                  <span>{form.formState.errors.name.message}</span>
+                                  <span>{form.formState.errors.email.message}</span>
                                 </FormMessage>
                               ) : (
                                 <FormDescription className="text-foreground">

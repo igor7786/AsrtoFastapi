@@ -14,6 +14,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "format": "bunx prettier --write \"./**/*.{ts,tsx,js,jsx,json,css,scss,md,astro}\"",
+    "ts:check": "bunx tsc --noEmit",
     "start:workers": "bun --workers=8 run src/hono-server.js",
     "benchmark:1": "autocannon -c 100 -d 5 http://localhost:4321/api/test",
     "benchmark:2": "autocannon -c 500 -d 5 http://localhost:4321/api/rcp/get-planets",
