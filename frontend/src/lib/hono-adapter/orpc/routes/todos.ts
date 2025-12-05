@@ -15,7 +15,7 @@ import {
   deleteTodoSchemabyId,
   findTodoByNumber,
   outputTodoSchema,
-} from '@hono-adapt/orpc/schemas/todos';
+} from '@/lib/types-schemas-validator/orpc-schemas-types/todos';
 import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
 
 // Define the Planet schema with metadata for OpenAPI

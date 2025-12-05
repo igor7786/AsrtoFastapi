@@ -2,7 +2,7 @@ import { eq, desc, and } from 'drizzle-orm';
 import { db } from '@db/db-instance';
 import { todos } from '@db/todos-shema';
 import type { NewTodo, Todo } from '@db/types';
-import { outputTodoSchema } from '@hono-adapt/orpc/schemas/todos';
+import { outputTodoSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/todos';
 import type z from 'zod';
 type OutputTodo = z.infer<typeof outputTodoSchema>;
 

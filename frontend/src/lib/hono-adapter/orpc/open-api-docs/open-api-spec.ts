@@ -6,7 +6,7 @@ import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from '@orpc/j
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import { OpenAPIReferencePlugin } from '@orpc/openapi/plugins';
 import { router } from '@hono-adapt/orpc/routes/router';
-import { PlanetSchema } from '@hono-adapt/orpc/schemas/planet';
+import { PlanetSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/planet';
 import { RequestHeadersPlugin, ResponseHeadersPlugin } from '@orpc/server/plugins';
 
 export const openApiHandler = new OpenAPIHandler(router, {

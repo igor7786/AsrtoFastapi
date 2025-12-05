@@ -21,7 +21,7 @@ import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
 import {
   registerInputSchemaFrontend,
   type RegisterInputSchemaFrontend,
-} from '@hono-adapt/orpc/schemas/auth.login.register';
+} from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/lib/hono-adapter/orpc/client';

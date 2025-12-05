@@ -1,7 +1,7 @@
 // router.ts
 import { os } from '@orpc/server';
 import * as z from 'zod';
-import { PlanetSchema } from '@/lib/hono-adapter/orpc/schemas/planet';
+import { PlanetSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/planet';
 // Define the Planet schema with metadata for OpenAPI
 
 // GET route to list planets

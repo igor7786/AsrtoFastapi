@@ -27,7 +27,10 @@ import {
 } from '@/components/reactcomp/ui/form';
 import { Input } from '@/components/reactcomp/ui/input';
 import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
-import { type LoginSchema, inputLoginSchema } from '@hono-adapt/orpc/schemas/auth.login.register';
+import {
+  type LoginSchema,
+  inputLoginSchema,
+} from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/lib/hono-adapter/orpc/client';
 

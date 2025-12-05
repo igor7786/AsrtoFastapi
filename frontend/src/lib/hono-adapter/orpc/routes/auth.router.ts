@@ -3,7 +3,7 @@ import {
   inputLoginSchema,
   inputRegisterSchema,
   outputLoginRegisterSchema,
-} from '@/lib/hono-adapter/orpc/schemas/auth.login.register';
+} from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { auth } from '@/lib/auth';
 import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
