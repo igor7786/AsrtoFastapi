@@ -30,7 +30,10 @@ import {
 } from '@/components/reactcomp/ui/form';
 import { Input } from '@/components/reactcomp/ui/input';
 import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
-import { type LoginSchema, loginSchema } from '@/lib/types-schemas-validator/login-schema';
+import {
+  type LoginSchema,
+  loginSchema,
+} from '@/lib/types-schemas-validator/rpc-schemas-types/login-schema';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   // 1. Define your form.

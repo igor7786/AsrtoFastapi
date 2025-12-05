@@ -2,8 +2,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import axios from 'axios';
-import type { TimeResponse } from '@/lib/types-schemas-validator/time-type.ts';
-import type { createTodoSchema } from '@/lib/types-schemas-validator/create-todo.validator';
+import type { TimeResponse } from '@/lib/types-schemas-validator/rpc-schemas-types/time-type';
+import type { createTodoSchema } from '@/lib/types-schemas-validator/rpc-schemas-types/create-todo.validator';
 import type z from 'zod';
 import clientHonoRpC from '@/lib/hono-adapter/rpc/client';
 

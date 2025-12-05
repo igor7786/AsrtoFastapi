@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { authMiddleware } from '@/lib/hono-adapter/rpc/auth-middleware';
 import { getTodoByUserIdAndOffset } from '@db/queries/queries';
 import type { HonoEnv } from '@db/types';
-import { todoIdParamValidator } from '@/lib/types-schemas-validator/todo-param-validator';
+import { todoIdParamValidator } from '@/lib/types-schemas-validator/rpc-schemas-types/todo-param-validator';
 const todoApi = new Hono<HonoEnv>().use(authMiddleware).get('/:id', todoIdParamValidator, async (c) => {
   const user = c.get('user');
   const { id: offset } = c.req.valid('param'); // validated number ≥ 0

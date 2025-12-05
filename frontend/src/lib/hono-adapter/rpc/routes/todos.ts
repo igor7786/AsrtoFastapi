@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { authMiddleware } from '@/lib/hono-adapter/rpc/auth-middleware';
 import { getTodosByUserId, createTodo } from '@db/queries/queries';
 import type { HonoEnv } from '@db/types';
-import { createTodoValidator } from '@/lib/types-schemas-validator/create-todo.validator';
+import { createTodoValidator } from '@/lib/types-schemas-validator/rpc-schemas-types/create-todo.validator';
 const todosApi = new Hono<HonoEnv>()
   .use(authMiddleware)
   .get('/', async (c) => {

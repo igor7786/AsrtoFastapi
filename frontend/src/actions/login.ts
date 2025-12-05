@@ -1,5 +1,5 @@
 import { auth } from '@/lib/auth';
-import { loginSchema } from '@/lib/types-schemas-validator/login-schema';
+import { loginSchema } from '@/lib/types-schemas-validator/rpc-schemas-types/login-schema';
 import { ActionError, defineAction } from 'astro:actions';
 import { mapStatusToAstroCode } from '@/actions/error-helper';
 import { set } from 'zod';
