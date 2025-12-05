@@ -2,7 +2,6 @@ import { auth } from '@/lib/auth';
 import { loginSchema } from '@/lib/types-schemas-validator/rpc-schemas-types/login-schema';
 import { ActionError, defineAction } from 'astro:actions';
 import { mapStatusToAstroCode } from '@/actions/error-helper';
-import { set } from 'zod';
 
 export const login = {
   loginUser: defineAction({
@@ -19,11 +18,11 @@ export const login = {
         });
       }
 
-      const { name, password } = parsed.data;
+      const { email, password } = parsed.data;
 
       try {
         const authResponse = await auth.api.signInEmail({
-          body: { email: name, password },
+          body: { email, password },
           asResponse: true,
           returnHeaders: true,
         });
