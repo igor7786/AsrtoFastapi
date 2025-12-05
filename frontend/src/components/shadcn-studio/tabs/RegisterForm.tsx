@@ -59,7 +59,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
       },
     },
   };
-  // 2. Define your astro action.
   // 2. Define a submit handler.
   const idToast = 'login-toast';
   const mutation = useMutation(
@@ -203,19 +202,19 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                             <FormControl>
                               <Input
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                type="email"
+                                type="text"
                                 placeholder="example@example.com"
                                 autoComplete="email"
                                 {...field}
                               />
                             </FormControl>
                             {/* ✅ Conditionally show FormMessage or FormDescription */}
-                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                            {form.watch('email').length > 0 && !form.formState.errors.email ? (
                               <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
-                            ) : form.formState.errors.name ? (
+                            ) : form.formState.errors.email ? (
                               <FormMessage className="flex items-center text-red-500">
                                 <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.name.message}</span>
+                                <span>{form.formState.errors.email.message}</span>
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
