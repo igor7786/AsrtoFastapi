@@ -10,3 +10,4 @@ README.md
 biome.jsonc
 bun.lock
 package.json
+**/routeTree.gen.ts

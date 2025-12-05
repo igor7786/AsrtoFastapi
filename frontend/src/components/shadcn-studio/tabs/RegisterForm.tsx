@@ -21,12 +21,15 @@ import {
 } from '@/components/reactcomp/ui/form';
 import { Input } from '@/components/reactcomp/ui/input';
 import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
-import { registerSchema, type RegisterSchema } from '@/lib/types-schemas-validator/register-schema';
+import {
+  registerInputSchemaFrontend,
+  type RegisterInputSchemaFrontend,
+} from '@hono-adapt/orpc/schemas/auth.login.register';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
   // 1. Define your form.
-  const form = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm<RegisterInputSchemaFrontend>({
+    resolver: zodResolver(registerInputSchemaFrontend),
     defaultValues: {
       name: '',
       password: '',

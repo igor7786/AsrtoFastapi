@@ -43,6 +43,11 @@ export type RegisterSchema = z.infer<typeof inputRegisterSchema>;
 
 export const registerInputSchemaFrontend = inputLoginSchema
   .extend({
+    name: z
+      .string()
+      .trim()
+      .min(2, { message: 'Name must be at least 2 characters long.' })
+      .max(20, { message: 'Name cannot exceed 20 characters.' }),
     repeatPassword: z
       .string()
       .trim()
@@ -53,7 +58,7 @@ export const registerInputSchemaFrontend = inputLoginSchema
     message: 'Passwords do not match',
     path: ['repeatPassword'],
   });
-export type RegisterInputSchema = z.infer<typeof registerInputSchemaFrontend>;
+export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFrontend>;
 export const outputLoginRegisterSchema = z.object({
   message: z.string().trim(),
 });

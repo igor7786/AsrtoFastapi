@@ -1,8 +1,6 @@
-import { actions } from 'astro:actions';
-import { withState } from '@astrojs/react/actions';
+import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GalleryVerticalEnd, X, Check } from 'lucide-react';
-import { startTransition, useActionState, useEffect } from 'react';
+import { Check, GalleryVerticalEnd, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -29,14 +27,17 @@ import {
 } from '@/components/reactcomp/ui/form';
 import { Input } from '@/components/reactcomp/ui/input';
 import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
-import { type LoginSchema, loginSchema } from '@/lib/types-schemas-validator/login-schema';
+import { type LoginSchema, inputLoginSchema } from '@hono-adapt/orpc/schemas/auth.login.register';
+import { useMutation } from '@tanstack/react-query';
+import { client } from '@/lib/hono-adapter/orpc/client';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
+  const queryClient = getQueryClient();
   // 1. Define your form.
   const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(inputLoginSchema),
     defaultValues: {
-      name: '',
+      email: '',
       password: '',
     },
     mode: 'onChange',
@@ -61,66 +62,65 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       },
     },
   };
-  // 2. Define your astro action.
-  const [state, action, pending] = useActionState(withState(actions.login.loginUser), {
-    data: { name: '', success: false },
-    error: undefined,
-  });
-  useEffect(() => {
-    const idToast = 'login-toast';
-    if (pending) {
-      toast(
-        <div className="flex items-center gap-2">
-          <Spinner className="text-orange-500" />
-          <span>Saving your information...</span>
-        </div>,
-        {
-          id: idToast,
-          duration: Infinity,
-        }
-      );
-    } else if (state?.error) {
-      toast(
-        <div className="flex items-center gap-2">
-          <X className="text-red-500" />
-          <span>{state.error.message ?? 'Failed to update account.'}</span>
-        </div>,
-        {
-          id: idToast,
-          duration: 1000,
-        }
-      );
-    } else if (state?.data?.success) {
-      toast(
-        <div className="flex items-center gap-2">
-          <Check className="text-green-500" />
-          <span>{`Welcome ${state.data.name}.`}</span>
-        </div>,
-        {
-          id: idToast,
-          duration: 1000,
-        }
-      );
-      const timer = setTimeout(() => {
-        window.location.reload();
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-      };
-    }
+  // 2. Define a submit handler.
+  const idToast = 'login-toast';
+  const mutation = useMutation(
+    {
+      mutationFn: ({ email, password }: LoginSchema) => client.auth.login({ email, password }),
 
-    // ✅ Clean up toast on component unmount
-  }, [pending, state]);
+      onMutate: async () => {
+        toast(
+          <div className="flex items-center gap-2">
+            <Spinner className="text-orange-500" />
+            <span>Saving your information...</span>
+          </div>,
+          {
+            id: idToast,
+            duration: Infinity,
+          }
+        );
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      },
+
+      onError: async (error) => {
+        toast(
+          <div className="flex items-center gap-2">
+            <X className="text-red-500" />
+            <span>{error.message ?? 'Failed to update account.'}</span>
+          </div>,
+          {
+            id: idToast,
+            duration: 1000,
+          }
+        );
+      },
+
+      onSuccess: async (data) => {
+        toast(
+          <div className="flex items-center gap-2">
+            <Check className="text-green-500" />
+            <span>{data.message}</span>
+          </div>,
+          {
+            id: idToast,
+            duration: 1000,
+          }
+        );
+        const timer = setTimeout(() => {
+          window.location.reload();
+        }, 500);
+        return () => {
+          clearTimeout(timer);
+        };
+      },
+    },
+    queryClient
+  );
+  // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
-    const fd = new FormData();
-    fd.append('name', formData.name);
-    fd.append('password', formData.password);
-    startTransition(() => {
-      action(fd);
-    });
+    const { email, password } = formData;
+    mutation.mutate({ email, password });
   });
-  // 4. Error handling with Soner
-
   return (
     <>
       <motion.div
@@ -185,26 +185,27 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                   >
                     <FormField
                       control={form.control}
-                      name="name"
+                      name="email"
                       render={({ field }) => (
                         <motion.div variants={itemVariants}>
                           <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
                               <Input
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                                type="email"
                                 placeholder="email@com"
                                 autoComplete="email"
                                 {...field}
                               />
                             </FormControl>
                             {/* ✅ Conditionally show FormMessage or FormDescription */}
-                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                            {form.watch('email').length > 0 && !form.formState.errors.email ? (
                               <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
-                            ) : form.formState.errors.name ? (
+                            ) : form.formState.errors.email ? (
                               <FormMessage className="flex items-center text-red-500">
                                 <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.name.message}</span>
+                                <span>{form.formState.errors.email.message}</span>
                               </FormMessage>
                             ) : (
                               <FormDescription className="text-foreground">
@@ -226,7 +227,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                               <Input
                                 type="password"
                                 className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                placeholder="Your password"
+                                placeholder="*******"
                                 autoComplete="current-password"
                                 {...field}
                               />
@@ -251,8 +252,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     />
 
                     <motion.div variants={itemVariants}>
-                      <RippleButton type="submit" className="w-full" disabled={pending}>
-                        {pending ? (
+                      <RippleButton type="submit" className="w-full" disabled={mutation.isPending}>
+                        {mutation.isPending ? (
                           <div className="disabled:text-primary flex items-center justify-center gap-4">
                             <span>Loading</span>
                             <Spinner className="text-amber-50" size={10} />
