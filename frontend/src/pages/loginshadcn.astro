@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
-import { LoginForm } from '@rcomp/LoginForm';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
 import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
 import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
@@ -18,7 +17,7 @@ try {
 }
 ---
 
-<Layout title="Login-shadcn">
+<Layout title={title}>
   <!--<Page client:visible />-->
   <main>
     <header>
