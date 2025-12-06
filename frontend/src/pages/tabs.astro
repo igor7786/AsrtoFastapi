@@ -12,16 +12,10 @@ try {
   sign = tabsUrlSchema.parse(sign);
 } catch {
   sign = 'signin'; // fallback
-}
-
-// Optional fallback redirect if no tab was specified
-if (Astro.url.href.endsWith('/tabs') || Astro.url.href.endsWith('/tabs/')) {
-  return Astro.redirect(`/tabs?tab=${sign}`, 302);
+  return Astro.redirect(`/tabs?tab=${sign}`, 302); // redirect
 }
 ---
 
 <Layout title={title}>
-  <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-    <AnimatedTabsDemo props={sign} client:load />
-  </div>
+  <AnimatedTabsDemo props={sign} client:load />
 </Layout>
