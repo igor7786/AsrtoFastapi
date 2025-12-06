@@ -24,9 +24,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const protectedPaths = ['/dashboard', '/admin', '/settings'];
   if (!session && protectedPaths.some((path) => context.url.pathname.startsWith(path))) {
     const redirectTo = encodeURIComponent(context.url.pathname);
+    const tabs = encodeURIComponent(context.url.searchParams.get('tab') || 'signin');
     return new Response(null, {
       status: 302,
-      headers: { Location: `/loginshadcn?redirect=${redirectTo}` },
+      headers: { Location: `/loginshadcn?tab=${tabs}&redirect=${redirectTo}` },
     });
   }
 

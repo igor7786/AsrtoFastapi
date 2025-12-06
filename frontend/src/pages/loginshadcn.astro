@@ -3,7 +3,19 @@ import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import { LoginForm } from '@rcomp/LoginForm';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
-import type { loadRenderers } from 'astro:container';
+import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
+import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
+const title = 'Login';
+
+let sign = Astro.url.searchParams.get('tab') as string;
+
+// Validate tab query param
+try {
+  sign = tabsUrlSchema.parse(sign);
+} catch {
+  sign = 'signin'; // fallback
+  return Astro.redirect(`/loginshadcn?tab=${sign}`, 302); // redirect
+}
 ---
 
 <Layout title="Login-shadcn">
@@ -13,11 +25,11 @@ import type { loadRenderers } from 'astro:container';
       <ThemeToggleShell className="absolute top-4 right-4" client:idle />
       <!-- Logo, nav menu, site title -->
     </header>
-    <LoginForm client:load>
+    <AnimatedTabsDemo props={sign} client:load>
       <div slot="fallback">
         <SkeletonPage client:visible />
       </div>
-    </LoginForm>
+    </AnimatedTabsDemo>
     <footer>
       <!-- Footer info, links, copyrights -->
     </footer>
