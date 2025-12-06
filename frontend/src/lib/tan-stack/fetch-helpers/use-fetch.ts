@@ -5,7 +5,6 @@ import axios from 'axios';
 import type { TimeResponse } from '@/lib/types-schemas-validator/rpc-schemas-types/time-type';
 import type { createTodoSchema } from '@/lib/types-schemas-validator/rpc-schemas-types/create-todo.validator';
 import type z from 'zod';
-import clientHonoRpC from '@/lib/hono-adapter/rpc/client';
 
 const client = getQueryClient();
 export function useTime() {
@@ -33,16 +32,15 @@ export async function fetchTodoRPC(
 ): Promise<z.infer<typeof createTodoSchema>> {
   // Fetch the todo by ID via RPC
   const idStr = String(id);
-  const res = await clientHonoRpC.api.todo[':id'].$get(
-    { param: { id: idStr } }, // path params
-    { init: { signal } } // pass the AbortSignal for cancellation
-  );
+  const res = await axios.get(`/api/rpc/todos/${idStr}`, {
+    signal,
+  });
   // Handle errors based on status
   if (res.status !== 200) {
     throw new Error(` ${res.status} ${res.statusText}`);
   }
   // Parse JSON and return the typed todo
-  return res.json() as Promise<z.infer<typeof createTodoSchema>>;
+  return res.data as Promise<z.infer<typeof createTodoSchema>>;
 }
 
 export const useTodo = (id: number) => {
