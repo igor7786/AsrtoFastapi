@@ -7,6 +7,7 @@ import {
 import { auth } from '@/lib/auth';
 import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
+import { authMiddleware } from '../middlewares/auth-middleware';
 
 export const register = base
   .use(validationErrorsMiddleware)
@@ -91,7 +92,7 @@ export const login = base
         context.resHeaders?.append('Set-Cookie', cookie);
       }
       return {
-        message: `Welcome back ${response.user.name.charAt(0).toUpperCase() + response.user.name.slice(1)}`,
+        message: `Welcome back ${response.user.name}`,
       };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {
@@ -100,6 +101,38 @@ export const login = base
         throw errors.UNAUTHORIZED({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 422) {
         throw errors.UNPROCESSABLE_CONTENT({ message: err.message });
+      }
+      throw errors.INTERNAL_SERVER_ERROR();
+    }
+  });
+
+import { deleteCookie } from '@orpc/server/helpers';
+export const logout = base
+  .use(validationErrorsMiddleware)
+  .use(authMiddleware)
+  .route({
+    method: 'POST',
+    path: '/logout',
+    description: 'Logout user',
+    summary: 'Sign out user',
+    tags: ['Auth'],
+    successDescription: 'User logged out successfully',
+    successStatus: 200,
+  })
+  .output(outputLoginRegisterSchema)
+  .handler(async ({ errors, context }) => {
+    try {
+      await auth.api.signOut({
+        headers: context.reqHeaders!,
+      });
+      deleteCookie(context.resHeaders, 'better-auth.session_token');
+      deleteCookie(context.resHeaders, 'better-auth.session_data');
+      return {
+        message: `${context.user.name} have been logged out`,
+      };
+    } catch (err) {
+      if (err instanceof APIError && err.statusCode === 400) {
+        throw errors.BAD_REQUEST({ message: err.message });
       }
       throw errors.INTERNAL_SERVER_ERROR();
     }

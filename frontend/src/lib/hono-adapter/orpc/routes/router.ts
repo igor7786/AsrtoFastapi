@@ -7,7 +7,7 @@ import {
   listTodos,
   putTodo,
 } from '@hono-adapt/orpc/routes/todos';
-import { login, register } from '@/lib/hono-adapter/orpc/routes/auth.router';
+import { login, logout, register } from '@/lib/hono-adapter/orpc/routes/auth.router';
 
 export const router = {
   planet: {
@@ -16,6 +16,7 @@ export const router = {
   auth: {
     register: register,
     login: login,
+    logout: logout,
   },
   todos: {
     listTodos: listTodos,
