@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { client } from '@hono-adapt/orpc/client';
-import type { OutputTodo } from '@/lib/types-schemas-validator/orpc-schemas-types/todos';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 
 interface GetTodoByIdProps {
