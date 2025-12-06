@@ -3,10 +3,10 @@ import { GalleryVerticalEnd, X, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { cn } from '@/components/reactcomp/lib/utils';
-import { Spinner } from '@/components/reactcomp/spinner';
-import { AuroraText } from '@/components/reactcomp/magicui/aurora-text';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/reactcomp/ui/card';
+import { cn } from '@rcomp/lib/utils';
+import { Spinner } from '@rcomp/spinner';
+import { AuroraText } from '@rcomp/magicui/aurora-text';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@rcomp/ui/card';
 import {
   Form,
   FormControl,
@@ -15,9 +15,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/reactcomp/ui/form';
-import { Input } from '@/components/reactcomp/ui/input';
-import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
+} from '@rcomp/ui/form';
+import { Input } from '@rcomp/ui/input';
+import { RippleButton } from '@rcomp/ui/ripple-button';
 import {
   registerInputSchemaFrontend,
   type RegisterInputSchemaFrontend,

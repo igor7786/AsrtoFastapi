@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { BorderBeam } from '@/components/reactcomp/magicui/border-beam';
+import { BorderBeam } from '@rcomp/magicui/border-beam';
 import {
   Tabs,
   TabsContent,
   TabsContents,
   TabsList,
   TabsTrigger,
-} from '@/components/reactcomp/ui/motion-tabs';
-import { LoginForm } from './LoginForm';
-import { RegisterForm } from './RegisterForm';
+} from '@rcomp/shadcn-studio/ui/motion-tabs';
+import { LoginForm } from '@rcomp/LoginForm';
+import { RegisterForm } from '@rcomp/RegisterForm';
 
 const tabs = [
   {

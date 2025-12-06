@@ -4,10 +4,10 @@ import { Check, GalleryVerticalEnd, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { cn } from '@/components/reactcomp/lib/utils';
-import { Spinner } from '@/components/reactcomp/spinner';
-import { Button } from '@/components/reactcomp/ui/button';
-import { AuroraText } from '@/components/reactcomp/magicui/aurora-text';
+import { cn } from '@rcomp/lib/utils';
+import { Spinner } from '@rcomp/spinner';
+import { Button } from '@rcomp/ui/button';
+import { AuroraText } from '@rcomp/magicui/aurora-text';
 import {
   Card,
   CardContent,

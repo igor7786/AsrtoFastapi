@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import ThemeToggleShell from '@rcomp/ThemeModeToogle';
-import AnimatedTabsDemo from '@/components/shadcn-studio/tabs/tabs-27';
+import AnimatedTabsDemo from '@rcomp/shadcn-studio/tabs/Auth';
 import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
 const title = 'Login';
 let sign = Astro.url.searchParams.get('tab') as string;
@@ -12,7 +12,7 @@ try {
   sign = tabsUrlSchema.parse(sign);
 } catch {
   sign = 'signin'; // fallback
-  return Astro.redirect(`/loginshadcn?tab=${sign}`, 302); // redirect
+  return Astro.redirect(`/login?tab=${sign}`, 302); // redirect
 }
 ---
 
