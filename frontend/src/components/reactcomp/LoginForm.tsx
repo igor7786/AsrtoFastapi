@@ -67,7 +67,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   };
   // 2. Define your astro action.
   const [state, action, pending] = useActionState(withState(actions.login.loginUser), {
-    data: { name: '', success: false },
+    data: { email: '', success: false },
     error: undefined,
   });
   useEffect(() => {
@@ -98,7 +98,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       toast(
         <div className="flex items-center gap-2">
           <Check className="text-green-500" />
-          <span>{`Welcome ${state.data.name}.`}</span>
+          <span>{`Welcome ${state.data.email}.`}</span>
         </div>,
         {
           id: idToast,

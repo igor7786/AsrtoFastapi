@@ -78,7 +78,7 @@ export const login = {
             ctx.cookies.set(name, decodeURIComponent(value), cookieOptions);
           }
         }
-        return { success: true, name };
+        return { success: true, email };
       } catch (err) {
         if (err instanceof ActionError) {
           console.error('Login action error:', err.message);
