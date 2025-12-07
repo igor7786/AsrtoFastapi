@@ -92,7 +92,9 @@ export const login = baseLogin
       }
 
       for (const cookie of allCookies) {
-        context.resHeaders?.append('Set-Cookie', cookie);
+        // Add secure flags
+        const secured = `${cookie}; Secure;`;
+        context.resHeaders?.append('Set-Cookie', secured);
       }
 
       return { message: `Welcome back ${response.user.name}` };
