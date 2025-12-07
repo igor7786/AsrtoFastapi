@@ -3,6 +3,7 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@db/db-instance'; // your drizzle instance
 import { openAPI } from 'better-auth/plugins';
 import * as schema from '@db/shema-index';
+import { hashPassword, verifyPassword } from '@/lib/argon2';
 
 export const auth = betterAuth({
   basePath: '/api/auth',
@@ -17,6 +18,10 @@ export const auth = betterAuth({
     maxPasswordLength: 20,
     minPasswordLength: 2,
     requireEmailVerification: false,
+    password: {
+      hash: hashPassword,
+      verify: verifyPassword,
+    },
   },
   session: {
     cookieCache: {

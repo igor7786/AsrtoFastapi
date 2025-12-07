@@ -37,7 +37,7 @@ export const inputRegisterSchema = inputLoginSchema.extend({
     .trim()
     .min(4, { message: 'Name must be at least 4 characters long.' })
     .max(20, { message: 'Name cannot exceed 20 characters.' })
-    .transform((val) => val.charAt(0).toUpperCase() + val.slice(1)),
+    .transform((val) => val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()),
 });
 export type RegisterSchema = z.infer<typeof inputRegisterSchema>;
 
