@@ -6,12 +6,12 @@ import { auth } from '@/lib/auth';
 import { Scalar } from '@scalar/hono-api-reference';
 import { minifyContractRouter } from '@orpc/contract';
 import { router } from '@hono-adapt/orpc/routes/router';
+import type { HonoEnv } from '@db/types';
 
 // ------------------------------
 // 1️⃣ Create Hono app
 // ------------------------------
-const app = new Hono({ strict: false }).basePath('/api');
-
+const app = new Hono<HonoEnv>({ strict: false }).basePath('/api');
 // Enable CORS globally for /api routes
 app.use(
   '/rpc/auth/*',
@@ -32,7 +32,10 @@ app
   .use('/rpc/*', async (c, next) => {
     const { matched, response } = await openApiHandler.handle(c.req.raw, {
       prefix: '/api/rpc',
-      context: {}, // You can inject user/session context here
+      context: {
+        session: c.get('session'), // ✅ real session object
+        user: c.get('user'),
+      }, // You can inject user/session context here
     });
 
     if (matched) return c.newResponse(response.body, response);
