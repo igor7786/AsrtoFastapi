@@ -64,7 +64,7 @@ export const login = base
     method: 'POST',
     path: '/login',
     description: 'Login a user',
-    summary: 'Authenticate a user',
+    summary: 'Sign in a user',
     tags: ['Auth'],
     successDescription: 'User logged in successfully',
     successStatus: 200,
@@ -73,6 +73,27 @@ export const login = base
   .output(outputLoginRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
+      //? 1️ Check if user is already logged in by checking cookie in header
+      const cookieHeader = context.reqHeaders?.toJSON().cookie;
+      const match = cookieHeader?.match(/better-auth\.session_data=([^;]+)/);
+
+      if (match) {
+        const base64 = match[1];
+        const jsonString = Buffer.from(base64, 'base64').toString('utf8');
+        const data = JSON.parse(jsonString);
+
+        if (data?.session?.user?.id) {
+          // User is already logged in
+          throw new APIError('UNPROCESSABLE_ENTITY', {
+            message: 'User is already logged in, please logout first',
+            code: '422',
+            cause: 'User is already logged in',
+          });
+        }
+      }
+
+      //? 2 Proceed with login
+
       const { headers, response } = await auth.api.signInEmail({
         returnHeaders: true,
         body: {
@@ -80,6 +101,7 @@ export const login = base
           password: input.password,
         },
       });
+
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {
@@ -88,12 +110,12 @@ export const login = base
           cause: 'Failed to get any cookie',
         });
       }
+
       for (const cookie of allCookies) {
         context.resHeaders?.append('Set-Cookie', cookie);
       }
-      return {
-        message: `Welcome back ${response.user.name}`,
-      };
+
+      return { message: `Welcome back ${response.user.name}` };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {
         throw errors.BAD_REQUEST({ message: err.message });

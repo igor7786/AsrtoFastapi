@@ -71,8 +71,8 @@ export default function LogoutButton() {
     <button
       type="submit"
       onClick={handleLogout}
-      disabled={false}
-      className="text-sm text-green-500 hover:underline disabled:opacity-50 dark:text-green-400"
+      disabled={mutation.isPending}
+      className="rounded-lg px-3 py-1 text-sm text-green-500 transition hover:underline disabled:cursor-not-allowed disabled:border disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:opacity-80 disabled:hover:no-underline dark:text-green-400 dark:disabled:border-gray-700 dark:disabled:bg-gray-800"
     >
       Logout
     </button>
