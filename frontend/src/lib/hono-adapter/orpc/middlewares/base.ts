@@ -1,14 +1,19 @@
 import { os } from '@orpc/server';
 import type { RequestHeadersPluginContext, ResponseHeadersPluginContext } from '@orpc/server/plugins';
-import { onError, ORPCError, ValidationError } from '@orpc/server';
-import { z } from 'zod';
+import type { auth } from '@/lib/auth';
 
 // 👇 Extend ORPC context with your auth fields
-export type AppContext = RequestHeadersPluginContext &
-  ResponseHeadersPluginContext & {
-    session?: any;
-    user?: any;
-  };
+export type AppContext = RequestHeadersPluginContext & ResponseHeadersPluginContext;
+
+export type AuthedContext = AppContext & {
+  session: typeof auth.$Infer.Session.session;
+  user: typeof auth.$Infer.Session.user;
+};
+
+export type IsAuthedContext = AppContext & {
+  session?: typeof auth.$Infer.Session.session;
+  user?: typeof auth.$Infer.Session.user;
+};
 
 export const base = os.$context<AppContext>().errors({
   BAD_REQUEST: { message: 'Bad Request', code: 400 },
@@ -20,3 +25,6 @@ export const base = os.$context<AppContext>().errors({
   TOO_MANY_REQUESTS: { message: 'Rate limit exceeded please try again later', code: 429 },
   INTERNAL_SERVER_ERROR: { message: 'Internal Server Error', code: 500 },
 });
+
+export const baseAuth = base.$context<AuthedContext>();
+export const baseLogin = base.$context<IsAuthedContext>();

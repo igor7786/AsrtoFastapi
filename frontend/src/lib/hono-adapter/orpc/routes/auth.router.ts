@@ -1,16 +1,16 @@
-import { base } from '@hono-adapt/orpc/middlewares/base';
+import { base, baseAuth, baseLogin } from '@hono-adapt/orpc/middlewares/base';
 import {
   inputLoginSchema,
   inputRegisterSchema,
   outputLoginRegisterSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { auth } from '@/lib/auth';
-import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
+import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
-import { authMiddleware } from '../middlewares/auth-middleware';
+import { isAuth, isLoggedIn } from '@hono-adapt/orpc/middlewares/auth-middleware';
 
 export const register = base
-  .use(validationErrorsMiddleware)
+  .use(isValErrors)
   .route({
     method: 'POST',
     path: '/register',
@@ -58,8 +58,9 @@ export const register = base
     }
   });
 
-export const login = base
-  .use(validationErrorsMiddleware)
+export const login = baseLogin
+  .use(isValErrors)
+  .use(isLoggedIn)
   .route({
     method: 'POST',
     path: '/login',
@@ -73,27 +74,6 @@ export const login = base
   .output(outputLoginRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
-      //? 1️ Check if user is already logged in by checking cookie in header
-      const cookieHeader = context.reqHeaders?.toJSON().cookie;
-      const match = cookieHeader?.match(/better-auth\.session_data=([^;]+)/);
-
-      if (match) {
-        const base64 = match[1];
-        const jsonString = Buffer.from(base64, 'base64').toString('utf8');
-        const data = JSON.parse(jsonString);
-
-        if (data?.session?.user?.id) {
-          // User is already logged in
-          throw new APIError('UNPROCESSABLE_ENTITY', {
-            message: 'User is already logged in, please logout first',
-            code: '422',
-            cause: 'User is already logged in',
-          });
-        }
-      }
-
-      //? 2 Proceed with login
-
       const { headers, response } = await auth.api.signInEmail({
         returnHeaders: true,
         body: {
@@ -129,9 +109,9 @@ export const login = base
   });
 
 import { deleteCookie } from '@orpc/server/helpers';
-export const logout = base
-  .use(validationErrorsMiddleware)
-  .use(authMiddleware)
+export const logout = baseAuth
+  .use(isValErrors)
+  .use(isAuth)
   .route({
     method: 'POST',
     path: '/logout',

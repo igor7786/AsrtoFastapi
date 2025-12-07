@@ -8,18 +8,18 @@ import {
 } from '@db/queries/queries';
 // router.ts
 import * as z from 'zod';
-import { authMiddleware } from '@hono-adapt/orpc/middlewares/auth-middleware';
-import { base } from '@hono-adapt/orpc/middlewares/base';
+import { isAuth } from '@hono-adapt/orpc/middlewares/auth-middleware';
+import { baseAuth } from '@hono-adapt/orpc/middlewares/base';
 import {
   createTodoSchema,
   deleteTodoSchemabyId,
   findTodoByNumber,
   outputTodoSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/todos';
-import { validationErrorsMiddleware } from '@hono-adapt/orpc/middlewares/validation-errors';
+import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
 
 // Define the Planet schema with metadata for OpenAPI
-const baseTodo = base
+const baseTodo = baseAuth
   .errors({
     INTERNAL_SERVER_ERROR: {
       message: 'Failed to fetch data from database',
@@ -30,8 +30,8 @@ const baseTodo = base
       status: 404,
     },
   })
-  .use(authMiddleware)
-  .use(validationErrorsMiddleware);
+  .use(isAuth)
+  .use(isValErrors);
 // GET route to list planets
 export const listTodos = baseTodo
 

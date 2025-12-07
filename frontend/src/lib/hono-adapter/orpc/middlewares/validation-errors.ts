@@ -1,7 +1,7 @@
 import { ORPCError, ValidationError } from '@orpc/server';
 import { z } from 'zod';
 import { base } from '@hono-adapt/orpc/middlewares/base';
-export const validationErrorsMiddleware = base.middleware(async ({ context, next, errors }) => {
+export const isValErrors = base.middleware(async ({ context, next, errors }) => {
   try {
     return await next({ context });
   } catch (error) {

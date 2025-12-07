@@ -1,10 +1,6 @@
-import { base } from '@hono-adapt/orpc/middlewares/base';
+import { baseAuth, baseLogin } from '@hono-adapt/orpc/middlewares/base';
 import { auth } from '@/lib/auth';
-export const authMiddleware = base.middleware(async ({ context, next, errors }) => {
-  // If Astro manually injects session + user, skip header validation
-  if (context.session && context.user) {
-    return next({ context });
-  }
+export const isAuth = baseAuth.middleware(async ({ context, next, errors }) => {
   const headers = context.reqHeaders;
 
   if (!headers) {
@@ -23,4 +19,17 @@ export const authMiddleware = base.middleware(async ({ context, next, errors }) 
       user: sessionData.user,
     },
   });
+});
+export const isLoggedIn = baseLogin.middleware(async ({ context, next, errors }) => {
+  const session = await auth.api.getSession({
+    headers: context.reqHeaders!,
+  });
+  if (session?.user?.id) {
+    throw errors.UNPROCESSABLE_CONTENT({
+      message: 'User is already logged in, please logout first before logging in again',
+    });
+  }
+
+  // continue the request
+  return next({ context });
 });
