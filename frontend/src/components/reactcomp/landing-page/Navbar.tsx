@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 import { Menu } from 'lucide-react';
 import ThemeToggleShell from '../ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
+import { useState } from 'react';
 const navLinks = [
   {
     href: '#features',
@@ -18,8 +19,10 @@ const navLinks = [
   },
 ];
 const Navbar = () => {
+  const [active, setActive] = useState<string | null>(null);
+
   return (
-    <nav className="border-border/50 bg-background/50 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-xl">
+    <nav className="animate-fade-in border-border/50 bg-background/50 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-xl">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="font-display text-xl font-bold tracking-tight">
           <span className="text-gradient">Apex</span>
@@ -30,7 +33,12 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              onClick={() => setActive(link.href)}
+              className={`text-sm transition-colors ${
+                active === link.href
+                  ? 'text-foreground underline decoration-emerald-500 underline-offset-6'
+                  : 'text-muted-foreground'
+              }`}
             >
               {link.label}
             </a>
@@ -44,7 +52,7 @@ const Navbar = () => {
           >
             Get Started
           </Button>
-          <ThemeToggleShell className="sm:hidden md:inline-flex" />
+          <ThemeToggleShell className="hidden md:inline-flex" />
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>

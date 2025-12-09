@@ -1,16 +1,12 @@
 import { Button } from '@rcomp/ui/button';
 import { ArrowRight, Sparkles, Zap, Shield, Layers } from 'lucide-react';
+import { AuroraText } from '@rcomp/magicui/aurora-text';
 const Main = () => {
   return (
     <>
       {/* Hero Section */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-16">
         {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="bg-foreground/5 absolute -top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full blur-3xl" />
-          <div className="bg-accent/5 absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full blur-3xl" />
-        </div>
-
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <div
             className="border-border animate-fade-in mb-6 inline-flex items-center gap-2 rounded-full border bg-emerald-500/50 px-4 py-2 text-sm opacity-0"
@@ -101,19 +97,19 @@ const Main = () => {
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
-              icon={<Zap className="h-6 w-6" />}
+              icon={<Zap className="dark:text-primary h-6 w-6 text-emerald-500" />}
               title="Lightning Fast"
               description="Optimized performance that keeps your projects running at peak speed."
               delay="0.1s"
             />
             <FeatureCard
-              icon={<Shield className="h-6 w-6" />}
+              icon={<Shield className="h-6 w-6 text-amber-400" />}
               title="Enterprise Security"
               description="Bank-grade encryption and security protocols to protect your data."
               delay="0.2s"
             />
             <FeatureCard
-              icon={<Layers className="h-6 w-6" />}
+              icon={<Layers className="h-6 w-6 text-sky-700" />}
               title="Scalable Architecture"
               description="Grow from prototype to millions of users without changing your stack."
               delay="0.3s"
@@ -131,9 +127,9 @@ const Main = () => {
             </div>
 
             <div className="bg-accent relative z-10">
-              <h2 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
+              <AuroraText className="font-display text-3xl font-bold tracking-tight md:text-5xl">
                 Ready to get started?
-              </h2>
+              </AuroraText>
               <p className="text-muted-foreground mx-auto mt-4 max-w-md">
                 Join thousands of creators who are already building the future with Apex.
               </p>
