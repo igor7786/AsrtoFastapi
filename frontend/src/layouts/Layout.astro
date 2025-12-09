@@ -8,7 +8,7 @@ import CacheManager from '@rcomp/CacheManager';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -18,8 +18,13 @@ import CacheManager from '@rcomp/CacheManager';
     <script set:html={themeScript} />
   </head>
   <body>
-    <slot />
-    <Toaster client:load />
-    <CacheManager client:load />
+    <div class="bg-background min-h-screen">
+      <slot name="header" />
+      <slot name="main" />
+      <slot name="footer" />
+
+      <Toaster client:load />
+      <CacheManager client:load />
+    </div>
   </body><!-- Inline the theme-checker.js script -->
 </html>

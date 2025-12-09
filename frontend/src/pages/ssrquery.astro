@@ -30,10 +30,12 @@ const dehydratedState = dehydrate(queryClient);
 
 <html lang="en">
   <body>
-    <h1>Server Time Example</h1>
+    <main slot="main">
+      <h1>Server Time Example</h1>
 
-    <QueryProvider client:load dehydratedState={dehydratedState}>
-      <PostsList client:load />
-    </QueryProvider>
+      <QueryProvider client:load dehydratedState={dehydratedState}>
+        <PostsList client:load />
+      </QueryProvider>
+    </main>
   </body>
 </html>

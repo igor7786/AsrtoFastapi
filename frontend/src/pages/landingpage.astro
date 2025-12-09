@@ -1,0 +1,12 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Main from '@/components/reactcomp/landing-page/LandingPage';
+import Navbar from '@rcomp/landing-page/Navbar';
+import Footer from '@rcomp/landing-page/Footer';
+---
+
+<Layout title="Landing Page">
+  <Navbar slot="header" client:load />
+  <Main slot="main" client:load />
+  <Footer slot="footer" client:load />
+</Layout>

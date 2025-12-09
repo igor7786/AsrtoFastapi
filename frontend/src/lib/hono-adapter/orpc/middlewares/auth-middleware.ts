@@ -1,9 +1,9 @@
 import { baseAuth, baseLogin } from '@hono-adapt/orpc/middlewares/base';
 import { auth } from '@/lib/auth';
 export const isAuth = baseAuth.middleware(async ({ context, next, errors }) => {
-   if (context.user && context.session) {
-     return next({ context });
-   }
+  if (context.user && context.session) {
+    return next({ context });
+  }
 
   const headers = context.reqHeaders;
 

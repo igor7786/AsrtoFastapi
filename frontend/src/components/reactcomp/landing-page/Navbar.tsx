@@ -1,0 +1,84 @@
+import { Button } from '@rcomp/ui/button';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@rcomp/ui/sheet';
+import { Menu } from 'lucide-react';
+import ThemeToggleShell from '../ThemeModeToogle';
+import { navigate } from 'astro:transitions/client';
+const navLinks = [
+  {
+    href: '#features',
+    label: 'Features',
+  },
+  {
+    href: '#about',
+    label: 'About',
+  },
+  {
+    href: '#pricing',
+    label: 'Pricing',
+  },
+];
+const Navbar = () => {
+  return (
+    <nav className="border-border/50 bg-background/50 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-xl">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6">
+        <div className="font-display text-xl font-bold tracking-tight">
+          <span className="text-gradient">Apex</span>
+        </div>
+        {/* Desktop Navigation */}
+        <div className="hidden items-center gap-8 md:flex">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={() => navigate('/login')}
+            size="sm"
+            className="bg-gradient-primary text-primary-foreground hidden bg-emerald-700 hover:bg-emerald-600 hover:opacity-90 md:inline-flex"
+          >
+            Get Started
+          </Button>
+          <ThemeToggleShell className="sm:hidden md:inline-flex" />
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-background w-[280px]">
+              <SheetTitle className="sr-only">Mobile navigation menu</SheetTitle>
+              <SheetDescription className="sr-only">
+                Navigation links for the mobile menu.
+              </SheetDescription>
+
+              <nav className="mt-8 flex flex-col gap-6">
+                <ThemeToggleShell className="mx-auto pt-4" />
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-foreground mx-auto pt-4 text-lg font-medium transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <Button className="bg-primary text-primary-foreground mx-auto mt-4 hover:opacity-90">
+                  Get Started
+                </Button>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </nav>
+  );
+};
+export default Navbar;

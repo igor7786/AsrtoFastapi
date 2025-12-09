@@ -30,7 +30,10 @@ const dehydratedState = dehydrate(queryClient);
 ---
 
 <Layout title="Login">
-  <div class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+  <div
+    slot="main"
+    class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
+  >
     <QueryProvider client:load dehydratedState={dehydratedState}>
       <GetTodoById findId={findId} client:load>
         <div slot="fallback">

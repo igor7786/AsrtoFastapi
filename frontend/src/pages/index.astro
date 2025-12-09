@@ -12,35 +12,37 @@ import Link from 'astro-typesafe-routes/link';
 ---
 
 <Layout title="Welcome to Astro">
-  <TanstackDevWrapper client:load>
-    <TodoList client:only="react" />
-    <ThemeToggleShell client:load />
-  </TanstackDevWrapper>
-  <div class="text-2xl text-amber-700">
-    {user?.name ? `Hello ${user.name}` : null}
-  </div>
-  <div class="mt-2.5 flex gap-1.5">
-    <Link
-      to="/dashboard"
-      class="rounded border-2 border-red-400 p-2 text-sm text-red-400 transition-all delay-100 hover:border-red-500 hover:text-red-500 hover:underline hover:decoration-red-500 hover:decoration-1"
-    >
-      Dashboard
-    </Link>
-    {
-      !user ? (
-        <Link
-          to="/login"
-          class="rounded border-2 border-green-300 p-2 text-sm text-green-400 transition-all delay-100 hover:border-green-500 hover:text-green-500 hover:underline hover:decoration-green-500 hover:decoration-1"
-        >
-          Login Shadcn
-        </Link>
-      ) : (
-        <LogoutButton client:load />
-      )
-    }
-  </div>
+  <main slot="main" class="flex flex-col gap-2.5">
+    <TanstackDevWrapper client:load>
+      <TodoList client:only="react" />
+      <ThemeToggleShell client:load />
+    </TanstackDevWrapper>
+    <div class="text-2xl text-amber-700">
+      {user?.name ? `Hello ${user.name}` : null}
+    </div>
+    <div class="mt-2.5 flex gap-1.5">
+      <Link
+        to="/dashboard"
+        class="rounded border-2 border-red-400 p-2 text-sm text-red-400 transition-all delay-100 hover:border-red-500 hover:text-red-500 hover:underline hover:decoration-red-500 hover:decoration-1"
+      >
+        Dashboard
+      </Link>
+      {
+        !user ? (
+          <Link
+            to="/login"
+            class="rounded border-2 border-green-300 p-2 text-sm text-green-400 transition-all delay-100 hover:border-green-500 hover:text-green-500 hover:underline hover:decoration-green-500 hover:decoration-1"
+          >
+            Login Shadcn
+          </Link>
+        ) : (
+          <LogoutButton client:load />
+        )
+      }
+    </div>
 
-  <Welcome />
+    <Welcome />
+  </main>
 </Layout>
 <!-- target="_blank" -->
 <!-- rel="noopener noreferrer" -->
