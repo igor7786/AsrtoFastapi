@@ -6,7 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { nanoTheme } from '@/lib/stores/themes';
-function ModeToggle({ className }: { className?: string }) {
+export function ModeToggle({ className }: { className?: string }) {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme(); // 👈 use the hook
   const { startTransition } = useThemeTransition();
