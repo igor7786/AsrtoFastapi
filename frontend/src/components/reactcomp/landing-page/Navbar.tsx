@@ -38,7 +38,7 @@ const Navbar = () => {
                 onClick={() => setActive(link.href)}
                 className={`text-sm transition-colors ${
                   active === link.href
-                    ? 'text-foreground underline decoration-emerald-500 underline-offset-6'
+                    ? 'text-foreground underline decoration-emerald-500 underline-offset-8'
                     : 'text-muted-foreground'
                 }`}
               >
