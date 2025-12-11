@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from '@rcomp/ui/form';
 import { Input } from '@rcomp/ui/input';
-import { RippleButton } from '@rcomp/ui/ripple-button';
+import { RippleButton } from '@/components/reactcomp/magicui/ripple-button';
 import {
   registerInputSchemaFrontend,
   type RegisterInputSchemaFrontend,

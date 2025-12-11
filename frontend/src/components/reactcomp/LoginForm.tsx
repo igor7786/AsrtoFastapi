@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from '@/components/reactcomp/ui/form';
 import { Input } from '@/components/reactcomp/ui/input';
-import { RippleButton } from '@/components/reactcomp/ui/ripple-button';
+import { RippleButton } from '@/components/reactcomp/magicui/ripple-button';
 import {
   type LoginSchema,
   inputLoginSchema,
@@ -255,11 +255,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     />
 
                     <motion.div variants={itemVariants}>
-                      <RippleButton type="submit" className="w-full" disabled={mutation.isPending}>
+                      <RippleButton
+                        type="submit"
+                        className="bg-primary text-primary-foreground w-full"
+                        disabled={mutation.isPending}
+                      >
                         {mutation.isPending ? (
                           <div className="disabled:text-primary flex items-center justify-center gap-4">
                             <span>Loading</span>
-                            <Spinner className="text-amber-50" size={10} />
+                            <Spinner variant="bars" className="h-4 w-4 text-amber-50" size={10} />
                           </div>
                         ) : (
                           'Submit'

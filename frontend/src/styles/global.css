@@ -259,6 +259,17 @@
   --animate-fade-in: fade-in 0.6s ease-out forwards;
   --animate-fade-in-slow: fade-in-slow 1s ease-out forwards;
   --animate-float: float 6s ease-in-out infinite;
+  --duration: 600ms;
+  --animate-rippling: rippling var(--duration) ease-out;
+  @keyframes rippling {
+  0% {
+    opacity: 1;
+    }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+    }
+  }
 }
 
 @layer base {
