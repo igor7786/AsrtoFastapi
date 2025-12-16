@@ -9,7 +9,6 @@ import {
 } from '@rcomp/shadcn-studio/ui/motion-tabs';
 import { LoginForm } from '@rcomp/LoginForm';
 import { RegisterForm } from '@rcomp/RegisterForm';
-
 const tabs = [
   {
     name: 'Sign In',
@@ -41,7 +40,7 @@ const AnimatedTabsDemo = ({ props }: { props: string }) => {
           onValueChange={(val) => setActiveTab(val)}
           className="mx-auto w-full gap-6"
         >
-          <TabsList className="bg-background/50 w-full justify-center shadow-md">
+          <TabsList className="bg-background/80 w-full justify-center shadow-md">
             {tabs.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
                 {tab.name}
@@ -49,7 +48,7 @@ const AnimatedTabsDemo = ({ props }: { props: string }) => {
             ))}
           </TabsList>
 
-          <TabsContents className="mx-1 -mt-2 mb-1 rounded-lg shadow-md">
+          <TabsContents className="bg-background sm:bg-muted mx-1 -mt-2 mb-1 rounded-lg shadow-md">
             {tabs.map((tab) => (
               <TabsContent className="min-h-full" key={tab.value} value={tab.value}>
                 <div>{tab.content}</div>

@@ -11,8 +11,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const session = await auth.api.getSession({ headers: context.request.headers });
-  // context.locals.user = session?.user ?? null;
-  // context.locals.session = session?.session ?? null;
   if (session) {
     context.locals.user = session.user;
     context.locals.session = session.session;
