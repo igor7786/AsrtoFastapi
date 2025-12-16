@@ -1,7 +1,6 @@
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, GalleryVerticalEnd, X } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
