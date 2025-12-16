@@ -7,7 +7,12 @@ import { hashPassword, verifyPassword } from '@/lib/argon2';
 
 export const auth = betterAuth({
   basePath: '/api/auth',
-  trustedOrigins: ['http://localhost:4321', 'http://localhost:5173', 'http://localhost:3000', 'http://192.168.0.71:4321'],
+  trustedOrigins: [
+    'http://localhost:4321',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://192.168.0.71:4321',
+  ],
   database: drizzleAdapter(db, {
     provider: 'sqlite', // or "mysql", "sqlite"
     schema: schema,
