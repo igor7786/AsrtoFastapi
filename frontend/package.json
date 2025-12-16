@@ -9,6 +9,7 @@
     "astro": "astro",
     "bun:dev": "bun --bun run dev -- --host",
     "bun:build": "bun --bun run astro build && bun --bun run ./src/hono-server.js",
+    "generate:contract": "bun run src/lib/hono-adapter/orpc/open-api-docs/generate-contract-json.ts",
     "generate:auth": "bunx --bun @better-auth/cli@latest generate --output ./db/auth-schema.ts",
     "db:generate:migrations": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",

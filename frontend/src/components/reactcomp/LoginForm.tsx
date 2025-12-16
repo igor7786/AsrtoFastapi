@@ -69,7 +69,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
   const idToast = 'login-toast';
   const mutation = useMutation(
     {
-      mutationFn: ({ email, password }: LoginSchema) => client.auth.login({ email, password }),
+      mutationFn: async ({ email, password }: LoginSchema) => await client.auth.login({ email, password }),
 
       onMutate: async () => {
         toast(
