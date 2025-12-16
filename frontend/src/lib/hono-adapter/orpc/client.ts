@@ -12,8 +12,13 @@ import { ORPCError } from '@orpc/client';
 import contract from '@hono-adapt/orpc/open-api-docs/contract.json';
 const link = new OpenAPILink(contract as any, {
   // ✅ Dynamically resolve URL for server or client
-  // for mobile use http://192.168.0.71:4321/api/rpc',
-  url: envConfig.PUBLIC_API_URL,
+  url: () => {
+    try {
+      return window.location.origin + '/api/rpc';
+    } catch (e) {
+      return ' envConfig.PUBLIC_API_URL';
+    }
+  },
   // ✅ Custom fetch ensures cookies/sessions are included for cross-origin calls
   fetch: (request, init) =>
     fetch(request, {

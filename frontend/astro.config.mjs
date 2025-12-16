@@ -45,6 +45,11 @@ export default defineConfig({
   //   },
   // },
   vite: {
+    server: {
+      host: '0.0.0.0', // REQUIRED for mobile
+      port: 4321, // Astro default
+      strictPort: true,
+    },
     plugins: [
       tailwindcss(),
       {

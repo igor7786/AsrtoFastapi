@@ -92,11 +92,10 @@ export const login = baseLogin
       }
 
       for (const cookie of allCookies) {
-        // Add secure flags
-        const secured = `${cookie}; Secure;`;
-        context.resHeaders?.append('Set-Cookie', secured);
+        const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
+        context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
       }
-
+      console.log(allCookies);
       return { message: `Welcome back ${response.user.name}` };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {

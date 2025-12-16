@@ -11,9 +11,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const session = await auth.api.getSession({ headers: context.request.headers });
-  context.locals.user = session?.user ?? null;
-  context.locals.session = session?.session ?? null;
-
+  // context.locals.user = session?.user ?? null;
+  // context.locals.session = session?.session ?? null;
+  if (session) {
+    context.locals.user = session.user;
+    context.locals.session = session.session;
+  }
   // Redirect logged-in users away from login
   if (session && context.url.pathname === '/login') {
     const redirectUrl = context.url.searchParams.get('redirect') || '/';

@@ -24,6 +24,8 @@ export const openApiHandler = new OpenAPIHandler(router, {
     new ResponseHeadersPlugin(),
     new CORSPlugin({
       exposeHeaders: ['Content-Disposition'],
+      origin: (origin, options) => origin,
+      allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
     }),
 
     new SmartCoercionPlugin({
