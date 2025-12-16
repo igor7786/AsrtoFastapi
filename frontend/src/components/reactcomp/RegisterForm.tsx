@@ -39,26 +39,6 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
     },
     mode: 'onChange',
   });
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
   // 2. Define a submit handler.
   const idToast = 'login-toast';
   const mutation = useMutation(
@@ -121,214 +101,185 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
     mutation.mutate({ email, password, name, repeatPassword: password });
   });
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{
-          duration: 0.8,
-          ease: [0.22, 1, 0.36, 1],
-        }}
-      >
-        <div className="mx-auto flex w-full max-w-sm flex-col gap-4 py-4">
-          <a href="#" className="flex items-center gap-2 self-center font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            Acme Inc.
-          </a>
-          <div className={cn('flex flex-col gap-6', className)} {...props}>
-            <Card className="relative overflow-hidden border-none shadow-none ring-0">
-              <CardHeader className="text-center">
-                <CardTitle className="text-xl">
-                  <AuroraText className="mb-2 text-3xl font-bold">Sign up to get started</AuroraText>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-red-400">
-                  <span className="bg-card text-muted-foreground relative z-10 px-2">
-                    All fields are required
-                  </span>
-                </div>
-                {/*#! Form*/}
-                <Form {...form}>
-                  <motion.form
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    onSubmit={onSubmit}
-                    className="space-y-8"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <motion.div variants={itemVariants}>
-                          <FormItem>
-                            <FormLabel>Name</FormLabel>
-                            <FormControl>
-                              <Input
-                                className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                type="text"
-                                placeholder="John Doe"
-                                autoComplete="off"
-                                {...field}
-                              />
-                            </FormControl>
-                            {/* ✅ Conditionally show FormMessage or FormDescription */}
-                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
-                              <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
-                            ) : form.formState.errors.name ? (
-                              <FormMessage className="flex items-center text-red-500">
-                                <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.name.message}</span>
-                              </FormMessage>
-                            ) : (
-                              <FormDescription className="text-foreground">
-                                Enter your Name (min. 4 characters)
-                              </FormDescription>
-                            )}
-                          </FormItem>
-                        </motion.div>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <motion.div variants={itemVariants}>
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input
-                                className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                type="text"
-                                placeholder="example@example.com"
-                                autoComplete="email"
-                                {...field}
-                              />
-                            </FormControl>
-                            {/* ✅ Conditionally show FormMessage or FormDescription */}
-                            {form.watch('email').length > 0 && !form.formState.errors.email ? (
-                              <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
-                            ) : form.formState.errors.email ? (
-                              <FormMessage className="flex items-center text-red-500">
-                                <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.email.message}</span>
-                              </FormMessage>
-                            ) : (
-                              <FormDescription className="text-foreground">
-                                Enter your Email (min. 6 characters)
-                              </FormDescription>
-                            )}
-                          </FormItem>
-                        </motion.div>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="password"
-                      render={({ field }) => (
-                        <motion.div variants={itemVariants}>
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="password"
-                                className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                                placeholder="********"
-                                autoComplete="current-password"
-                                {...field}
-                              />
-                            </FormControl>
-
-                            {/* Conditional Feedback */}
-                            {form.watch('password').length > 0 && !form.formState.errors.password ? (
-                              <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
-                            ) : form.formState.errors.password ? (
-                              <FormMessage className="flex items-center text-red-500">
-                                <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.password.message}</span>
-                              </FormMessage>
-                            ) : (
-                              <FormDescription className="text-foreground">
-                                Enter your Password (min. 4 characters)
-                              </FormDescription>
-                            )}
-                          </FormItem>
-                        </motion.div>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="repeatPassword"
-                      render={({ field }) => (
-                        <motion.div variants={itemVariants}>
-                          <FormItem>
-                            <FormLabel>Repeat Password</FormLabel>
-
-                            <FormControl>
-                              <Input
-                                type="password"
-                                className="text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0"
-                                placeholder="Repeat your password"
-                                autoComplete="current-password"
-                                {...field}
-                              />
-                            </FormControl>
-
-                            {/* Conditional Feedback */}
-                            {form.watch('repeatPassword').length > 0 &&
-                            !form.formState.errors.repeatPassword ? (
-                              <FormDescription className="text-green-600">
-                                ✓ Passwords match!
-                              </FormDescription>
-                            ) : form.formState.errors.repeatPassword ? (
-                              <FormMessage className="flex items-center text-red-500">
-                                <X className="mr-2 h-4 w-4" />
-                                <span>{form.formState.errors.repeatPassword.message}</span>
-                              </FormMessage>
-                            ) : (
-                              <FormDescription className="text-foreground">
-                                Re-enter your password to confirm.
-                              </FormDescription>
-                            )}
-                          </FormItem>
-                        </motion.div>
-                      )}
-                    />
-
-                    <motion.div variants={itemVariants}>
-                      <RippleButton type="submit" className="w-full" disabled={mutation.isPending}>
-                        {mutation.isPending ? (
-                          <div className="disabled:text-primary flex items-center justify-center gap-4">
-                            <span>Loading</span>
-                            <Spinner className="text-amber-50" size={10} />
-                          </div>
-                        ) : (
-                          'Submit'
-                        )}
-                      </RippleButton>
-                    </motion.div>
-                  </motion.form>
-                </Form>
-              </CardContent>
-
-              <CardFooter className={'flex-col'}>
-                <div className="text-muted-foreground gap-2 py-4 text-center text-sm">
-                  © {new Date().getFullYear()} Asrto Inc. — All rights reserved.
-                </div>
-              </CardFooter>
-            </Card>
-
-            <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-              By clicking Submit, you agree to our <a href="#">Terms of Service</a> and{' '}
-              <a href="#">Privacy Policy</a>.
-            </div>
-          </div>
+    <div className="mx-auto flex w-full max-w-sm flex-col gap-4 py-4">
+      <a href="#" className="flex items-center gap-2 self-center font-medium">
+        <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
+          <GalleryVerticalEnd className="size-4" />
         </div>
-      </motion.div>
-    </>
+        Acme Inc.
+      </a>
+      <div className={cn('flex flex-col gap-6', className)} {...props}>
+        <Card className="relative overflow-hidden border-none shadow-none ring-0">
+          <CardHeader className="text-center">
+            <CardTitle className="text-xl">
+              <AuroraText className="mb-2 text-3xl font-bold">Sign up to get started</AuroraText>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-red-400">
+              <span className="bg-card text-muted-foreground relative z-10 px-2">
+                All fields are required
+              </span>
+            </div>
+            {/*#! Form*/}
+            <Form {...form}>
+              <form onSubmit={onSubmit} className="space-y-8">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                          type="text"
+                          placeholder="John Doe"
+                          autoComplete="off"
+                          {...field}
+                        />
+                      </FormControl>
+                      {/* ✅ Conditionally show FormMessage or FormDescription */}
+                      {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                        <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
+                      ) : form.formState.errors.name ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.name.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Enter your Name (min. 4 characters)
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                          type="text"
+                          placeholder="example@example.com"
+                          autoComplete="email"
+                          {...field}
+                        />
+                      </FormControl>
+                      {/* ✅ Conditionally show FormMessage or FormDescription */}
+                      {form.watch('email').length > 0 && !form.formState.errors.email ? (
+                        <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
+                      ) : form.formState.errors.email ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.email.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Enter your Email (min. 6 characters)
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                          placeholder="********"
+                          autoComplete="current-password"
+                          {...field}
+                        />
+                      </FormControl>
+
+                      {/* Conditional Feedback */}
+                      {form.watch('password').length > 0 && !form.formState.errors.password ? (
+                        <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
+                      ) : form.formState.errors.password ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.password.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Enter your Password (min. 4 characters)
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="repeatPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Repeat Password</FormLabel>
+
+                      <FormControl>
+                        <Input
+                          type="password"
+                          className="text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0"
+                          placeholder="Repeat your password"
+                          autoComplete="current-password"
+                          {...field}
+                        />
+                      </FormControl>
+
+                      {/* Conditional Feedback */}
+                      {form.watch('repeatPassword').length > 0 &&
+                      !form.formState.errors.repeatPassword ? (
+                        <FormDescription className="text-green-600">✓ Passwords match!</FormDescription>
+                      ) : form.formState.errors.repeatPassword ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.repeatPassword.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Re-enter your password to confirm.
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+
+                <RippleButton type="submit" className="w-full" disabled={mutation.isPending}>
+                  {mutation.isPending ? (
+                    <div className="disabled:text-primary flex items-center justify-center gap-4">
+                      <span>Loading</span>
+                      <Spinner className="text-amber-50" size={10} />
+                    </div>
+                  ) : (
+                    'Submit'
+                  )}
+                </RippleButton>
+              </form>
+            </Form>
+          </CardContent>
+
+          <CardFooter className={'flex-col'}>
+            <div className="text-muted-foreground gap-2 py-4 text-center text-sm">
+              © {new Date().getFullYear()} Asrto Inc. — All rights reserved.
+            </div>
+          </CardFooter>
+        </Card>
+
+        <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
+          By clicking Submit, you agree to our <a href="#">Terms of Service</a> and{' '}
+          <a href="#">Privacy Policy</a>.
+        </div>
+      </div>
+    </div>
   );
 }

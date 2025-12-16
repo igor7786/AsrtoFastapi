@@ -1,0 +1,48 @@
+---
+import Welcome from '@acomp/Welcome.astro';
+import ThemeToggleShell from '@rcomp/ThemeModeToogle';
+import TodoList from '@rcomp/TodoExample';
+import Layout from '@/layouts/Layout.astro';
+import TanstackDevWrapper from '@/lib/tan-stack/TanstackDevWrapper';
+import LogoutButton from '@/components/reactcomp/LogoutButton';
+const user = Astro.locals.user;
+import Link from 'astro-typesafe-routes/link';
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout title="Welcome to Astro">
+  <main slot="main" class="flex flex-col gap-2.5">
+    <TanstackDevWrapper client:load>
+      <TodoList client:only="react" />
+      <ThemeToggleShell client:load />
+    </TanstackDevWrapper>
+    <div class="text-2xl text-amber-700">
+      {user?.name ? `Hello ${user.name}` : null}
+    </div>
+    <div class="mt-2.5 flex gap-1.5">
+      <Link
+        to="/dashboard"
+        class="rounded border-2 border-red-400 p-2 text-sm text-red-400 transition-all delay-100 hover:border-red-500 hover:text-red-500 hover:underline hover:decoration-red-500 hover:decoration-1"
+      >
+        Dashboard
+      </Link>
+      {
+        !user ? (
+          <Link
+            to="/login"
+            class="rounded border-2 border-green-300 p-2 text-sm text-green-400 transition-all delay-100 hover:border-green-500 hover:text-green-500 hover:underline hover:decoration-green-500 hover:decoration-1"
+          >
+            Login Shadcn
+          </Link>
+        ) : (
+          <LogoutButton client:load />
+        )
+      }
+    </div>
+
+    <Welcome />
+  </main>
+</Layout>
+<!-- target="_blank" -->
+<!-- rel="noopener noreferrer" -->
