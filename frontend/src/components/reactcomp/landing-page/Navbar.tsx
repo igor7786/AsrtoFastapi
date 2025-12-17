@@ -5,6 +5,19 @@ import { ModeToggle } from '../ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { ThemeProvider } from 'next-themes';
+import LogoutButton from '@rcomp/LogoutButton';
+export type User = {
+  id: string;
+  email: string;
+  name: string;
+  image?: string | null;
+  emailVerified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type NavbarProps = {
+  user: User | null;
+};
 const navLinks = [
   {
     href: '#features',
@@ -19,9 +32,8 @@ const navLinks = [
     label: 'Pricing',
   },
 ];
-const Navbar = () => {
+const Navbar = ({ user }: NavbarProps) => {
   const [active, setActive] = useState<string | null>(null);
-
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <nav className="animate-fade-in border-border/50 bg-background/50 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-xl">
@@ -47,13 +59,22 @@ const Navbar = () => {
             ))}
           </div>
           <div className="flex items-center gap-4">
-            <Button
-              onClick={() => navigate('/login')}
-              size="sm"
-              className="bg-gradient-primary text-primary-foreground hidden bg-emerald-700 hover:bg-emerald-600 hover:opacity-90 md:inline-flex"
-            >
-              Get Started
-            </Button>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm leading-none font-medium">Hello {user.name}</span>
+              </div>
+            ) : null}
+            {user ? (
+              <LogoutButton />
+            ) : (
+              <Button
+                onClick={() => navigate('/login')}
+                size="sm"
+                className="text-primary-foreground bg-emerald-700 md:inline-flex"
+              >
+                Login
+              </Button>
+            )}
             <ModeToggle className="hidden md:inline-flex" />
             {/* Mobile Menu */}
             <Sheet>
@@ -81,6 +102,7 @@ const Navbar = () => {
                       {link.label}
                     </a>
                   ))}
+
                   <Button className="bg-primary text-primary-foreground mx-auto mt-4 hover:opacity-90">
                     Get Started
                   </Button>

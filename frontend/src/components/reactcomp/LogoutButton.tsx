@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { Check, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@hono-adapt/orpc/client';
+import { Button } from '@rcomp/ui/button';
 
 export default function LogoutButton() {
   const queryClient = getQueryClient();
@@ -68,13 +69,13 @@ export default function LogoutButton() {
   };
 
   return (
-    <button
-      type="submit"
+    <Button
       onClick={handleLogout}
       disabled={mutation.isPending}
-      className="rounded-lg px-3 py-1 text-sm text-green-500 transition hover:underline disabled:cursor-not-allowed disabled:border disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:opacity-80 disabled:hover:no-underline dark:text-green-400 dark:disabled:border-gray-700 dark:disabled:bg-gray-800"
+      size="sm"
+      className="text-primary-foreground bg-emerald-700 md:inline-flex"
     >
       Logout
-    </button>
+    </Button>
   );
 }

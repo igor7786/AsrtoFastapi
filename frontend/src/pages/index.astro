@@ -3,10 +3,11 @@ import Layout from '@/layouts/Layout.astro';
 import Main from '@/components/reactcomp/landing-page/LandingPage';
 import Navbar from '@rcomp/landing-page/Navbar';
 import Footer from '@rcomp/landing-page/Footer';
+const user = Astro.locals.user;
 ---
 
 <Layout title="Landing Page">
-  <Navbar slot="header" client:load />
+  <Navbar slot="header" user={user ?? null} client:load />
   <Main slot="main" client:visible />
   <Footer slot="footer" client:visible />
 </Layout>
