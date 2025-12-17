@@ -10,6 +10,7 @@ import {
 import { LoginForm } from '@rcomp/LoginForm';
 import { RegisterForm } from '@rcomp/RegisterForm';
 import { motion } from 'motion/react';
+import ThemeToggleShell, { ModeToggle } from '@rcomp/ThemeModeToogle';
 const tabs = [
   {
     name: 'Sign In',
@@ -36,6 +37,7 @@ const AnimatedTabsDemo = ({ props }: { props: string }) => {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="mx-auto flex w-full max-w-md flex-col items-center">
+        <ThemeToggleShell className="absolute top-4 right-4 hidden md:inline-flex" />
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 1 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
