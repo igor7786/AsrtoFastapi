@@ -215,13 +215,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
 
                 <RippleButton
                   type="submit"
-                  className="bg-primary text-primary-foreground w-full disabled:cursor-not-allowed disabled:opacity-70"
+                  className="bg-primary text-primary-foreground w-full px-0 disabled:cursor-not-allowed disabled:opacity-70"
                   disabled={mutation.isPending}
                 >
                   {mutation.isPending ? (
-                    <div className="flex items-center justify-center gap-4">
+                    <div className="flex w-full items-center justify-center gap-4">
                       <span>Loading</span>
-                      <Spinner variant="bars" className="h-4 w-4 text-amber-50" size={10} />
+                      <Spinner variant="default" className="h-4 w-4 text-amber-50" size={10} />
                     </div>
                   ) : (
                     'Submit'
