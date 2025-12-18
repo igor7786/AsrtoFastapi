@@ -84,7 +84,7 @@ const Navbar = ({ user }: NavbarProps) => {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="bg-background w-[280px]">
+              <SheetContent side="right" className="bg-background w-70">
                 <SheetTitle className="sr-only">Mobile navigation menu</SheetTitle>
                 <SheetDescription className="sr-only">
                   Navigation links for the mobile menu.
