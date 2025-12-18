@@ -5,11 +5,17 @@ import { Check, X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@hono-adapt/orpc/client';
 import { Button } from '@rcomp/ui/button';
+import { $nanoUser } from '@/lib/stores/user';
+import { cleanStores } from 'nanostores';
+import { useEffect, useState } from 'react';
 
 export default function LogoutButton() {
   const queryClient = getQueryClient();
   const idToast = 'login-toast';
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const mutation = useMutation(
     {
       mutationFn: () => client.auth.logout(),
@@ -65,6 +71,11 @@ export default function LogoutButton() {
 
   const handleLogout = () => {
     queryClient.clear();
+    // Clear in-memory state
+    $nanoUser.set(null);
+    cleanStores($nanoUser);
+
+    // Clear persistent storage
     mutation.mutate();
   };
 

@@ -9,6 +9,6 @@ const user: User = Astro.locals.user;
 
 <Layout title="Landing Page">
   <Navbar slot="header" user={user ?? null} client:load />
-  <Main slot="main" client:visible />
+  <Main slot="main" client:load />
   <Footer slot="footer" client:visible />
 </Layout>

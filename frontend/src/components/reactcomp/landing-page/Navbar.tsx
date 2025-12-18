@@ -3,10 +3,13 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 import { Menu } from 'lucide-react';
 import { ModeToggle } from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'next-themes';
 import LogoutButton from '@rcomp/LogoutButton';
 import type { User } from '@db/types';
+import { $nanoUser } from '@/lib/stores/user';
+import { onMount } from 'nanostores';
+import { useStore } from '@nanostores/react';
 type NavbarProps = {
   user: User | null;
 };
@@ -25,7 +28,27 @@ const navLinks = [
   },
 ];
 const Navbar = ({ user }: NavbarProps) => {
+  const storeUser = useStore($nanoUser);
   const [active, setActive] = useState<string | null>(null);
+  const [isUser, setIsUser] = useState<User | null>(user);
+  useEffect(() => {
+    console.log('Navbar', user);
+    handleStoreChange();
+  }, [user]);
+  function handleStoreChange() {
+    if (user && !storeUser) {
+      $nanoUser.set(isUser);
+    }
+
+  }
+  // onMount($nanoUser, () => {
+  //   // Mount mode
+  //   return () => {
+  //     // Disabled mode
+  //     $nanoUser.set(user);
+  //     isUser = $nanoUser.get();
+  //   };
+  // });
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <nav className="animate-fade-in border-border/50 bg-background/50 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-xl">
@@ -51,12 +74,12 @@ const Navbar = ({ user }: NavbarProps) => {
             ))}
           </div>
           <div className="flex items-center gap-4">
-            {user ? (
+            {isUser ? (
               <div className="flex items-center gap-4">
-                <span className="text-sm leading-none font-medium">Hello {user.name}</span>
+                <span className="text-sm leading-none font-medium">Hello {isUser.name}</span>
               </div>
             ) : null}
-            {user ? (
+            {isUser ? (
               <LogoutButton />
             ) : (
               <Button

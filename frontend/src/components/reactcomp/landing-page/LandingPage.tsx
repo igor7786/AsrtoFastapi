@@ -1,7 +1,23 @@
 import { Button } from '@rcomp/ui/button';
 import { ArrowRight, Sparkles, Zap, Shield, Layers } from 'lucide-react';
 import { AuroraText } from '@rcomp/magicui/aurora-text';
+import { $nanoUser } from '@/lib/stores/user';
+import { useStore } from '@nanostores/react';
+import { useEffect, useState } from 'react';
+import { Skeleton } from '../ui/skeleton';
+('use client');
 const Main = () => {
+  const isUser = useStore($nanoUser);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    console.log('Main', isUser);
+    setLoaded(true);
+  }, [isUser]);
+
+  if (!loaded) {
+    return <Skeleton />;
+  }
   return (
     <>
       {/* Hero Section */}
@@ -16,6 +32,11 @@ const Main = () => {
           >
             <Sparkles className="h-4 w-4 text-purple-300" />
             <span className="text-muted-foreground">Introducing the future of design</span>
+            {isUser ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm leading-none font-medium">Hello {isUser.name}</span>
+              </div>
+            ) : null}
           </div>
 
           <h1
