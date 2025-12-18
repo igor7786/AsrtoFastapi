@@ -1,7 +1,7 @@
 import { Button } from '@rcomp/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@rcomp/ui/sheet';
 import { Menu } from 'lucide-react';
-import { ModeToggle } from '../ThemeModeToogle';
+import { ModeToggle } from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { ThemeProvider } from 'next-themes';
