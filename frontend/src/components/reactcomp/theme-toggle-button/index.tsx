@@ -1,7 +1,3 @@
-// noinspection D
-
-'use client';
-
 import { Moon, Sun } from 'lucide-react';
 import { useCallback } from 'react';
 import { Button } from '@/components/reactcomp/ui/button.tsx';
@@ -51,7 +47,7 @@ export const ThemeToggleButton = ({
       const cy = start === 'center' ? '50' : start.includes('top') ? '0' : '100';
       css = `
         @supports (view-transition-name: root) {
-          ::view-transition-old(root) { 
+          ::view-transition-old(root) {
             animation: none;
           }
           ::view-transition-new(root) {
@@ -73,7 +69,7 @@ export const ThemeToggleButton = ({
       const cy = start === 'center' ? '50' : start.includes('top') ? '0' : '100';
       css = `
         @supports (view-transition-name: root) {
-          ::view-transition-old(root) { 
+          ::view-transition-old(root) {
             animation: none;
           }
           ::view-transition-new(root) {
