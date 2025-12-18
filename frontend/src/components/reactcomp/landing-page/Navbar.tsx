@@ -6,15 +6,7 @@ import { navigate } from 'astro:transitions/client';
 import { useState } from 'react';
 import { ThemeProvider } from 'next-themes';
 import LogoutButton from '@rcomp/LogoutButton';
-export type User = {
-  id: string;
-  email: string;
-  name: string;
-  image?: string | null;
-  emailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import type { User } from '@db/types';
 type NavbarProps = {
   user: User | null;
 };

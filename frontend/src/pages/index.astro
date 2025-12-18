@@ -3,7 +3,8 @@ import Layout from '@/layouts/Layout.astro';
 import Main from '@/components/reactcomp/landing-page/LandingPage';
 import Navbar from '@rcomp/landing-page/Navbar';
 import Footer from '@rcomp/landing-page/Footer';
-const user = Astro.locals.user;
+import type { User } from '@db/types';
+const user: User = Astro.locals.user;
 ---
 
 <Layout title="Landing Page">
