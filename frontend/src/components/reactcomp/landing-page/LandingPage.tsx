@@ -4,19 +4,16 @@ import { AuroraText } from '@rcomp/magicui/aurora-text';
 import { $nanoUser } from '@/lib/stores/user';
 import { useStore } from '@nanostores/react';
 import { useEffect, useState } from 'react';
-import { Skeleton } from '../ui/skeleton';
-('use client');
+import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 const Main = () => {
   const isUser = useStore($nanoUser);
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
-    console.log('Main', isUser);
     setLoaded(true);
   }, [isUser]);
 
   if (!loaded) {
-    return <Skeleton />;
+    return <SkeletonPage />;
   }
   return (
     <>

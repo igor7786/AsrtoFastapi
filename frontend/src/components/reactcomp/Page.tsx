@@ -1,4 +1,3 @@
-'use client';
 import { lazy, Suspense } from 'react';
 
 import { AppSidebar } from '@/components/reactcomp/app-sidebar';
