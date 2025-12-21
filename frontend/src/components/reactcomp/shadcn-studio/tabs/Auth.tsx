@@ -10,9 +10,7 @@ import {
 import { LoginForm } from '@rcomp/LoginForm';
 import { RegisterForm } from '@rcomp/RegisterForm';
 import { motion } from 'motion/react';
-import ThemeToggleShell, {
-  ModeToggle,
-} from '@rcomp/theme-toggle-button/ThemeModeToogle';
+import ThemeToggleShell from '@rcomp/theme-toggle-button/ThemeModeToogle';
 const tabs = [
   {
     name: 'Sign In',

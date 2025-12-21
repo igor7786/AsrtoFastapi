@@ -24,7 +24,7 @@ export const register = base
   .output(outputLoginRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
-      const { headers } = await auth.api.signUpEmail({
+      const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
         body: {
           name: input.name,
@@ -32,8 +32,16 @@ export const register = base
           password: input.password,
         },
       });
+
       const allCookies = headers.getAll('Set-Cookie');
-      if (allCookies.length === 0) {
+      if (allCookies.length === 0 && !response.token && response.user) {
+        console.log(response);
+        context.resHeaders?.set('X-Login-Redirect', '/login?tab=signin');
+        return {
+          message: `Welcome ${response.user.name}`,
+          redirectTo: '/login?tab=signin',
+        };
+      } else if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {
           message: 'Failed to register user',
           code: '400',
@@ -41,12 +49,14 @@ export const register = base
         });
       }
       for (const cookie of allCookies) {
-        context.resHeaders?.append('Set-Cookie', cookie);
+        const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
+        context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
       }
       return {
-        message: `Welcome ${input.name.charAt(0).toUpperCase() + input.name.slice(1)}`,
+        message: `Welcome ${response.user.name}`,
       };
     } catch (err) {
+      console.error(err);
       if (err instanceof APIError && err.statusCode === 400) {
         throw errors.BAD_REQUEST({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 401) {

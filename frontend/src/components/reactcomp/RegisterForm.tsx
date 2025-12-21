@@ -84,7 +84,11 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
           }
         );
         const timer = setTimeout(() => {
-          window.location.reload();
+          if (data.redirectTo) {
+            window.location.href = data.redirectTo;
+          } else {
+            window.location.reload();
+          }
         }, 500);
         return () => {
           clearTimeout(timer);

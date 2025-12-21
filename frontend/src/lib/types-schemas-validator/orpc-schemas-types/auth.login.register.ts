@@ -57,5 +57,6 @@ export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFron
 
 export const outputLoginRegisterSchema = z.object({
   message: z.string().trim(),
+  redirectTo: z.string().optional(),
 });
 export type OutputLoginRegisterSchema = z.infer<typeof outputLoginRegisterSchema>;

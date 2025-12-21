@@ -21,6 +21,7 @@ app.use(
       'http://localhost:5173',
       'http://localhost:3000',
       'http://192.168.0.71:4321',
+      'http://172.30.233.210:4321',
     ], // replace with your
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],

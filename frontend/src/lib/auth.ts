@@ -12,6 +12,7 @@ export const auth = betterAuth({
     'http://localhost:5173',
     'http://localhost:3000',
     'http://192.168.0.71:4321',
+    'http://172.30.233.210:4321',
   ],
   database: drizzleAdapter(db, {
     provider: 'sqlite', // or "mysql", "sqlite"
@@ -23,6 +24,7 @@ export const auth = betterAuth({
     maxPasswordLength: 20,
     minPasswordLength: 2,
     requireEmailVerification: false,
+    autoSignIn: false,
     password: {
       hash: hashPassword,
       verify: verifyPassword,
