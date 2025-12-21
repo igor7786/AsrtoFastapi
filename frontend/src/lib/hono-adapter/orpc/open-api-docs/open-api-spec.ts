@@ -2,7 +2,7 @@
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError, ORPCError } from '@orpc/server';
 import { CORSPlugin } from '@orpc/server/plugins';
-import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from '@orpc/json-schema';
+import { SmartCoercionPlugin } from '@orpc/json-schema';
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import { OpenAPIReferencePlugin } from '@orpc/openapi/plugins';
 import { router } from '@hono-adapt/orpc/routes/router';

@@ -4,7 +4,7 @@ import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import ThemeToggleShell from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import AnimatedTabsDemo from '@rcomp/shadcn-studio/tabs/Auth';
 import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
-const title = 'Login';
+const title = 'Auth';
 let sign = Astro.url.searchParams.get('tab') as string;
 
 // Validate tab query param
@@ -12,7 +12,7 @@ try {
   sign = tabsUrlSchema.parse(sign);
 } catch {
   sign = 'signin'; // fallback
-  return Astro.redirect(`/login?tab=${sign}`, 302); // redirect
+  return Astro.redirect(`/auth?tab=${sign}`, 302); // redirect
 }
 ---
 

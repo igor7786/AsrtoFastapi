@@ -65,7 +65,7 @@ const Navbar = ({ user }: NavbarProps) => {
               <LogoutButton />
             ) : (
               <Button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/auth')}
                 size="sm"
                 className="text-primary-foreground bg-emerald-700 md:inline-flex"
               >

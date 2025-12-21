@@ -37,9 +37,19 @@ export const register = base
       if (allCookies.length === 0 && !response.token && response.user) {
         console.log(response);
         context.resHeaders?.set('X-Login-Redirect', '/login?tab=signin');
+        console.log(context.reqHeaders?.get('referer'));
+        const url = new URL(context.reqHeaders?.get('referer') || '');
+        const redirect = url.searchParams.get('redirect');
+        if (redirect) {
+          const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
+          return {
+            message: `Welcome ${response.user.name} Please login to continue`,
+            redirectTo: signinUrl,
+          };
+        }
         return {
-          message: `Welcome ${response.user.name}`,
-          redirectTo: '/login?tab=signin',
+          message: `Welcome ${response.user.name} Please login to continue`,
+          redirectTo: '/auth?tab=signin',
         };
       } else if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {

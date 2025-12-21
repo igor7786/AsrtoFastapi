@@ -16,7 +16,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.session = session.session;
   }
   // Redirect logged-in users away from login
-  if (session && context.url.pathname === '/login') {
+  if (session && context.url.pathname === '/auth') {
     const redirectUrl = context.url.searchParams.get('redirect') || '/';
     return new Response(null, { status: 302, headers: { Location: redirectUrl } });
   }
@@ -28,7 +28,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const tabs = encodeURIComponent(context.url.searchParams.get('tab') || 'signin');
     return new Response(null, {
       status: 302,
-      headers: { Location: `/login?tab=${tabs}&redirect=${redirectTo}` },
+      headers: { Location: `/auth?tab=${tabs}&redirect=${redirectTo}` },
     });
   }
 
