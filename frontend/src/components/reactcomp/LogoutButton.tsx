@@ -6,19 +6,14 @@ import { useMutation } from '@tanstack/react-query';
 import { client } from '@hono-adapt/orpc/client';
 import { Button } from '@rcomp/ui/button';
 import { $nanoUser } from '@/lib/stores/user';
-import { cleanStores } from 'nanostores';
-import { useEffect, useState } from 'react';
+import { navigate } from 'astro:transitions/client';
 
 export default function LogoutButton() {
   const queryClient = getQueryClient();
   const idToast = 'login-toast';
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   const mutation = useMutation(
     {
-      mutationFn: () => client.auth.logout(),
+      mutationFn: async () => await client.auth.logout(),
 
       onMutate: async () => {
         toast(
@@ -59,7 +54,7 @@ export default function LogoutButton() {
           }
         );
         const timer = setTimeout(() => {
-          window.location.reload();
+          navigate('/', { history: 'replace' });
         }, 500);
         return () => {
           clearTimeout(timer);
@@ -73,7 +68,7 @@ export default function LogoutButton() {
     queryClient.clear();
     // Clear in-memory state
     $nanoUser.set(null);
-    cleanStores($nanoUser);
+    // cleanStores($nanoUser);
 
     // Clear persistent storage
     mutation.mutate();

@@ -141,7 +141,7 @@ const Main = () => {
         <div className="container mx-auto px-6">
           <div className="bg-gradient-dark border-border shadow-card bg-sidebar-accent relative overflow-hidden rounded-3xl border p-12 text-center md:p-20">
             <div className="border-primary absolute inset-0 overflow-hidden">
-              <div className="bg-primary/10 absolute top-0 right-0 h-[300px] w-[300px] translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" />
+              <div className="bg-primary/10 absolute top-0 right-0 h-75 w-75 translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" />
             </div>
 
             <div className="bg-accent relative z-10">

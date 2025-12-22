@@ -7,6 +7,7 @@ import { cn } from '@rcomp/lib/utils';
 import { Spinner } from '@rcomp/spinner';
 import { Button } from '@rcomp/ui/button';
 import { AuroraText } from '@rcomp/magicui/aurora-text';
+import { navigate } from 'astro:transitions/client';
 import {
   Card,
   CardContent,
@@ -79,6 +80,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       },
 
       onSuccess: async (data) => {
+        const fullPathWithQuery = window.location.pathname + window.location.search;
         toast(
           <div className="flex items-center gap-2">
             <Check className="text-green-500" />
@@ -89,8 +91,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             duration: 1000,
           }
         );
+         form.reset();
         const timer = setTimeout(() => {
-          window.location.reload();
+          navigate(fullPathWithQuery, { history: 'replace' });
         }, 500);
         return () => {
           clearTimeout(timer);

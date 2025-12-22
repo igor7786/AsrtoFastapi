@@ -3,12 +3,11 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 import { Menu } from 'lucide-react';
 import { ModeToggle } from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ThemeProvider } from 'next-themes';
 import LogoutButton from '@rcomp/LogoutButton';
 import type { User } from '@db/types';
 import { $nanoUser } from '@/lib/stores/user';
-import { useStore } from '@nanostores/react';
 type NavbarProps = {
   user: User | null;
 };

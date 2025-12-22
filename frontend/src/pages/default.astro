@@ -1,6 +1,6 @@
 ---
 import Welcome from '@acomp/Welcome.astro';
-import ThemeToggleShell from '@rcomp/ThemeModeToogle';
+import ThemeToggleShell from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import TodoList from '@rcomp/TodoExample';
 import Layout from '@/layouts/Layout.astro';
 import TanstackDevWrapper from '@/lib/tan-stack/TanstackDevWrapper';
@@ -30,7 +30,7 @@ import Link from 'astro-typesafe-routes/link';
       {
         !user ? (
           <Link
-            to="/login"
+            to="/auth"
             class="rounded border-2 border-green-300 p-2 text-sm text-green-400 transition-all delay-100 hover:border-green-500 hover:text-green-500 hover:underline hover:decoration-green-500 hover:decoration-1"
           >
             Login Shadcn

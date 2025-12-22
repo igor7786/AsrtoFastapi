@@ -35,9 +35,7 @@ export const register = base
 
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0 && !response.token && response.user) {
-        console.log(response);
         context.resHeaders?.set('X-Login-Redirect', '/login?tab=signin');
-        console.log(context.reqHeaders?.get('referer'));
         const url = new URL(context.reqHeaders?.get('referer') || '');
         const redirect = url.searchParams.get('redirect');
         if (redirect) {

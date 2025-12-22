@@ -1,8 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
-import ThemeToggleShell from '@rcomp/theme-toggle-button/ThemeModeToogle';
-import AnimatedTabsDemo from '@rcomp/shadcn-studio/tabs/Auth';
+import TabsAuth from '@rcomp/shadcn-studio/tabs/Auth';
 import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
 const title = 'Auth';
 let sign = Astro.url.searchParams.get('tab') as string;
@@ -19,17 +18,10 @@ try {
 <Layout title={title}>
   <!--<Page client:visible />-->
   <main slot="main">
-    <header>
-      <!-- <ThemeToggleShell className="absolute top-4 right-4" client:idle /> -->
-      <!-- Logo, nav menu, site title -->
-    </header>
-    <AnimatedTabsDemo props={sign} client:load>
+    <TabsAuth props={sign} client:only="react">
       <div slot="fallback">
-        <SkeletonPage client:visible />
+        <SkeletonPage />
       </div>
-    </AnimatedTabsDemo>
-    <footer>
-      <!-- Footer info, links, copyrights -->
-    </footer>
+    </TabsAuth>
   </main>
 </Layout>
