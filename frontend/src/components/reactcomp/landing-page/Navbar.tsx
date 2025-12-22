@@ -8,21 +8,22 @@ import { ThemeProvider } from 'next-themes';
 import LogoutButton from '@rcomp/LogoutButton';
 import type { User } from '@db/types';
 import { $nanoUser } from '@/lib/stores/user';
+import Link from 'astro-typesafe-routes/link/react';
 type NavbarProps = {
   user: User | null;
 };
 const navLinks = [
   {
-    href: '#features',
-    label: 'Features',
-  },
-  {
     href: '#about',
     label: 'About',
   },
   {
-    href: '#pricing',
-    label: 'Pricing',
+    href: '#features',
+    label: 'Features',
+  },
+  {
+    href: '#ready',
+    label: 'ready',
   },
 ];
 const Navbar = ({ user }: NavbarProps) => {
@@ -40,9 +41,10 @@ const Navbar = ({ user }: NavbarProps) => {
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to="/"
+                hash={link.href}
                 onClick={() => setActive(link.href)}
                 className={`text-sm transition-colors ${
                   active === link.href
@@ -51,7 +53,7 @@ const Navbar = ({ user }: NavbarProps) => {
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="flex items-center gap-4">

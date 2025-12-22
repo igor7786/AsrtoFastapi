@@ -18,7 +18,10 @@ const Main = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-16">
+      <section
+        id="about"
+        className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-16"
+      >
         {/* Background Elements */}
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <div
@@ -137,7 +140,13 @@ const Main = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="border-primary relative border-dashed py-32">
+      <section
+        id="ready"
+        className="animate-fade-in border-primary relative border-dashed py-32 opacity-0"
+        style={{
+          animationDelay: '0.6s',
+        }}
+      >
         <div className="container mx-auto px-6">
           <div className="bg-gradient-dark border-border shadow-card bg-sidebar-accent relative overflow-hidden rounded-3xl border p-12 text-center md:p-20">
             <div className="border-primary absolute inset-0 overflow-hidden">
