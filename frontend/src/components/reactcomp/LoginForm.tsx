@@ -91,7 +91,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             duration: 1000,
           }
         );
-         form.reset();
+        form.reset();
         const timer = setTimeout(() => {
           navigate(fullPathWithQuery, { history: 'replace' });
         }, 500);

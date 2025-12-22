@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from 
 import { Menu } from 'lucide-react';
 import { ModeToggle } from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ThemeProvider } from 'next-themes';
 import LogoutButton from '@rcomp/LogoutButton';
 import type { User } from '@db/types';
@@ -23,13 +23,28 @@ const navLinks = [
   },
   {
     href: '#ready',
-    label: 'ready',
+    label: 'Ready',
   },
 ];
 const Navbar = ({ user }: NavbarProps) => {
   $nanoUser.set(user);
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<string | null>('#about');
   const [isUser, setIsUser] = useState<User | null>(user);
+  const navRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    navigate('/#about', { history: 'replace' });
+  }, []); // empty dependency array → runs once on mount
+  // Handle clicks outside the nav container
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setActive(null); // reset active link
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -39,7 +54,7 @@ const Navbar = ({ user }: NavbarProps) => {
             <span className="text-gradient">Apex</span>
           </div>
           {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
+          <div ref={navRef} className="hidden items-center gap-8 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -88,17 +103,23 @@ const Navbar = ({ user }: NavbarProps) => {
                   Navigation links for the mobile menu.
                 </SheetDescription>
 
-                <nav className="mt-8 flex flex-col gap-6">
+                <nav ref={navRef} className="mt-8 flex flex-col items-center justify-center gap-6">
                   <ModeToggle className="mx-auto pt-4" />
 
                   {navLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.href}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground mx-auto pt-4 text-lg font-medium transition-colors"
+                      to="/"
+                      hash={link.href}
+                      onClick={() => setActive(link.href)}
+                      className={`text-sm transition-colors ${
+                        active === link.href
+                          ? 'text-foreground underline decoration-emerald-500 underline-offset-8'
+                          : 'text-muted-foreground'
+                      }`}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   ))}
 
                   <Button className="bg-primary text-primary-foreground mx-auto mt-4 hover:opacity-90">
