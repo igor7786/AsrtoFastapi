@@ -41,12 +41,12 @@ export const register = base
         if (redirect) {
           const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
           return {
-            message: `Welcome ${response.user.name} Please login to continue`,
+            message: `Welcome ${response.user.name} Please login to continue.`,
             redirectTo: signinUrl,
           };
         }
         return {
-          message: `Welcome ${response.user.name} Please login to continue`,
+          message: `Welcome ${response.user.name} Please login to continue.`,
           redirectTo: '/auth?tab=signin',
         };
       } else if (allCookies.length === 0) {
@@ -61,16 +61,17 @@ export const register = base
         context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
       }
       return {
-        message: `Welcome ${response.user.name}`,
+        message: `Welcome ${response.user.name}.`,
       };
     } catch (err) {
-      console.error(err);
       if (err instanceof APIError && err.statusCode === 400) {
         throw errors.BAD_REQUEST({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 401) {
         throw errors.UNAUTHORIZED({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 422) {
-        throw errors.UNPROCESSABLE_CONTENT({ message: err.message });
+        throw errors.UNPROCESSABLE_CONTENT({
+          message: `Failed to register ${input.name} , try again later.`,
+        });
       }
       throw errors.INTERNAL_SERVER_ERROR();
     }
@@ -113,7 +114,7 @@ export const login = baseLogin
         const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
         context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
       }
-      return { message: `Welcome back ${response.user.name}` };
+      return { message: `Welcome back ${response.user.name}.` };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {
         throw errors.BAD_REQUEST({ message: err.message });
@@ -148,7 +149,7 @@ export const logout = baseAuth
       deleteCookie(context.resHeaders, 'better-auth.session_token');
       deleteCookie(context.resHeaders, 'better-auth.session_data');
       return {
-        message: `${context.user.name} have been logged out`,
+        message: `${context.user.name} see you next time.`,
       };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {

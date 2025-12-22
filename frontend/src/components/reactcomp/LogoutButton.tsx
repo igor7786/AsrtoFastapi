@@ -43,6 +43,7 @@ export default function LogoutButton() {
       },
 
       onSuccess: async (data) => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
         toast(
           <div className="flex items-center gap-2">
             <Check className="text-green-500" />
@@ -53,33 +54,24 @@ export default function LogoutButton() {
             duration: 1000,
           }
         );
-        const timer = setTimeout(() => {
-          navigate('/', { history: 'replace' });
-        }, 500);
-        return () => {
-          clearTimeout(timer);
-        };
+
+        // Clear persistent storage
+        queryClient.clear();
+        // Clear in-memory state
+        $nanoUser.set(null);
+        // cleanStores($nanoUser);
+        navigate('/', { history: 'replace' });
       },
     },
     queryClient
   );
 
-  const handleLogout = () => {
-    queryClient.clear();
-    // Clear in-memory state
-    $nanoUser.set(null);
-    // cleanStores($nanoUser);
-
-    // Clear persistent storage
-    mutation.mutate();
-  };
-
   return (
     <Button
-      onClick={handleLogout}
+      onClick={() => mutation.mutate()}
       disabled={mutation.isPending}
       size="sm"
-      className="text-primary-foreground bg-emerald-700 md:inline-flex"
+      className="text-primary-foreground bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:opacity-50 md:inline-flex"
     >
       Logout
     </Button>
