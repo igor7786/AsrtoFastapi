@@ -1,4 +1,4 @@
-import { Spinner } from '@/components/reactcomp/spinner';
+import { Spinner } from '@rcomp/spinner';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { toast } from 'sonner';
 import { Check, X } from 'lucide-react';
@@ -73,7 +73,14 @@ export default function LogoutButton() {
       size="sm"
       className="text-primary-foreground bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:opacity-50 md:inline-flex"
     >
-      Logout
+      {mutation.isPending ? (
+        <>
+          <span>Logging out</span>
+          <Spinner className="mr-2" />
+        </>
+      ) : (
+        'Logout'
+      )}
     </Button>
   );
 }
