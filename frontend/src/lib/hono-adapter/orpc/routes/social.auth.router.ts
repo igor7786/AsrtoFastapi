@@ -58,6 +58,8 @@ export const socialLogin = baseLogin
         throw errors.BAD_REQUEST({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 401) {
         throw errors.UNAUTHORIZED({ message: err.message });
+      } else if (err instanceof APIError && err.statusCode === 404) {
+        throw errors.NOT_FOUND({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 422) {
         throw errors.UNPROCESSABLE_CONTENT({ message: err.message });
       }
