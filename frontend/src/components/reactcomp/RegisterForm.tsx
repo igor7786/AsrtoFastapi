@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GalleryVerticalEnd, X, Check } from 'lucide-react';
+import { GalleryVerticalEnd, X, Check, EyeOff, EyeIcon, Mail } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
@@ -25,9 +25,13 @@ import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/lib/hono-adapter/orpc/client';
 import { navigate } from 'astro:transitions/client';
+import { Button } from '@rcomp/ui/button';
+import { useState } from 'react';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
   const queryClient = getQueryClient();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false);
   // 1. Define your form.
   const form = useForm<RegisterInputSchemaFrontend>({
     resolver: zodResolver(registerInputSchemaFrontend),
@@ -135,13 +139,15 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel htmlFor={field.name}>Name</FormLabel>
                       <FormControl>
                         <Input
+                          id={field.name}
                           className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                           type="text"
                           placeholder="John Doe"
                           autoComplete="off"
+                          disabled={mutation.isPending}
                           {...field}
                         />
                       </FormControl>
@@ -166,13 +172,15 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel htmlFor={'emailReg'}>Email</FormLabel>
                       <FormControl>
                         <Input
+                          id="emailReg"
                           className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                           type="text"
                           placeholder="example@example.com"
                           autoComplete="email"
+                          disabled={mutation.isPending}
                           {...field}
                         />
                       </FormControl>
@@ -198,15 +206,33 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel htmlFor={'passwordReg'}>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                          placeholder="********"
-                          autoComplete="current-password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="passwordReg"
+                            disabled={mutation.isPending}
+                            type={showPassword ? 'text' : 'password'}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            placeholder="*******"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPassword(!showPassword)}
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            ) : (
+                              <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
 
                       {/* Conditional Feedback */}
@@ -230,16 +256,34 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                   name="repeatPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Repeat Password</FormLabel>
+                      <FormLabel htmlFor={field.name}>Repeat Password</FormLabel>
 
                       <FormControl>
-                        <Input
-                          type="password"
-                          className="text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0"
-                          placeholder="Repeat your password"
-                          autoComplete="current-password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id={field.name}
+                            disabled={mutation.isPending}
+                            type={showPasswordRepeat ? 'text' : 'password'}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            placeholder="Repeat your Password"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPasswordRepeat(!showPasswordRepeat)}
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {showPasswordRepeat ? (
+                              <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            ) : (
+                              <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
 
                       {/* Conditional Feedback */}
@@ -263,7 +307,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                 <RippleButton
                   type="submit"
                   className="bg-primary text-primary-foreground w-full px-0 disabled:cursor-not-allowed disabled:opacity-70"
-                  disabled={mutation.isPending}
+                  disabled={mutation.isPending || !form.formState.isValid}
                 >
                   {mutation.isPending ? (
                     <div className="flex w-full items-center justify-center gap-4">

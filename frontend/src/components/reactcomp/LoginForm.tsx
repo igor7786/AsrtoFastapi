@@ -1,6 +1,6 @@
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, GalleryVerticalEnd, X } from 'lucide-react';
+import { Check, Eye, EyeIcon, EyeOff, GalleryVerticalEnd, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
@@ -35,10 +35,13 @@ import { client } from '@/lib/hono-adapter/orpc/client';
 import { SocialBtn } from '@/components/reactcomp/social-btn/socialLoginBtn';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
+import { useState } from 'react';
+import { Button } from '@rcomp/ui/button';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const queryClient = getQueryClient();
   const isDisabled = useStore(pending);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   // 1. Define your form.
   const form = useForm<LoginSchema>({
     resolver: zodResolver(inputLoginSchema),
@@ -149,9 +152,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel htmlFor={field.name}>Email</FormLabel>
                       <FormControl>
                         <Input
+                          id={field.name}
                           disabled={isDisabled}
                           className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                           type="text"
@@ -181,16 +185,32 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel htmlFor={field.name}>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isDisabled}
-                          type="password"
-                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                          placeholder="*******"
-                          autoComplete="current-password"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id={field.name}
+                            disabled={isDisabled}
+                            type={showPassword ? 'text' : 'password'}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            placeholder="*******"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPassword(!showPassword)}
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="text-muted-foreground h-4 w-4" />
+                            ) : (
+                              <EyeIcon className="text-muted-foreground h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
 
                       {/* Conditional Feedback */}
