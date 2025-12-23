@@ -1,5 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { GalleryVerticalEnd, X, Check, EyeOff, EyeIcon, Mail } from 'lucide-react';
+import {
+  GalleryVerticalEnd,
+  X,
+  Check,
+  EyeOff,
+  EyeIcon,
+  Mail,
+  User,
+  UserCheck,
+  MailCheckIcon,
+} from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
@@ -141,15 +151,32 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                     <FormItem>
                       <FormLabel htmlFor={field.name}>Name</FormLabel>
                       <FormControl>
-                        <Input
-                          id={field.name}
-                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                          type="text"
-                          placeholder="John Doe"
-                          autoComplete="off"
-                          disabled={mutation.isPending}
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id={field.name}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            type="text"
+                            placeholder="John Doe"
+                            autoComplete="off"
+                            disabled={mutation.isPending}
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                              <UserCheck className="h-4 w-4 text-green-600 disabled:text-neutral-800" />
+                            ) : form.formState.errors.name ? (
+                              <User className="h-4 w-4 text-red-500 disabled:text-neutral-800" />
+                            ) : (
+                              <User className="text-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
                       {/* ✅ Conditionally show FormMessage or FormDescription */}
                       {form.watch('name').length > 0 && !form.formState.errors.name ? (
@@ -174,15 +201,32 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                     <FormItem>
                       <FormLabel htmlFor={'emailReg'}>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          id="emailReg"
-                          className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
-                          type="text"
-                          placeholder="example@example.com"
-                          autoComplete="email"
-                          disabled={mutation.isPending}
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            id="emailReg"
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            type="text"
+                            placeholder="example@example.com"
+                            autoComplete="email"
+                            disabled={mutation.isPending}
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {form.watch('email').length > 0 && !form.formState.errors.email ? (
+                              <MailCheckIcon className="h-4 w-4 text-green-600 disabled:text-neutral-800" />
+                            ) : form.formState.errors.email ? (
+                              <Mail className="h-4 w-4 text-red-500 disabled:text-neutral-800" />
+                            ) : (
+                              <Mail className="text-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
                       {/* ✅ Conditionally show FormMessage or FormDescription */}
                       {form.watch('email').length > 0 && !form.formState.errors.email ? (
