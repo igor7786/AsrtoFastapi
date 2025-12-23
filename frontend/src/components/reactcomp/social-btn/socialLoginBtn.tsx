@@ -5,10 +5,9 @@ import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { navigate } from 'astro:transitions/client';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
-import { Check, GalleryVerticalEnd, X } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { Spinner } from '@rcomp/spinner';
 import { client } from '@/lib/hono-adapter/orpc/client';
-import { RippleButton } from '../magicui/ripple-button';
 import {
   type InputLoginSocialSchema,
   inputLoginSocialSchema,

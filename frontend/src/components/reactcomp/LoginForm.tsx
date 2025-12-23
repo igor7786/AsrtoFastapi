@@ -213,7 +213,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                 <RippleButton
                   type="submit"
                   className="bg-primary text-primary-foreground w-full px-0 disabled:cursor-not-allowed disabled:opacity-70"
-                  disabled={mutation.isPending}
+                  disabled={mutation.isPending || !form.formState.isValid || isDisabled}
                 >
                   {mutation.isPending ? (
                     <div className="flex w-full items-center justify-center gap-4">
