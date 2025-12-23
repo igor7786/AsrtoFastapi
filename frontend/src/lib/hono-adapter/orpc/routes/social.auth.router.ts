@@ -1,10 +1,13 @@
 import { auth } from '@/lib/auth';
-import { outputLoginRegisterSocialSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
+import {
+  inputLoginSocialSchema,
+  outputLoginRegisterSchema,
+} from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { isLoggedIn } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { baseLogin } from '@hono-adapt/orpc/middlewares/base';
 import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
-export const googleLogin = baseLogin
+export const socialLogin = baseLogin
   .use(isValErrors)
   .use(isLoggedIn)
   .route({
@@ -16,8 +19,9 @@ export const googleLogin = baseLogin
     successDescription: 'User logged in successfully',
     successStatus: 200,
   })
-  .output(outputLoginRegisterSocialSchema)
-  .handler(async ({ errors, context }) => {
+  .input(inputLoginSocialSchema)
+  .output(outputLoginRegisterSchema)
+  .handler(async ({ input, errors, context }) => {
     try {
       const referer = context.reqHeaders?.get('referer') || '';
       const url = new URL(referer);
@@ -28,7 +32,7 @@ export const googleLogin = baseLogin
         headers: context.reqHeaders,
         returnHeaders: true,
         body: {
-          provider: 'google',
+          provider: input.provider,
           callbackURL,
         },
       });
@@ -45,7 +49,10 @@ export const googleLogin = baseLogin
         const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
         context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
       }
-      return { redirectTo: response.url };
+      return {
+        redirectTo: response.url,
+        message: `Redirecting to ${input.provider}.`,
+      };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {
         throw errors.BAD_REQUEST({ message: err.message });

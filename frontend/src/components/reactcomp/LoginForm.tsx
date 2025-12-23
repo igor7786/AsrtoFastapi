@@ -32,11 +32,13 @@ import {
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/lib/hono-adapter/orpc/client';
-import { GithubBtn } from '@rcomp/social-btn/githubBtn';
-import { GoogleBtn } from '@rcomp/social-btn/googleBtn';
+import { SocialBtn } from '@/components/reactcomp/social-btn/socialLoginBtn';
+import { useStore } from '@nanostores/react';
+import { pending } from '@/lib/stores/pending';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const queryClient = getQueryClient();
+  const isDisabled = useStore(pending);
   // 1. Define your form.
   const form = useForm<LoginSchema>({
     resolver: zodResolver(inputLoginSchema),
@@ -64,6 +66,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             duration: Infinity,
           }
         );
+        pending.set(true);
         await new Promise((resolve) => setTimeout(resolve, 500));
       },
 
@@ -78,6 +81,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             duration: 1000,
           }
         );
+        pending.set(false);
       },
 
       onSuccess: async (data) => {
@@ -94,6 +98,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         );
         form.reset();
         const timer = setTimeout(() => {
+          pending.set(false);
           navigate(fullPathWithQuery, { history: 'replace' });
         }, 500);
         return () => {
@@ -128,8 +133,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
                 {/* #! Social Login */}
-                <GithubBtn />
-                <GoogleBtn />
+                {/* <GithubBtn /> */}
+                <SocialBtn provider="google" />
+                <SocialBtn provider="github" />
               </div>
             </div>
             <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-yellow-200">
@@ -146,6 +152,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isDisabled}
                           className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                           type="text"
                           placeholder="email@com"
@@ -177,6 +184,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isDisabled}
                           type="password"
                           className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                           placeholder="*******"

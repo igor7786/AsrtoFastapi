@@ -60,7 +60,8 @@ export const outputLoginRegisterSchema = z.object({
   redirectTo: z.string().optional(),
 });
 export type OutputLoginRegisterSchema = z.infer<typeof outputLoginRegisterSchema>;
-export const outputLoginRegisterSocialSchema = z.object({
-  redirectTo: z.string().optional(),
+
+export const inputLoginSocialSchema = z.object({
+  provider: z.enum(['google', 'github'], { message: 'Invalid provider' }),
 });
-export type OutputLoginRegisterSocialSchema = z.infer<typeof outputLoginRegisterSchema>;
+export type InputLoginSocialSchema = z.infer<typeof inputLoginSocialSchema>;
