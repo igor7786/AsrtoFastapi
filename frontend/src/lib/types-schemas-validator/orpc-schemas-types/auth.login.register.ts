@@ -60,3 +60,7 @@ export const outputLoginRegisterSchema = z.object({
   redirectTo: z.string().optional(),
 });
 export type OutputLoginRegisterSchema = z.infer<typeof outputLoginRegisterSchema>;
+export const outputLoginRegisterSocialSchema = z.object({
+  redirectTo: z.string().optional(),
+});
+export type OutputLoginRegisterSocialSchema = z.infer<typeof outputLoginRegisterSchema>;

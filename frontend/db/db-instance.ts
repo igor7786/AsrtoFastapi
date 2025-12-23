@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/bun-sqlite';
 import { Database } from 'bun:sqlite';
-import { envConfig } from '@/lib/env';
+import { envServer } from '@/lib/env/env.server';
 import { LRUCache } from 'lru-cache';
 
 // Define cache type
@@ -21,7 +21,7 @@ export function getDbInstance() {
   }
 
   // Create SQLite instance
-  const sqlite = new Database(envConfig.DB_FILE_NAME);
+  const sqlite = new Database(envServer.DB_FILE_NAME);
   sqlite.run('PRAGMA foreign_keys = ON');
 
   // Create Drizzle instance

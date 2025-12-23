@@ -1,5 +1,3 @@
-'use client';
-
 import { Toaster, ToastBar, toast, type Toast, type ToastPosition } from 'react-hot-toast';
 import { useEffect, useRef } from 'react';
 

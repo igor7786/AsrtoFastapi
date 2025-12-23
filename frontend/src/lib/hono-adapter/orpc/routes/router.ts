@@ -8,6 +8,7 @@ import {
   putTodo,
 } from '@hono-adapt/orpc/routes/todos';
 import { login, logout, register } from '@/lib/hono-adapter/orpc/routes/auth.router';
+import { googleLogin } from '@hono-adapt/orpc/routes/social.auth.router';
 
 export const router = {
   planet: {
@@ -17,6 +18,9 @@ export const router = {
     register: register,
     login: login,
     logout: logout,
+  },
+  authSocial: {
+    google: googleLogin,
   },
   todos: {
     listTodos: listTodos,

@@ -4,7 +4,7 @@ import { db } from '@db/db-instance'; // your drizzle instance
 import { openAPI } from 'better-auth/plugins';
 import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
-
+import { envServer } from '@/lib/env/env.server';
 export const auth = betterAuth({
   basePath: '/api/auth',
   trustedOrigins: [
@@ -19,6 +19,14 @@ export const auth = betterAuth({
     schema: schema,
     camelCase: false,
   }),
+  socialProviders: {
+    google: {
+      clientId: envServer.GOOGLE_CLIENT_ID,
+      clientSecret: envServer.GOOGLE_CLIENT_SECRET,
+      accessType: 'offline',
+      prompt: 'select_account consent',
+    },
+  },
   emailAndPassword: {
     enabled: true,
     maxPasswordLength: 20,

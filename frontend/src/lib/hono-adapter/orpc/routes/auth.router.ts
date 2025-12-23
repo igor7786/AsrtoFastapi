@@ -100,7 +100,6 @@ export const login = baseLogin
           password: input.password,
         },
       });
-
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {
@@ -148,6 +147,7 @@ export const logout = baseAuth
       });
       deleteCookie(context.resHeaders, 'better-auth.session_token');
       deleteCookie(context.resHeaders, 'better-auth.session_data');
+      deleteCookie(context.resHeaders, 'better-auth.state');
       return {
         message: `${context.user.name} see you next time.`,
       };

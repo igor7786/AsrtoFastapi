@@ -1,4 +1,4 @@
-import { envDrizzle } from '@/lib/env/env.drizzle';
+import { envServer } from '@/lib/env/env.server';
 import { defineConfig } from 'drizzle-kit';
 export default defineConfig({
   out: './db/migrations',
@@ -6,6 +6,6 @@ export default defineConfig({
   dialect: 'sqlite',
   casing: 'snake_case',
   dbCredentials: {
-    url: envDrizzle.DB_FILE_NAME,
+    url: envServer.DB_FILE_NAME,
   },
 });
