@@ -26,6 +26,10 @@ export const auth = betterAuth({
       accessType: 'offline',
       prompt: 'select_account consent',
     },
+    github: {
+      clientId: envServer.GITHUB_CLIENT_ID,
+      clientSecret: envServer.GITHUB_CLIENT_SECRET,
+    },
   },
   emailAndPassword: {
     enabled: true,

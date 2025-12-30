@@ -48,7 +48,7 @@ export function SocialBtn({ provider }: InputLoginSocialSchema) {
         toast(
           <div className="flex items-center gap-2">
             <Spinner className="text-orange-500" />
-            <span>Logging to Google...</span>
+            <span>Logging to {providerCapitalized}...</span>
           </div>,
           {
             id: idToast,
@@ -78,7 +78,7 @@ export function SocialBtn({ provider }: InputLoginSocialSchema) {
           toast(
             <div className="flex items-center gap-2">
               <Check className="text-green-500" />
-              <span>Redirecting to {providerCapitalized}...</span>+
+              <span>Redirecting to {providerCapitalized}...</span>
             </div>,
             {
               id: idToast,

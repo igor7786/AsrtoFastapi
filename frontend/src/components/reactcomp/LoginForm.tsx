@@ -1,12 +1,9 @@
-import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, Eye, EyeIcon, EyeOff, GalleryVerticalEnd, Mail, MailCheckIcon, X } from 'lucide-react';
+import { EyeIcon, EyeOff, GalleryVerticalEnd, Mail, MailCheckIcon, X } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
 import { Spinner } from '@rcomp/spinner';
 import { AuroraText } from '@rcomp/magicui/aurora-text';
-import { navigate } from 'astro:transitions/client';
 import {
   Card,
   CardContent,
@@ -30,17 +27,16 @@ import {
   type LoginSchema,
   inputLoginSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { useMutation } from '@tanstack/react-query';
-import { client } from '@/lib/hono-adapter/orpc/client';
 import { SocialBtn } from '@/components/reactcomp/social-btn/socialLoginBtn';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
 import { useState } from 'react';
 import { Button } from '@rcomp/ui/button';
+import { useLoginMutation } from '@rcomp/login-mutation';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
-  const queryClient = getQueryClient();
   const isDisabled = useStore(pending);
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   // 1. Define your form.
   const form = useForm<LoginSchema>({
@@ -52,65 +48,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     mode: 'onChange',
   });
   // 2. Define a submit handler.
-  const idToast = 'login-toast';
-  const mutation = useMutation(
-    {
-      mutationFn: async ({ email, password }: LoginSchema) =>
-        await client.auth.login({ email, password }),
-
-      onMutate: async () => {
-        toast(
-          <div className="flex items-center gap-2">
-            <Spinner className="text-orange-500" />
-            <span>Saving your information...</span>
-          </div>,
-          {
-            id: idToast,
-            duration: Infinity,
-          }
-        );
-        pending.set(true);
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      },
-
-      onError: async (error) => {
-        toast(
-          <div className="flex items-center gap-2">
-            <X className="text-red-500" />
-            <span>{error.message ?? 'Failed to update account.'}</span>
-          </div>,
-          {
-            id: idToast,
-            duration: 1000,
-          }
-        );
-        pending.set(false);
-      },
-
-      onSuccess: async (data) => {
-        const fullPathWithQuery = window.location.pathname + window.location.search;
-        toast(
-          <div className="flex items-center gap-2">
-            <Check className="text-green-500" />
-            <span>{data.message}</span>
-          </div>,
-          {
-            id: idToast,
-            duration: 1000,
-          }
-        );
-        form.reset();
-        const timer = setTimeout(() => {
-          pending.set(false);
-          navigate(fullPathWithQuery, { history: 'replace' });
-        }, 500);
-        return () => {
-          clearTimeout(timer);
-        };
-      },
-    },
-    queryClient
-  );
+  const mutation = useLoginMutation(form);
   // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
     const { email, password } = formData;

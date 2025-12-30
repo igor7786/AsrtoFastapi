@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   GalleryVerticalEnd,
   X,
-  Check,
   EyeOff,
   EyeIcon,
   Mail,
@@ -11,7 +10,6 @@ import {
   MailCheckIcon,
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { cn } from '@rcomp/lib/utils';
 import { Spinner } from '@rcomp/spinner';
 import { AuroraText } from '@rcomp/magicui/aurora-text';
@@ -31,15 +29,11 @@ import {
   registerInputSchemaFrontend,
   type RegisterInputSchemaFrontend,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
-import { useMutation } from '@tanstack/react-query';
-import { client } from '@/lib/hono-adapter/orpc/client';
-import { navigate } from 'astro:transitions/client';
 import { Button } from '@rcomp/ui/button';
 import { useState } from 'react';
+import { useRegisterMutation } from '@rcomp/register-mutation';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
-  const queryClient = getQueryClient();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false);
   // 1. Define your form.
@@ -54,66 +48,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
     mode: 'onChange',
   });
   // 2. Define a submit handler.
-  const idToast = 'login-toast';
-  const mutation = useMutation(
-    {
-      mutationFn: async ({ email, password, name }: RegisterInputSchemaFrontend) =>
-        await client.auth.register({ email, password, name }),
-
-      onMutate: async () => {
-        toast(
-          <div className="flex items-center gap-2">
-            <Spinner className="text-orange-500" />
-            <span>Saving your information...</span>
-          </div>,
-          {
-            id: idToast,
-            duration: Infinity,
-          }
-        );
-        await new Promise((resolve) => setTimeout(resolve, 500));
-      },
-
-      onError: async (error) => {
-        toast(
-          <div className="flex items-center gap-2">
-            <X className="text-red-500" />
-            <span>{error.message ?? 'Failed to update account.'}</span>
-          </div>,
-          {
-            id: idToast,
-            duration: 1000,
-          }
-        );
-      },
-
-      onSuccess: async (data) => {
-        const fullPathWithQuery = window.location.pathname + window.location.search;
-        toast(
-          <div className="flex items-center gap-2">
-            <Check className="text-green-500" />
-            <span>{data.message}</span>
-          </div>,
-          {
-            id: idToast,
-            duration: 1000,
-          }
-        );
-        form.reset();
-        const timer = setTimeout(() => {
-          if (data.redirectTo) {
-            navigate(data.redirectTo);
-          } else {
-            navigate(fullPathWithQuery, { history: 'replace' });
-          }
-        }, 500);
-        return () => {
-          clearTimeout(timer);
-        };
-      },
-    },
-    queryClient
-  );
+  const mutation = useRegisterMutation(form);
 
   // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
