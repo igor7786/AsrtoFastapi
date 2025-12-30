@@ -205,7 +205,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                             variant="ghost"
                             disabled={mutation.isPending}
                           >
-                            {showPassword ? (
+                            {showPassword && form.watch('password').length > 0 ? (
                               <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
                             ) : (
                               <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
@@ -256,7 +256,7 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
                             variant="ghost"
                             disabled={mutation.isPending}
                           >
-                            {showPasswordRepeat ? (
+                            {showPasswordRepeat && form.watch('repeatPassword').length > 0 ? (
                               <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
                             ) : (
                               <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />

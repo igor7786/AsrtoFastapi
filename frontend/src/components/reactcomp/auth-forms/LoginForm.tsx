@@ -27,7 +27,7 @@ import {
   type LoginSchema,
   inputLoginSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { SocialBtn } from '@/components/reactcomp/social-btn/socialLoginBtn';
+import { SocialBtn } from '@rcomp/auth-forms/social-btn/socialLoginBtn';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
 import { useState } from 'react';
@@ -146,7 +146,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                           <Input
                             id={field.name}
                             disabled={isDisabled}
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword && form.watch('password').length > 0 ? 'text' : 'password'}
                             className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                             placeholder="*******"
                             autoComplete="current-password"
@@ -159,7 +159,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                             type="button"
                             variant="ghost"
                           >
-                            {showPassword ? (
+                            {showPassword && form.watch('password').length > 0 ? (
                               <EyeOff className="text-muted-foreground h-4 w-4" />
                             ) : (
                               <EyeIcon className="text-muted-foreground h-4 w-4" />
