@@ -1,17 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EyeIcon, EyeOff, GalleryVerticalEnd, Mail, MailCheckIcon, X } from 'lucide-react';
+import {
+  GalleryVerticalEnd,
+  X,
+  EyeOff,
+  EyeIcon,
+  Mail,
+  User,
+  UserCheck,
+  MailCheckIcon,
+} from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { cn } from '@rcomp/lib/utils';
 import { Spinner } from '@rcomp/spinner';
 import { AuroraText } from '@rcomp/magicui/aurora-text';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/reactcomp/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@rcomp/ui/card';
 import {
   Form,
   FormControl,
@@ -20,39 +22,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/reactcomp/ui/form';
+} from '@rcomp/ui/form';
 import { Input } from '@rcomp/ui/input';
-import { RippleButton } from '@rcomp/magicui/ripple-button';
+import { RippleButton } from '@/components/reactcomp/magicui/ripple-button';
 import {
-  type LoginSchema,
-  inputLoginSchema,
+  registerInputSchemaFrontend,
+  type RegisterInputSchemaFrontend,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { SocialBtn } from '@/components/reactcomp/social-btn/socialLoginBtn';
-import { useStore } from '@nanostores/react';
-import { pending } from '@/lib/stores/pending';
-import { useState } from 'react';
 import { Button } from '@rcomp/ui/button';
-import { useLoginMutation } from '@rcomp/login-mutation';
+import { useState } from 'react';
+import { useRegisterMutation } from '@rcomp/auth-forms/register-mutation';
 
-export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
-  const isDisabled = useStore(pending);
-
+export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState<boolean>(false);
   // 1. Define your form.
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(inputLoginSchema),
+  const form = useForm<RegisterInputSchemaFrontend>({
+    resolver: zodResolver(registerInputSchemaFrontend),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
+      repeatPassword: '',
     },
     mode: 'onChange',
   });
   // 2. Define a submit handler.
-  const mutation = useLoginMutation(form);
+  const mutation = useRegisterMutation(form);
+
   // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
-    const { email, password } = formData;
-    mutation.mutate({ email, password });
+    const { email, password, name } = formData;
+    mutation.mutate({ email, password, name, repeatPassword: password });
   });
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-4 py-4">
@@ -66,35 +67,78 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         <Card className="relative overflow-hidden border-none shadow-none ring-0">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">
-              <AuroraText className="mb-2 text-3xl font-bold">Welcome Back</AuroraText>
+              <AuroraText className="mb-2 text-3xl font-bold">Sign up to get started</AuroraText>
             </CardTitle>
-            <CardDescription>Login with your Apple or Google account</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-6">
-              <div className="flex flex-col gap-4">
-                {/* #! Social Login */}
-                {/* <GithubBtn /> */}
-                <SocialBtn provider="google" />
-                <SocialBtn provider="github" />
-              </div>
-            </div>
-            <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-yellow-200">
-              <span className="bg-card text-muted-foreground relative z-10 px-2">Or continue with</span>
+            <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-red-400">
+              <span className="bg-card text-muted-foreground relative z-10 px-2">
+                All fields are required
+              </span>
             </div>
             {/*#! Form*/}
             <Form {...form}>
               <form onSubmit={onSubmit} className="space-y-8">
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor={field.name}>Email</FormLabel>
+                      <FormLabel htmlFor={field.name}>Name</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             id={field.name}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            type="text"
+                            placeholder="John Doe"
+                            autoComplete="off"
+                            disabled={mutation.isPending}
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                              <UserCheck className="h-4 w-4 text-green-600 disabled:text-neutral-800" />
+                            ) : form.formState.errors.name ? (
+                              <User className="h-4 w-4 text-red-500 disabled:text-neutral-800" />
+                            ) : (
+                              <User className="text-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
+                      </FormControl>
+                      {/* ✅ Conditionally show FormMessage or FormDescription */}
+                      {form.watch('name').length > 0 && !form.formState.errors.name ? (
+                        <FormDescription className="text-green-600">✓ Looks good!</FormDescription>
+                      ) : form.formState.errors.name ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.name.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Enter your Name (min. 4 characters)
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor={'emailReg'}>Email</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            id="emailReg"
                             className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                             type="text"
                             placeholder="example@example.com"
@@ -135,17 +179,18 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor={field.name}>Password</FormLabel>
+                      <FormLabel htmlFor={'passwordReg'}>Password</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
-                            id={field.name}
-                            disabled={isDisabled}
+                            id="passwordReg"
+                            disabled={mutation.isPending}
                             type={showPassword ? 'text' : 'password'}
                             className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                             placeholder="*******"
@@ -158,11 +203,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                             size="icon"
                             type="button"
                             variant="ghost"
+                            disabled={mutation.isPending}
                           >
                             {showPassword ? (
-                              <EyeOff className="text-muted-foreground h-4 w-4" />
+                              <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
                             ) : (
-                              <EyeIcon className="text-muted-foreground h-4 w-4" />
+                              <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
                             )}
                           </Button>
                         </div>
@@ -178,7 +224,59 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                         </FormMessage>
                       ) : (
                         <FormDescription className="text-foreground">
-                          Enter your password (min. 4 characters)
+                          Enter your Password (min. 4 characters)
+                        </FormDescription>
+                      )}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="repeatPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor={field.name}>Repeat Password</FormLabel>
+
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            id={field.name}
+                            disabled={mutation.isPending}
+                            type={showPasswordRepeat ? 'text' : 'password'}
+                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            placeholder="Repeat your Password"
+                            autoComplete="current-password"
+                            {...field}
+                          />
+                          <Button
+                            className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                            onClick={() => setShowPasswordRepeat(!showPasswordRepeat)}
+                            size="icon"
+                            type="button"
+                            variant="ghost"
+                            disabled={mutation.isPending}
+                          >
+                            {showPasswordRepeat ? (
+                              <EyeOff className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            ) : (
+                              <EyeIcon className="text-muted-foreground h-4 w-4 disabled:text-neutral-800" />
+                            )}
+                          </Button>
+                        </div>
+                      </FormControl>
+
+                      {/* Conditional Feedback */}
+                      {form.watch('repeatPassword').length > 0 &&
+                      !form.formState.errors.repeatPassword ? (
+                        <FormDescription className="text-green-600">✓ Passwords match!</FormDescription>
+                      ) : form.formState.errors.repeatPassword ? (
+                        <FormMessage className="flex items-center text-red-500">
+                          <X className="mr-2 h-4 w-4" />
+                          <span>{form.formState.errors.repeatPassword.message}</span>
+                        </FormMessage>
+                      ) : (
+                        <FormDescription className="text-foreground">
+                          Re-enter your password to confirm.
                         </FormDescription>
                       )}
                     </FormItem>
@@ -188,7 +286,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                 <RippleButton
                   type="submit"
                   className="bg-primary text-primary-foreground w-full px-0 disabled:cursor-not-allowed disabled:opacity-70"
-                  disabled={mutation.isPending || !form.formState.isValid || isDisabled}
+                  disabled={mutation.isPending || !form.formState.isValid}
                 >
                   {mutation.isPending ? (
                     <div className="flex w-full items-center justify-center gap-4">
