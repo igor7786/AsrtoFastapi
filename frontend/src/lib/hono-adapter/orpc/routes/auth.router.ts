@@ -24,14 +24,10 @@ export const register = base
   .output(outputLoginRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
-      let callbackURL;
-      const url = new URL(context.reqHeaders?.get('referer') || '');
-      const redirect = url.searchParams.get('redirect');
-      if (redirect) {
-        callbackURL = `${url.origin}${decodeURIComponent(redirect)}`;
-      } else {
-        callbackURL = `${url.origin}`;
-      }
+      const referer = context.reqHeaders?.get('referer') || '';
+      const url = new URL(referer);
+      const redirect = url.searchParams.get('redirect') || '';
+      const callbackURL = `${redirect}`;
       const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
         body: {
@@ -153,9 +149,18 @@ export const logout = baseAuth
       await auth.api.signOut({
         headers: context.reqHeaders!,
       });
+      const cookiesParams = {
+        secure: true,
+        sameSite: 'lax' as const,
+        httpOnly: true,
+        path: '/',
+      };
       deleteCookie(context.resHeaders, 'better-auth.session_token');
       deleteCookie(context.resHeaders, 'better-auth.session_data');
       deleteCookie(context.resHeaders, 'better-auth.state');
+      deleteCookie(context.resHeaders, '__Secure-better-auth.session_data', cookiesParams);
+      deleteCookie(context.resHeaders, '__Secure-better-auth.session_token', cookiesParams);
+      deleteCookie(context.resHeaders, '__Secure-better-auth.state', cookiesParams);
       return {
         message: `${context.user.name} see you next time.`,
       };

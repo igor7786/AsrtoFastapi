@@ -1,5 +1,5 @@
 // @ts-check
-
+import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 // import node from "@astrojs/node";
@@ -44,11 +44,32 @@ export default defineConfig({
   //     url: 'redis://:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t82@localhost:6379',
   //   },
   // },
+  server: {
+    host: '0.0.0.0', // Allow access from any interface. Change to 'localhost' for local use
+    port: 4321, // Port number for your Astro server
+  },
   vite: {
     server: {
-      host: '0.0.0.0', // REQUIRED for mobile
-      port: 4321, // Astro default
+      host: 'igorfastapi.co.uk', // bind all interfaces
+      port: 4321,
       strictPort: true,
+      https: {
+        key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/_.igorfastapi.co.uk_private_key.key')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/full_chain.pem')),
+      },
+      allowedHosts: [
+        'igorfastapi.co.uk',
+        'localhost',
+        '127.0.0.1',
+        '0.0.0.0',
+        '10.87.40.210',
+        '192.168.0.71',
+      ],
+      hmr: {
+        protocol: 'wss', // WebSocket secure
+        host: 'igorfastapi.co.uk', // public hostname used by browser
+        port: 5173,
+      },
     },
     plugins: [
       tailwindcss(),

@@ -26,7 +26,7 @@ export const socialLogin = baseLogin
       const referer = context.reqHeaders?.get('referer') || '';
       const url = new URL(referer);
       const redirect = url.searchParams.get('redirect') || '';
-      const callbackURL = `${url.origin}${redirect}`;
+      const callbackURL = `${redirect}`;
 
       const { headers, response } = await auth.api.signInSocial({
         headers: context.reqHeaders,
