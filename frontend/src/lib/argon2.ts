@@ -3,7 +3,7 @@ import { hash, verify, type Options } from '@node-rs/argon2';
 const opts: Options = {
   memoryCost: 65536, // 64MB RAM
   timeCost: 3, // 3 iterations
-  parallelism: 2, // 2 threads
+  parallelism: 4, // 2 threads
   outputLen: 32,
   algorithm: 2, // Argon2id (recommended)
 };

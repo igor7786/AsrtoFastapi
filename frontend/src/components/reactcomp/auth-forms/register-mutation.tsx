@@ -53,7 +53,7 @@ export function useRegisterMutation(form: UseFormReturn<RegisterInputSchemaFront
           </div>,
           {
             id: idToast,
-            duration: 1000,
+            duration: 2500,
           }
         );
         form.reset();
@@ -63,7 +63,7 @@ export function useRegisterMutation(form: UseFormReturn<RegisterInputSchemaFront
           } else {
             navigate(fullPathWithQuery, { history: 'replace' });
           }
-        }, 500);
+        }, 3000);
         return () => {
           clearTimeout(timer);
         };

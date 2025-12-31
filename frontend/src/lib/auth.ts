@@ -50,7 +50,7 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, url }) => {
       await resend.emails.send({
         from: 'Acme <astrofastapi@resend.dev>', // You could add your custom domain
-        to: 'grimuta60@gmail.com', // email of the user to want to end
+        to: user.email, // email of the user to want to end
         subject: 'Email Verification', // Main subject of the email
         html: `Click the link to verify your email: ${url}`, // Content of the email
         // you could also use "React:" option for sending the email template and there content to user

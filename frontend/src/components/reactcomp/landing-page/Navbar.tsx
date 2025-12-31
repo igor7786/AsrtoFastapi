@@ -25,6 +25,10 @@ const navLinks = [
     href: '#ready',
     label: 'Ready',
   },
+  {
+    href: 'dashboard',
+    label: 'Dashboard',
+  },
 ];
 const Navbar = ({ user }: NavbarProps) => {
   $nanoUser.set(user);
@@ -60,7 +64,12 @@ const Navbar = ({ user }: NavbarProps) => {
                 key={link.href}
                 to="/"
                 hash={link.href}
-                onClick={() => setActive(link.href)}
+                onClick={() => {
+                  setActive(link.href);
+                  if (link.href === 'dashboard') {
+                    navigate('/dashboard', { history: 'replace' });
+                  }
+                }}
                 className={`text-sm transition-colors ${
                   active === link.href
                     ? 'text-foreground underline decoration-emerald-500 underline-offset-8'

@@ -26,7 +26,7 @@ export const inputLoginSchema = z.object({
     .trim()
     .email()
     .min(6, { message: 'Username must be at least 6 character long.' })
-    .max(20, { message: 'Username cannot exceed 20 characters.' }),
+    .max(30, { message: 'Username cannot exceed 30 characters.' }),
   password: z
     .string()
     .trim()

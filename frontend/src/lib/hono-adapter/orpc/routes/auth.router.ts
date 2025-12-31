@@ -24,20 +24,26 @@ export const register = base
   .output(outputLoginRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
+      let callbackURL;
+      const url = new URL(context.reqHeaders?.get('referer') || '');
+      const redirect = url.searchParams.get('redirect');
+      if (redirect) {
+        callbackURL = `${url.origin}${decodeURIComponent(redirect)}`;
+      } else {
+        callbackURL = `${url.origin}`;
+      }
       const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
         body: {
           name: input.name,
           email: input.email,
           password: input.password,
+          callbackURL: callbackURL,
         },
       });
       const msg = `Welcome ${response.user.name}.Please verify your email to complete the registration.`;
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0 && !response.token && response.user) {
-        context.resHeaders?.set('X-Login-Redirect', '/login?tab=signin');
-        const url = new URL(context.reqHeaders?.get('referer') || '');
-        const redirect = url.searchParams.get('redirect');
         if (redirect) {
           const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
           return {
