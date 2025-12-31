@@ -146,7 +146,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                           <Input
                             id={field.name}
                             disabled={isDisabled}
-                            type={showPassword && form.watch('password').length > 0 ? 'text' : 'password'}
+                            type={
+                              showPassword && form.watch('password').length > 0 ? 'text' : 'password'
+                            }
                             className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
                             placeholder="*******"
                             autoComplete="current-password"

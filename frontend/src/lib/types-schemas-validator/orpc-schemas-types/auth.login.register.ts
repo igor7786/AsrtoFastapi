@@ -3,12 +3,16 @@ import { user } from '@db/auth-schema';
 import { session } from '@db/auth-schema';
 import z from 'zod';
 
-export const userSchema = createSelectSchema(user, {
-  image: (f) => f.nullable().optional(),
+const baseUserSchema = createSelectSchema(user);
+
+export const userSchema = baseUserSchema.extend({
+  image: baseUserSchema.shape.image.optional(),
 });
 
-const tokenSchema = createSelectSchema(session, {
-  token: (f) => f.nullable().optional(), // string | null | undefined
+const baseTokenSchema = createSelectSchema(session);
+
+export const tokenSchema = baseTokenSchema.extend({
+  expiresAt: baseTokenSchema.shape.expiresAt,
 });
 
 export const registerResponseSchema = z.object({
