@@ -32,7 +32,7 @@ export const register = base
           password: input.password,
         },
       });
-
+      const msg = `Welcome ${response.user.name}.Please verify your email to complete the registration.`;
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0 && !response.token && response.user) {
         context.resHeaders?.set('X-Login-Redirect', '/login?tab=signin');
@@ -41,12 +41,12 @@ export const register = base
         if (redirect) {
           const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
           return {
-            message: `Welcome ${response.user.name} Please login to continue.`,
+            message: msg,
             redirectTo: signinUrl,
           };
         }
         return {
-          message: `Welcome ${response.user.name} Please login to continue.`,
+          message: msg,
           redirectTo: '/auth?tab=signin',
         };
       } else if (allCookies.length === 0) {
@@ -119,6 +119,8 @@ export const login = baseLogin
         throw errors.BAD_REQUEST({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 401) {
         throw errors.UNAUTHORIZED({ message: err.message });
+      } else if (err instanceof APIError && err.statusCode === 403) {
+        throw errors.FORBIDDEN({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 422) {
         throw errors.UNPROCESSABLE_CONTENT({ message: err.message });
       }

@@ -5,6 +5,8 @@ import { openAPI } from 'better-auth/plugins';
 import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
+import { resend } from '@/lib/resend-email';
+
 export const auth = betterAuth({
   basePath: '/api/auth',
   trustedOrigins: [
@@ -34,14 +36,28 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     maxPasswordLength: 20,
-    minPasswordLength: 2,
-    requireEmailVerification: false,
+    minPasswordLength: 4,
+    requireEmailVerification: true,
     autoSignIn: false,
     password: {
       hash: hashPassword,
       verify: verifyPassword,
     },
   },
+  emailVerification: {
+    sendOnSignUp: true, // Automatically sends a verification email at signup
+    autoSignInAfterVerification: true, // Automatically signIn the user after verification
+    sendVerificationEmail: async ({ user, url }) => {
+      await resend.emails.send({
+        from: 'Acme <astrofastapi@resend.dev>', // You could add your custom domain
+        to: 'grimuta60@gmail.com', // email of the user to want to end
+        subject: 'Email Verification', // Main subject of the email
+        html: `Click the link to verify your email: ${url}`, // Content of the email
+        // you could also use "React:" option for sending the email template and there content to user
+      });
+    },
+  },
+
   session: {
     cookieCache: {
       enabled: true,
