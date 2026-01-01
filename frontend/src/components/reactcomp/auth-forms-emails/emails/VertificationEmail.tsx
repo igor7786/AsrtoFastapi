@@ -35,7 +35,7 @@ export const WelcomeEmail = ({ user, url }: EmailProps) => {
           theme: {
             extend: {
               colors: {
-                brand: '#2250f4',
+                brand: '#007a55',
                 offwhite: '#fafbfb',
               },
               spacing: {
@@ -51,8 +51,8 @@ export const WelcomeEmail = ({ user, url }: EmailProps) => {
         <Body className="bg-offwhite font-sans text-base">
           <Img
             src="https://refine-web.imgix.net/blog/2023-06-12-astro-js/social-2.png?w=1788"
-            width="184"
-            height="75"
+            width="200"
+            height="85"
             alt="AsrtoFastapi Logo"
             className="mx-auto my-20"
           />
@@ -63,7 +63,7 @@ export const WelcomeEmail = ({ user, url }: EmailProps) => {
               <Row>
                 <Text className="text-base">
                   Congratulations {user?.name} ! You're joining over 3 million people around the world
-                  who use <strong>astrofastapi.co.uk</strong> to be part of community.
+                  who use <strong>igorfastapi.co.uk</strong> to be part of community.
                 </Text>
 
                 <Text className="text-base">Here's how to get started:</Text>
