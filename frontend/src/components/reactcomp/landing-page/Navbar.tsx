@@ -5,7 +5,7 @@ import { ModeToggle } from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import { navigate } from 'astro:transitions/client';
 import { useEffect, useRef, useState } from 'react';
 import { ThemeProvider } from 'next-themes';
-import LogoutButton from '@rcomp/auth-forms/LogoutButton';
+import LogoutButton from '@rcomp/auth-forms-emails/LogoutButton';
 import type { User } from '@db/types';
 import { $nanoUser } from '@/lib/stores/user';
 import Link from 'astro-typesafe-routes/link/react';

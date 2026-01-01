@@ -31,7 +31,7 @@ import {
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { Button } from '@rcomp/ui/button';
 import { useState } from 'react';
-import { useRegisterMutation } from '@rcomp/auth-forms/register-mutation';
+import { useRegisterMutation } from '@rcomp/auth-forms-emails/register-mutation';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
   const [showPassword, setShowPassword] = useState<boolean>(false);

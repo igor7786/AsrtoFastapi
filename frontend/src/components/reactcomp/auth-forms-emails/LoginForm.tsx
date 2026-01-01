@@ -27,12 +27,12 @@ import {
   type LoginSchema,
   inputLoginSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { SocialBtn } from '@rcomp/auth-forms/social-btn/socialLoginBtn';
+import { SocialBtn } from '@rcomp/auth-forms-emails/social-btn/socialLoginBtn';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
 import { useState } from 'react';
 import { Button } from '@rcomp/ui/button';
-import { useLoginMutation } from '@rcomp/auth-forms/login-mutation';
+import { useLoginMutation } from '@rcomp/auth-forms-emails/login-mutation';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const isDisabled = useStore(pending);

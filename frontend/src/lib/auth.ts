@@ -6,6 +6,7 @@ import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
 import { resend } from '@/lib/resend-email';
+import { WelcomeEmail } from '@rcomp/auth-forms-emails/emails/VertificationEmail';
 
 export const auth = betterAuth({
   basePath: '/api/auth',
@@ -52,7 +53,7 @@ export const auth = betterAuth({
         from: 'Verification <astrofastapi@igorfastapi.co.uk>', // You could add your custom domain
         to: 'grimuta60@gmail.com', // email of the user to want to end
         subject: 'Email Verification', // Main subject of the email
-        html: `Click the link to verify your email: ${url}`, // Content of the email
+        react: WelcomeEmail({ user, url }), // Content of the email
         // you could also use "React:" option for sending the email template and there content to user
       });
     },

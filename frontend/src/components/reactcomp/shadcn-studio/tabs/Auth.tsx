@@ -7,17 +7,17 @@ import {
   TabsList,
   TabsTrigger,
 } from '@rcomp/shadcn-studio/ui/motion-tabs';
-import { LoginForm } from '@rcomp/auth-forms/LoginForm';
-import { RegisterForm } from '@rcomp//auth-forms/RegisterForm';
+import { LoginForm } from '@rcomp/auth-forms-emails/LoginForm';
+import { RegisterForm } from '@rcomp//auth-forms-emails/RegisterForm';
 import { motion } from 'motion/react';
 import ThemeToggleShell from '@rcomp/theme-toggle-button/ThemeModeToogle';
 import FullPageLoader from '@rcomp/skeleton-dashboard-page';
 // Lazy-load forms
 const LoginFormLazy = lazy(() =>
-  import('@rcomp/auth-forms/LoginForm').then((m) => ({ default: m.LoginForm }))
+  import('@rcomp/auth-forms-emails/LoginForm').then((m) => ({ default: m.LoginForm }))
 );
 const RegisterFormLazy = lazy(() =>
-  import('@rcomp/auth-forms/RegisterForm').then((m) => ({ default: m.RegisterForm }))
+  import('@rcomp/auth-forms-emails/RegisterForm').then((m) => ({ default: m.RegisterForm }))
 );
 const tabs = [
   {
