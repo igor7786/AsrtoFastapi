@@ -6,7 +6,7 @@ import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
 import { resend } from '@/lib/resend-email';
-import { WelcomeEmail } from '@rcomp/auth-forms-emails/emails/VertificationEmail';
+import { WelcomeEmail } from '@rcomp/auth-forms-emails/emails/VerificationEmail';
 
 export const auth = betterAuth({
   basePath: '/api/auth',
@@ -51,13 +51,33 @@ export const auth = betterAuth({
     expiresIn: 10, // 15 minutes
 
     sendVerificationEmail: async ({ user, url }) => {
-      await resend.emails.send({
-        from: 'Verification <astrofastapi@igorfastapi.co.uk>', // You could add your custom domain
-        to: 'grimuta60@gmail.com', // email of the user to want to end
-        subject: 'Email Verification', // Main subject of the email
-        react: WelcomeEmail({ user, url }), // Content of the email
-        // you could also use "React:" option for sending the email template and there content to user
-      });
+      void resend.emails
+        .send({
+          from: 'Verification <astrofastapi@igorfastapi.co.uk>',
+          to: 'grimuta60@gmail.com',
+          subject: 'Email Verification',
+          react: WelcomeEmail({ user, url }),
+        })
+        .then((result) => {
+          if (result.error) {
+            console.error('[EMAIL ERROR]', {
+              userId: user.id,
+              email: user.email,
+              statusCode: result.error.statusCode,
+              message: result.error.message,
+              name: result.error.name,
+            });
+          }
+        })
+        .catch((err) => {
+          // only network / runtime failures
+          console.error('[EMAIL FATAL]', {
+            userId: user.id,
+            email: user.email,
+            message: err.message,
+            fullError: err,
+          });
+        });
     },
   },
 
