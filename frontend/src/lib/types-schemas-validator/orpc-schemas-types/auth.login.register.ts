@@ -59,11 +59,19 @@ export const registerInputSchemaFrontend = inputRegisterSchema
   });
 export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFrontend>;
 
-export const outputLoginRegisterSchema = z.object({
+export const outputLoginSchema = z.object({
   message: z.string().trim(),
   redirectTo: z.string().optional(),
 });
-export type OutputLoginRegisterSchema = z.infer<typeof outputLoginRegisterSchema>;
+export type OutputLoginSchema = z.infer<typeof outputLoginSchema>;
+
+export const outputRegisterSchema = z.object({
+  message: z.string().trim().optional(),
+  name: z.string().trim().optional(),
+  email: z.string().trim().email().optional(),
+  redirectTo: z.string().optional(),
+});
+export type OutputRegisterSchema = z.infer<typeof outputRegisterSchema>;
 
 export const inputLoginSocialSchema = z.object({
   provider: z.enum(['google', 'github'], { message: 'Invalid provider' }),

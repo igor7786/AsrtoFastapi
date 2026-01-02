@@ -9,6 +9,7 @@ import LogoutButton from '@rcomp/auth-forms-emails/LogoutButton';
 import type { User } from '@db/types';
 import { $nanoUser } from '@/lib/stores/user';
 import Link from 'astro-typesafe-routes/link/react';
+import { useStore } from '@nanostores/react';
 type NavbarProps = {
   user: User | null;
 };
@@ -32,8 +33,8 @@ const navLinks = [
 ];
 const Navbar = ({ user }: NavbarProps) => {
   $nanoUser.set(user);
+  const isUser = useStore($nanoUser);
   const [active, setActive] = useState<string | null>('#about');
-  const [isUser, setIsUser] = useState<User | null>(user);
   const navRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     navigate('/#about', { history: 'replace' });

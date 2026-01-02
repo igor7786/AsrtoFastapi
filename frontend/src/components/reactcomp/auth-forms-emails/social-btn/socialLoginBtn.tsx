@@ -12,9 +12,7 @@ import {
   type InputLoginSocialSchema,
   inputLoginSocialSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-// type SocialBtnProps = InputLoginSocialSchema & {
-//   disabled?: boolean; // accept disabled as a prop
-// };
+
 export function SocialBtn({ provider }: InputLoginSocialSchema) {
   const queryClient = getQueryClient();
   const idToast = 'login-toast';
@@ -36,7 +34,6 @@ export function SocialBtn({ provider }: InputLoginSocialSchema) {
               duration: 500,
             }
           );
-          console.error('[Invalid provider]: Check your provider');
           pending.set(false);
         } else {
           return await client.authSocial.socialLogin({ provider });

@@ -2,7 +2,8 @@ import { base, baseAuth, baseLogin } from '@hono-adapt/orpc/middlewares/base';
 import {
   inputLoginSchema,
   inputRegisterSchema,
-  outputLoginRegisterSchema,
+  outputLoginSchema,
+  outputRegisterSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { auth } from '@/lib/auth';
 import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
@@ -21,7 +22,7 @@ export const register = base
     successStatus: 201,
   })
   .input(inputRegisterSchema)
-  .output(outputLoginRegisterSchema)
+  .output(outputRegisterSchema)
   .handler(async ({ input, errors, context }) => {
     try {
       const referer = context.reqHeaders?.get('referer') || '';
@@ -37,18 +38,19 @@ export const register = base
           callbackURL: callbackURL,
         },
       });
-      const msg = `Welcome ${response.user.name}.Please verify your email to complete the registration.`;
       const allCookies = headers.getAll('Set-Cookie');
       if (allCookies.length === 0 && !response.token && response.user) {
         if (redirect) {
           const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
           return {
-            message: msg,
+            name: response.user.name,
+            email: response.user.email,
             redirectTo: signinUrl,
           };
         }
         return {
-          message: msg,
+          name: response.user.name,
+          email: response.user.email,
           redirectTo: '/auth?tab=signin',
         };
       } else if (allCookies.length === 0) {
@@ -72,7 +74,7 @@ export const register = base
         throw errors.UNAUTHORIZED({ message: err.message });
       } else if (err instanceof APIError && err.statusCode === 422) {
         throw errors.UNPROCESSABLE_CONTENT({
-          message: `Failed to register ${input.name} , try again later.`,
+          message: `Failed to register ${input.name}, try again later.`,
         });
       }
       throw errors.INTERNAL_SERVER_ERROR();
@@ -92,7 +94,7 @@ export const login = baseLogin
     successStatus: 200,
   })
   .input(inputLoginSchema)
-  .output(outputLoginRegisterSchema)
+  .output(outputLoginSchema)
   .handler(async ({ input, errors, context }) => {
     try {
       const { headers, response } = await auth.api.signInEmail({
@@ -143,7 +145,7 @@ export const logout = baseAuth
     successDescription: 'User logged out successfully',
     successStatus: 200,
   })
-  .output(outputLoginRegisterSchema)
+  .output(outputLoginSchema)
   .handler(async ({ errors, context }) => {
     try {
       await auth.api.signOut({

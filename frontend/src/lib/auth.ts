@@ -48,6 +48,8 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true, // Automatically sends a verification email at signup
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
+    expiresIn: 10, // 15 minutes
+
     sendVerificationEmail: async ({ user, url }) => {
       await resend.emails.send({
         from: 'Verification <astrofastapi@igorfastapi.co.uk>', // You could add your custom domain

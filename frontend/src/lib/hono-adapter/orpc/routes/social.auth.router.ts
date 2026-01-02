@@ -1,7 +1,7 @@
 import { auth } from '@/lib/auth';
 import {
   inputLoginSocialSchema,
-  outputLoginRegisterSchema,
+  outputLoginSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { isLoggedIn } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { baseLogin } from '@hono-adapt/orpc/middlewares/base';
@@ -20,7 +20,7 @@ export const socialLogin = baseLogin
     successStatus: 200,
   })
   .input(inputLoginSocialSchema)
-  .output(outputLoginRegisterSchema)
+  .output(outputLoginSchema)
   .handler(async ({ input, errors, context }) => {
     try {
       const referer = context.reqHeaders?.get('referer') || '';

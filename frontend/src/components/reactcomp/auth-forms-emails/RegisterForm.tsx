@@ -32,6 +32,7 @@ import {
 import { Button } from '@rcomp/ui/button';
 import { useState } from 'react';
 import { useRegisterMutation } from '@rcomp/auth-forms-emails/register-mutation';
+import EmailVerificationDialog from '@rcomp/auth-forms-emails/modal-dialog/EmailModal';
 
 export function RegisterForm({ className, ...props }: React.ComponentProps<'div'>) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -313,6 +314,8 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<'div'
           <a href="#">Privacy Policy</a>.
         </div>
       </div>
+      {/* Dialog */}
+      <EmailVerificationDialog />
     </div>
   );
 }

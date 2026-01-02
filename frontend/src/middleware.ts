@@ -2,6 +2,19 @@ import { defineMiddleware } from 'astro:middleware';
 import { auth } from '@/lib/auth';
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  if (context.url.pathname.startsWith('/api/auth/verify-email')) {
+    const res = await next();
+
+    console.log(res.headers,  await res.text());
+    if (context.url.pathname.startsWith('/api/auth/verify-email') && res.status === 302) {
+      const location = res.headers.get('location');
+
+      if (location?.includes('error=token_expired')) {
+        return Response.redirect('/token-expired', 302);
+      }
+    }
+    return res;
+  }
   if (
     context.isPrerendered ||
     context.url.pathname.startsWith('/_astro/') ||
