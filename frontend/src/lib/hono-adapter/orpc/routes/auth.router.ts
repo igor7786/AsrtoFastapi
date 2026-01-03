@@ -31,6 +31,7 @@ export const register = base
       const callbackURL = `${redirect}`;
       const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
+        headers: context.reqHeaders!,
         body: {
           name: input.name,
           email: input.email,
@@ -98,6 +99,7 @@ export const login = baseLogin
   .handler(async ({ input, errors, context }) => {
     try {
       const { headers, response } = await auth.api.signInEmail({
+        headers: context.reqHeaders!,
         returnHeaders: true,
         body: {
           email: input.email,

@@ -21,11 +21,11 @@ interface EmailProps {
     name: string;
     email: string;
   };
-  url?: string;
+  newUrl?: string;
 }
 const baseUrl = envServer.PUBLIC_URL;
 
-export const WelcomeEmail = ({ user, url }: EmailProps) => {
+export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
   return (
     <Html>
       <Head />
@@ -71,7 +71,7 @@ export const WelcomeEmail = ({ user, url }: EmailProps) => {
             </Section>
 
             <Section className="text-center">
-              <Button href={url} className="bg-brand rounded-lg px-[18px] py-3 text-white">
+              <Button href={newUrl} className="bg-brand rounded-lg px-[18px] py-3 text-white">
                 Verify your email address !
               </Button>
             </Section>
@@ -82,7 +82,7 @@ export const WelcomeEmail = ({ user, url }: EmailProps) => {
               <Row>
                 <Column className="px-20 text-center">
                   If the button not work, copy and paste this link into your browser:{' '}
-                  <Link href={url}>{url}</Link>
+                  <Link href={newUrl}>{newUrl}</Link>
                 </Column>
               </Row>
             </Section>

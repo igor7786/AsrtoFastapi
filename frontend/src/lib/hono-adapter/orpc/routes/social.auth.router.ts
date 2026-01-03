@@ -13,8 +13,8 @@ export const socialLogin = baseLogin
   .route({
     method: 'POST',
     path: '/social/login',
-    description: 'Login a user',
-    summary: 'Sign in a user',
+    description: 'Social login a user',
+    summary: 'Social sign in a user',
     tags: ['Auth'],
     successDescription: 'User logged in successfully',
     successStatus: 200,

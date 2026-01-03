@@ -9,6 +9,7 @@ import {
 } from '@hono-adapt/orpc/routes/todos';
 import { login, logout, register } from '@/lib/hono-adapter/orpc/routes/auth.router';
 import { socialLogin } from '@hono-adapt/orpc/routes/social.auth.router';
+import { verifyEmail } from '@/lib/hono-adapter/orpc/routes/auth.verify';
 
 export const router = {
   planet: {
@@ -21,6 +22,9 @@ export const router = {
   },
   authSocial: {
     socialLogin: socialLogin,
+  },
+  authVerifyEmail: {
+    verifyEmail: verifyEmail,
   },
   todos: {
     listTodos: listTodos,

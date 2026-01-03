@@ -48,15 +48,18 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true, // Automatically sends a verification email at signup
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
-    expiresIn: 10, // 15 minutes
+    expiresIn: 15, // 1 hour
 
     sendVerificationEmail: async ({ user, url }) => {
+      const newUrl = new URL(url);
+      newUrl.pathname = '/api/rpc/verify-email';
+      newUrl.searchParams.set('email', user.email);
       void resend.emails
         .send({
           from: 'Verification <astrofastapi@igorfastapi.co.uk>',
           to: 'grimuta60@gmail.com',
           subject: 'Email Verification',
-          react: WelcomeEmail({ user, url }),
+          react: WelcomeEmail({ user, newUrl: newUrl.toString() }),
         })
         .then((result) => {
           if (result.error) {
