@@ -48,7 +48,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true, // Automatically sends a verification email at signup
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
-    expiresIn: 60 * 60, // 1 hour
+    expiresIn: 60 * 15, // 15 minutes
 
     sendVerificationEmail: async ({ user, url, token }) => {
       console.error(token);

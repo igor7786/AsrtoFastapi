@@ -1,38 +1,10 @@
 import { base } from '@hono-adapt/orpc/middlewares/base';
 import { auth } from '@/lib/auth';
 import { APIError } from 'better-auth/api';
-import { z } from 'zod';
-
-/* --------------------------------------------------
- * Input schema
- * -------------------------------------------------- */
-export const inputVerifyEmailSchema = z.object({
-  token: z.string().min(1, 'Token is required'),
-  callbackURL: z.string().optional(),
-});
-
-/* --------------------------------------------------
- * Output schema (for OpenAPI + ORPC)
- * -------------------------------------------------- */
-const verifyEmailOutputSchema = z.union([
-  // Redirect with cookies (success)
-  z.object({
-    status: z.literal(302).describe('record created'),
-    headers: z.object({
-      location: z.string(),
-      'set-cookie': z.array(z.string()).optional(),
-    }),
-  }),
-
-  // Success without redirect (rare but supported)
-  z.object({
-    status: z.literal(200),
-    body: z.object({
-      status: z.literal(true),
-      user: z.any().nullable(),
-    }),
-  }),
-]);
+import {
+  inputVerifyEmailSchema,
+  verifyEmailOutputSchema,
+} from '@/lib/types-schemas-validator/orpc-schemas-types/verify';
 
 /* --------------------------------------------------
  * Route
