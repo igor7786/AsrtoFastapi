@@ -69,7 +69,7 @@ export const outputRegisterSchema = z.object({
   message: z.string().trim().optional(),
   name: z.string().trim().optional(),
   email: z.string().trim().email().optional(),
-  redirectTo: z.string().optional(),
+  redirectTo: z.string(),
 });
 export type OutputRegisterSchema = z.infer<typeof outputRegisterSchema>;
 

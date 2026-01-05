@@ -28,18 +28,7 @@ export function useRegisterMutation(form: UseFormReturn<RegisterInputSchemaFront
         isError.set('');
         isPending.set(false);
         isUser.set(data);
-        const fullPathWithQuery = window.location.pathname + window.location.search;
         form.reset();
-        const timer = setTimeout(() => {
-          if (data.redirectTo) {
-            navigate(data.redirectTo);
-          } else {
-            navigate(fullPathWithQuery, { history: 'replace' });
-          }
-        }, 3_000);
-        return () => {
-          clearTimeout(timer);
-        };
       },
     },
     queryClient

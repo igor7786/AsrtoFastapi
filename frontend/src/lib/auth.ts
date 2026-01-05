@@ -54,7 +54,6 @@ export const auth = betterAuth({
       console.error(token);
       const getUrl = new URL(url);
       getUrl.pathname = '/api/rpc/verify-email';
-      getUrl.searchParams.set('email', user.email);
       const newUrl = getUrl.toString();
       void resend.emails
         .send({

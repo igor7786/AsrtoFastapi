@@ -27,7 +27,8 @@ export const register = base
     try {
       const referer = context.reqHeaders?.get('referer') || '';
       const url = new URL(referer);
-      const redirect = url.searchParams.get('redirect') || '';
+      const redirect = url.searchParams.get('redirect') || '/';
+      const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
       const callbackURL = `${redirect}`;
       const { headers, response } = await auth.api.signUpEmail({
         returnHeaders: true,
@@ -40,19 +41,12 @@ export const register = base
         },
       });
       const allCookies = headers.getAll('Set-Cookie');
+      console.log('signinUrl', signinUrl);
       if (allCookies.length === 0 && !response.token && response.user) {
-        if (redirect) {
-          const signinUrl = `/auth?tab=signin&redirect=${encodeURIComponent(redirect)}`;
-          return {
-            name: response.user.name,
-            email: response.user.email,
-            redirectTo: signinUrl,
-          };
-        }
         return {
           name: response.user.name,
           email: response.user.email,
-          redirectTo: '/auth?tab=signin',
+          redirectTo: signinUrl,
         };
       } else if (allCookies.length === 0) {
         throw new APIError('BAD_REQUEST', {
@@ -67,6 +61,7 @@ export const register = base
       }
       return {
         message: `Welcome ${response.user.name}.`,
+        redirectTo: signinUrl,
       };
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MailIcon, X } from 'lucide-react';
 import {
   isPending as pending,
@@ -10,18 +10,54 @@ import { useStore } from '@nanostores/react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@rcomp/ui/dialog';
 import { Spinner } from '@rcomp/spinner';
 import { cn } from '@rcomp/lib/utils';
+import { navigate } from 'astro:transitions/client';
 const EmailVerificationDialog = () => {
   const contentRef = useRef<HTMLDivElement>(null);
   const isOpen = useStore(open);
   const isPending = useStore(pending);
   const isError = useStore(error);
   const isUser = useStore(user);
-  // onOpenChange={(val) => open.set(val)}
+
+  function navigateUser() {
+    navigate(isUser!.redirectTo, { history: 'replace' });
+  }
+
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setSeconds(10); // reset when opening
+
+    const interval = setInterval(() => {
+      setSeconds((s) => {
+        if (s <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        console.log(isUser);
+        return s - 1;
+      });
+    }, 1_000);
+
+    const timeout = setTimeout(() => {
+      open.set(false); // auto-close after 30s
+      navigateUser();
+    }, 10_000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+  }, [isOpen, isUser]);
+
   return (
     <Dialog
       open={isOpen}
       {...(!isPending && {
-        onOpenChange: (val: boolean) => open.set(val),
+        onOpenChange: (val: boolean) => {
+          open.set(val);
+          navigateUser();
+        },
       })}
     >
       <DialogContent
@@ -65,10 +101,19 @@ const EmailVerificationDialog = () => {
                 <span className="text-2xl text-red-500">{isError}</span>
               ) : isUser?.email ? (
                 <span>
-                  Welcome <strong>{isUser.name}</strong>. We have sent a verification email to{' '}
-                  <strong>{isUser.email}</strong>. Please check your inbox to activate your account!{' '}
+                  Welcome <strong className="text-amber-500">{isUser.name}</strong>!
                   <br />
-                  <strong className="text-primary">This window will close automatically.</strong>
+                  We’ve sent a verification email to{' '}
+                  <strong className="text-amber-500">{isUser.email}</strong>. Please check your inbox to
+                  activate your account.
+                  <br />
+                  If you don’t see the email, be sure to check your{' '}
+                  <strong className="text-red-500">Spam</strong> or{' '}
+                  <strong className="text-red-500">Junk</strong> folder.
+                  <br />
+                  <strong className="text-primary">
+                    This window will close in {seconds} seconds...
+                  </strong>
                 </span>
               ) : null}
             </DialogDescription>
