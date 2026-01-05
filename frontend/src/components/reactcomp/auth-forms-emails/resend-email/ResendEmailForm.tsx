@@ -27,14 +27,13 @@ import {
   type LoginSchema,
   inputLoginSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
-import { SocialBtn } from '@rcomp/auth-forms-emails/social-btn/socialLoginBtn';
 import { useStore } from '@nanostores/react';
 import { pending } from '@/lib/stores/pending';
 import { useState } from 'react';
 import { Button } from '@rcomp/ui/button';
-import { useLoginMutation } from '@rcomp/auth-forms-emails/login-mutation';
+import { useResendEmailMutation } from '@rcomp/auth-forms-emails/resend-email/resend-mutation';
 
-export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
+export function ResendEmailForm({ className, ...props }: React.ComponentProps<'div'>) {
   const isDisabled = useStore(pending);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -48,7 +47,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     mode: 'onChange',
   });
   // 2. Define a submit handler.
-  const mutation = useLoginMutation(form);
+  const mutation = useResendEmailMutation(form);
   // 3. Use the useForm return values.
   const onSubmit = form.handleSubmit((formData) => {
     const { email, password } = formData;
@@ -66,22 +65,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         <Card className="relative overflow-hidden border-none shadow-none ring-0">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">
-              <AuroraText className="mb-2 text-3xl font-bold">Welcome Back</AuroraText>
+              <AuroraText className="mb-2 text-2xl font-bold">Resend Verification Email</AuroraText>
             </CardTitle>
-            <CardDescription>Login with your Google or Github account</CardDescription>
+            <CardDescription className="text-stone-200">
+              Login to resend verification email
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-6">
-              <div className="flex flex-col gap-4">
-                {/* #! Social Login */}
-                {/* <GithubBtn /> */}
-                <SocialBtn provider="google" />
-                <SocialBtn provider="github" />
-              </div>
-            </div>
-            <div className="text-muted-foreground after:border-primary relative py-4 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t dark:after:border-yellow-200">
-              <span className="bg-card text-muted-foreground relative z-10 px-2">Or continue with</span>
-            </div>
             {/*#! Form*/}
             <Form {...form}>
               <form onSubmit={onSubmit} className="space-y-8">
@@ -95,7 +85,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                         <div className="relative">
                           <Input
                             id={field.name}
-                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            className={`text-foreground autofill:text-input border focus-visible:border-green-500/50 focus-visible:ring-0`}
                             type="text"
                             placeholder="example@example.com"
                             autoComplete="email"
@@ -149,7 +139,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                             type={
                               showPassword && form.watch('password').length > 0 ? 'text' : 'password'
                             }
-                            className={`text-foreground autofill:text-input border-[1px] focus-visible:border-green-500/50 focus-visible:ring-0`}
+                            className={`text-foreground autofill:text-input border focus-visible:border-green-500/50 focus-visible:ring-0`}
                             placeholder="*******"
                             autoComplete="current-password"
                             {...field}

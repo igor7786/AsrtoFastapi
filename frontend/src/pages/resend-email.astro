@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { ResendEmailUser } from '@rcomp/auth-forms-emails/resend-email';
+import { tokenUrlSchema } from '@/lib/types-schemas-validator/pages-other/resend.email';
+const title = 'Resend Email';
+let token = Astro.url.searchParams.get('error') as string;
+const urlPath = Astro.url.pathname;
+console.log(token, urlPath);
+
+// Validate tab query param
+try {
+  token = tokenUrlSchema.parse(token);
+} catch {
+  token = 'token_expired'; // fallback
+  return Astro.redirect(`${urlPath}/?error=${token}`, 302); // redirect
+}
+---
+
+<Layout title={title}>
+  <ResendEmailUser slot="main" client:load />
+</Layout>

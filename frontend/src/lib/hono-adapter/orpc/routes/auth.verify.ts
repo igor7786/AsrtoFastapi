@@ -55,7 +55,7 @@ export const verifyEmail = base
         return {
           status: 302,
           headers: {
-            location: '/token/expired',
+            location: '/resend-email?error=token_expired',
           },
         };
         // Token already used
@@ -63,7 +63,7 @@ export const verifyEmail = base
         return {
           status: 302,
           headers: {
-            location: '/token/been-used',
+            location: '/resend-email?error=token_already_used',
           },
         };
       } else if (res.status === 200) {

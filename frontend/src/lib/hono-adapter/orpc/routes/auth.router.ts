@@ -41,7 +41,6 @@ export const register = base
         },
       });
       const allCookies = headers.getAll('Set-Cookie');
-      console.log('signinUrl', signinUrl);
       if (allCookies.length === 0 && !response.token && response.user) {
         return {
           name: response.user.name,

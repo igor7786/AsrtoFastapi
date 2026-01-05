@@ -34,10 +34,6 @@ export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
           presets: [pixelBasedPreset],
           theme: {
             extend: {
-              colors: {
-                brand: '#007a55',
-                offwhite: '#fafbfb',
-              },
               spacing: {
                 0: '0px',
                 20: '20px',
@@ -71,9 +67,12 @@ export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
             </Section>
 
             <Section className="text-center">
-              <Button href={newUrl} className="bg-brand rounded-lg px-[18px] py-3 text-white">
+              <Button href={newUrl} className="rounded-lg bg-[#007a55] px-4.5 py-3 text-white">
                 Verify your email address !
               </Button>
+              <Text className="mt-4 text-center font-semibold text-red-500">
+                Link expires in 15 minutes!
+              </Text>
             </Section>
           </Container>
 

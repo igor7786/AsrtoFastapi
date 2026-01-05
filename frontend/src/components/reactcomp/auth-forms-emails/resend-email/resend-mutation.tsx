@@ -1,16 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { client } from '@/lib/hono-adapter/orpc/client';
 import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
-import type { RegisterInputSchemaFrontend } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
+import type { LoginSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import type { UseFormReturn } from 'react-hook-form';
 import { isOpen, isPending, isError, isUser } from '@/lib/stores/register';
 
-export function useRegisterMutation(form: UseFormReturn<RegisterInputSchemaFrontend>) {
+export function useResendEmailMutation(form: UseFormReturn<LoginSchema>) {
   const queryClient = getQueryClient();
   return useMutation(
     {
-      mutationFn: async ({ email, password, name }: RegisterInputSchemaFrontend) =>
-        await client.auth.register({ email, password, name }),
+      mutationFn: async ({ email, password }: LoginSchema) =>
+        await client.auth.login({ email, password }),
 
       onMutate: async () => {
         isOpen.set(true);
@@ -26,7 +26,7 @@ export function useRegisterMutation(form: UseFormReturn<RegisterInputSchemaFront
       onSuccess: async (data) => {
         isError.set('');
         isPending.set(false);
-        isUser.set(data);
+        // isUser.set(data);
         form.reset();
       },
     },

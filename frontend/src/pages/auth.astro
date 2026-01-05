@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import { SkeletonPage } from '@rcomp/LoadingSkeleton';
 import TabsAuth from '@rcomp/shadcn-studio/tabs/Auth';
-import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs-url';
+import { tabsUrlSchema } from '@/lib/types-schemas-validator/pages-other/tabs.url';
 const title = 'Auth';
 let sign = Astro.url.searchParams.get('tab') as string;
 

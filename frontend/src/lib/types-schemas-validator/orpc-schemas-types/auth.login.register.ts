@@ -35,6 +35,13 @@ export const inputLoginSchema = z.object({
 });
 export type LoginSchema = z.infer<typeof inputLoginSchema>;
 
+export const outputLoginSchema = z.object({
+  message: z.string().trim(),
+  redirectTo: z.string().optional(),
+});
+export type OutputLoginSchema = z.infer<typeof outputLoginSchema>;
+
+
 export const inputRegisterSchema = inputLoginSchema.extend({
   name: z
     .string()
@@ -59,11 +66,7 @@ export const registerInputSchemaFrontend = inputRegisterSchema
   });
 export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFrontend>;
 
-export const outputLoginSchema = z.object({
-  message: z.string().trim(),
-  redirectTo: z.string().optional(),
-});
-export type OutputLoginSchema = z.infer<typeof outputLoginSchema>;
+
 
 export const outputRegisterSchema = z.object({
   message: z.string().trim().optional(),
