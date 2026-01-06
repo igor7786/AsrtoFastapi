@@ -1,9 +1,13 @@
 import { os } from '@orpc/server';
 import type { RequestHeadersPluginContext, ResponseHeadersPluginContext } from '@orpc/server/plugins';
 import type { auth } from '@/lib/auth';
+import { type DB } from '@db/db-instance';
 
 // 👇 Extend ORPC context with your auth fields
-export type AppContext = RequestHeadersPluginContext & ResponseHeadersPluginContext;
+export type AppContext = RequestHeadersPluginContext &
+  ResponseHeadersPluginContext & {
+    db: DB;
+  };
 
 export type AuthedContext = AppContext & {
   session: typeof auth.$Infer.Session.session;

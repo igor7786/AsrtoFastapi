@@ -7,6 +7,7 @@ import { Scalar } from '@scalar/hono-api-reference';
 import { minifyContractRouter } from '@orpc/contract';
 import { router } from '@hono-adapt/orpc/routes/router';
 import type { HonoEnv } from '@db/types';
+import { db } from '@db/db-instance';
 
 // ------------------------------
 // 1️⃣ Create Hono app
@@ -40,8 +41,9 @@ app
       prefix: '/api/rpc',
       context: {
         session: c.get('session'), // ✅ real session object
-        user: c.get('user'),
-      }, // You can inject user/session context here
+        user: c.get('user'), // You can inject user/session context here
+        db: db,
+      },
     });
 
     if (matched) return c.newResponse(response.body, response);

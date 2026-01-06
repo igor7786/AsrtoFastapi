@@ -40,8 +40,6 @@ export const outputLoginSchema = z.object({
   redirectTo: z.string().optional(),
 });
 export type OutputLoginSchema = z.infer<typeof outputLoginSchema>;
-
-
 export const inputRegisterSchema = inputLoginSchema.extend({
   name: z
     .string()
@@ -65,8 +63,6 @@ export const registerInputSchemaFrontend = inputRegisterSchema
     path: ['repeatPassword'],
   });
 export type RegisterInputSchemaFrontend = z.infer<typeof registerInputSchemaFrontend>;
-
-
 
 export const outputRegisterSchema = z.object({
   message: z.string().trim().optional(),

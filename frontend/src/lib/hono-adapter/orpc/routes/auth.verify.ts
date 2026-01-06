@@ -21,6 +21,7 @@ export const verifyEmail = base
   .input(inputVerifyEmailSchema)
   .output(verifyEmailOutputSchema)
   .handler(async ({ input, context, errors }) => {
+    const { token, callbackURL } = input;
     try {
       /* --------------------------------------------
        * Call BetterAuth
@@ -30,8 +31,8 @@ export const verifyEmail = base
         returnHeaders: true,
         asResponse: true,
         query: {
-          token: input.token,
-          callbackURL: input.callbackURL,
+          token,
+          callbackURL,
         },
       });
 
@@ -60,6 +61,7 @@ export const verifyEmail = base
         };
         // Token already used
       } else if (res.status === 302 && cookies.length === 0) {
+        // Token already used
         return {
           status: 302,
           headers: {

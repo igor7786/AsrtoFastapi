@@ -10,7 +10,7 @@ export function useResendEmailMutation(form: UseFormReturn<LoginSchema>) {
   return useMutation(
     {
       mutationFn: async ({ email, password }: LoginSchema) =>
-        await client.auth.login({ email, password }),
+        await client.authEmail.resendEmail({ email, password }),
 
       onMutate: async () => {
         isOpen.set(true);

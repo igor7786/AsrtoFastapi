@@ -1,10 +1,36 @@
 import { eq, desc, and } from 'drizzle-orm';
-import { db } from '@db/db-instance';
+import { db, type DB } from '@db/db-instance';
 import { todos } from '@db/todos-shema';
 import type { NewTodo, Todo } from '@db/types';
 import { outputTodoSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/todos';
 import type z from 'zod';
+import { user, account } from '@db/auth-schema';
+import { type LoginSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
+import { verifyPassword } from '@/lib/argon2';
+import { error } from 'node:console';
 type OutputTodo = z.infer<typeof outputTodoSchema>;
+
+export const getUserByEmail = async (input: LoginSchema, db: DB) => {
+  const { email, password } = input;
+
+  const [userRecord] = await db.select().from(user).where(eq(user.email, email)).limit(1);
+  if (!userRecord) return { error: 'Invalid credentials', code: '401' };
+
+  if (userRecord.emailVerified) return { error: 'Email already verified', code: '403' };
+
+  const [accountRecord] = await db
+    .select()
+    .from(account)
+    .where(eq(account.userId, userRecord.id))
+    .limit(1);
+
+  if (!accountRecord?.password) return { error: 'Invalid credentials', code: '401' };
+
+  const isValidPassword = await verifyPassword({ password, hash: accountRecord.password });
+  if (!isValidPassword) return { error: 'Invalid credentials', code: '401' };
+
+  return { userRecord, isEmailVerified: false, code: 200 };
+};
 
 export const getTodoByUserIdAndOffset = async (userId: string, offset: number) => {
   // Validate offset

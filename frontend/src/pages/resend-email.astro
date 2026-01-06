@@ -5,8 +5,6 @@ import { tokenUrlSchema } from '@/lib/types-schemas-validator/pages-other/resend
 const title = 'Resend Email';
 let token = Astro.url.searchParams.get('error') as string;
 const urlPath = Astro.url.pathname;
-console.log(token, urlPath);
-
 // Validate tab query param
 try {
   token = tokenUrlSchema.parse(token);

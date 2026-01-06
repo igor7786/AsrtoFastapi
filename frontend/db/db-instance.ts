@@ -35,3 +35,4 @@ export function getDbInstance() {
 
 // Export the singleton DB instance
 export const db = getDbInstance();
+export type DB = typeof db;

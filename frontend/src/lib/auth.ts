@@ -46,6 +46,10 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
+    async afterEmailVerification(user, request,) {
+      // Your custom logic here, e.g., grant access to premium features
+      console.log(`${user.email} has been successfully verified!`);
+    },
     sendOnSignUp: true, // Automatically sends a verification email at signup
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
     expiresIn: 60 * 15, // 15 minutes
