@@ -24,7 +24,7 @@ export const resendEmail = baseLogin
   .input(inputLoginSchema)
   .output(outputRegisterSchema)
   .handler(async ({ input, errors, context }) => {
-    const { email } = input;
+    const { email, password } = input;
     const db = context.db;
     try {
       const user = await getUserByEmail(input, db);
@@ -35,11 +35,20 @@ export const resendEmail = baseLogin
           cause: 'Failed to get user by email and password',
         });
       } else if (user.error === 'Email already verified') {
-        throw new APIError('FORBIDDEN', {
-          message: 'Something went wrong, try again later.',
-          code: user.code,
-          cause: 'Failed to get user by email and password',
+        const { headers, response } = await auth.api.signInEmail({
+          headers: context.reqHeaders!,
+          returnHeaders: true,
+          body: {
+            email,
+            password,
+          },
         });
+        const allCookies = headers.getAll('Set-Cookie');
+        for (const cookie of allCookies) {
+          const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
+          context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
+        }
+        return { message: `Welcome back ${response.user.name}.`, redirectTo: '/' };
       }
       const response = await auth.api.sendVerificationEmail({
         returnHeaders: true,
@@ -49,6 +58,7 @@ export const resendEmail = baseLogin
           email,
           callbackURL: '/',
         },
+
       });
       return {
         message: ` ${user.userRecord?.name} Yours verification email was sent to ${user.userRecord?.email}`,

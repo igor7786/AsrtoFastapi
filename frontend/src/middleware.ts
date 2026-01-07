@@ -9,21 +9,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
   ) {
     return next();
   }
-
+  const notProtectedPaths = ['/resend-email', '/auth'];
+  const protectedPaths = ['/dashboard', '/admin', '/settings'];
+  const pathname = context.url.pathname;
   const session = await auth.api.getSession({ headers: context.request.headers });
   if (session) {
     context.locals.user = session.user;
     context.locals.session = session.session;
   }
+
   // Redirect logged-in users away from login
-  if (session && context.url.pathname === '/auth') {
+  if (session && notProtectedPaths.some((path) => pathname.startsWith(path))) {
     const redirectUrl = context.url.searchParams.get('redirect') || '/';
     return new Response(null, { status: 302, headers: { Location: redirectUrl } });
   }
 
   // Redirect unauthenticated users from protected routes
-  const protectedPaths = ['/dashboard', '/admin', '/settings'];
-  if (!session && protectedPaths.some((path) => context.url.pathname.startsWith(path))) {
+  if (!session && protectedPaths.some((path) => pathname.startsWith(path))) {
     const redirectTo = encodeURIComponent(context.url.pathname);
     const tabs = encodeURIComponent(context.url.searchParams.get('tab') || 'signin');
     return new Response(null, {

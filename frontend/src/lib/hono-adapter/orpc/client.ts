@@ -16,7 +16,7 @@ const link = new OpenAPILink(contract as any, {
     try {
       return window.location.origin + '/api/rpc';
     } catch (e) {
-      return ' envConfig.PUBLIC_API_URL';
+      return envConfig.PUBLIC_API_URL;
     }
   },
   // ✅ Custom fetch ensures cookies/sessions are included for cross-origin calls

@@ -29,7 +29,7 @@ export const isLoggedIn = baseLogin.middleware(async ({ context, next, errors })
     headers: context.reqHeaders!,
   });
   if (session?.user?.id) {
-    throw errors.UNPROCESSABLE_CONTENT({
+    throw errors.FORBIDDEN({
       message: 'User is already logged in, please logout first before logging in again',
     });
   }

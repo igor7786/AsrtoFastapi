@@ -10,7 +10,7 @@ try {
   token = tokenUrlSchema.parse(token);
 } catch {
   token = 'token_expired'; // fallback
-  return Astro.redirect(`${urlPath}/?error=${token}`, 302); // redirect
+  return Astro.redirect(`${urlPath}?error=${token}`, 302); // redirect
 }
 ---
 
