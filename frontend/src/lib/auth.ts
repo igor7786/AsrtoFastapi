@@ -37,20 +37,6 @@ export const auth = betterAuth({
       clientSecret: envServer.GITHUB_CLIENT_SECRET,
     },
   },
-  // hooks: {
-  //   before: createAuthMiddleware(async (ctx) => {
-  //     console.log('BEFORE', ctx.path, ctx.headers);
-  //     if (ctx.path === '/api/rpc/verify-email') {
-  //       console.log('BEFORE VERIFY EMAIL', ctx);
-  //     }
-  //   }),
-  //   after: createAuthMiddleware(async (ctx) => {
-  //     console.log('AFTER', ctx.path, ctx.method, ctx.params);
-  //     if (ctx.path === '/api/rpc/verify-email') {
-  //       console.log('AFTER VERIFY EMAIL', ctx);
-  //     }
-  //   }),
-  // },
 
   emailAndPassword: {
     enabled: true,

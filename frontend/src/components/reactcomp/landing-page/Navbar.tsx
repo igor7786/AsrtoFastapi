@@ -30,6 +30,10 @@ const navLinks = [
     href: 'dashboard',
     label: 'Dashboard',
   },
+  {
+    href: 'resend-email',
+    label: 'Resend Email',
+  },
 ];
 const Navbar = ({ user }: NavbarProps) => {
   $nanoUser.set(user);
@@ -70,6 +74,9 @@ const Navbar = ({ user }: NavbarProps) => {
                   if (link.href === 'dashboard') {
                     navigate('/dashboard', { history: 'replace' });
                   }
+                  if (link.href === 'resend-email') {
+                    navigate('/resend-email', { history: 'replace' });
+                  }
                 }}
                 className={`text-sm transition-colors ${
                   active === link.href
@@ -83,12 +90,12 @@ const Navbar = ({ user }: NavbarProps) => {
           </div>
           <div className="flex items-center gap-4">
             {isUser ? (
-              <div className="flex items-center gap-4">
-                <span className="text-sm leading-none font-medium">Hello {isUser.name}</span>
-              </div>
-            ) : null}
-            {isUser ? (
-              <LogoutButton />
+              <>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm leading-none font-medium">Hello {isUser.name}</span>
+                </div>
+                <LogoutButton />
+              </>
             ) : (
               <Button
                 onClick={() => navigate('/auth')}
