@@ -2,6 +2,8 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@db/db-instance'; // your drizzle instance
 import { openAPI } from 'better-auth/plugins';
+// import { admin } from 'better-auth/plugins';
+import { createAuthMiddleware, APIError } from 'better-auth/api';
 import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
@@ -22,6 +24,7 @@ export const auth = betterAuth({
     schema: schema,
     camelCase: false,
   }),
+
   socialProviders: {
     google: {
       clientId: envServer.GOOGLE_CLIENT_ID,
@@ -34,6 +37,21 @@ export const auth = betterAuth({
       clientSecret: envServer.GITHUB_CLIENT_SECRET,
     },
   },
+  // hooks: {
+  //   before: createAuthMiddleware(async (ctx) => {
+  //     console.log('BEFORE', ctx.path, ctx.headers);
+  //     if (ctx.path === '/api/rpc/verify-email') {
+  //       console.log('BEFORE VERIFY EMAIL', ctx);
+  //     }
+  //   }),
+  //   after: createAuthMiddleware(async (ctx) => {
+  //     console.log('AFTER', ctx.path, ctx.method, ctx.params);
+  //     if (ctx.path === '/api/rpc/verify-email') {
+  //       console.log('AFTER VERIFY EMAIL', ctx);
+  //     }
+  //   }),
+  // },
+
   emailAndPassword: {
     enabled: true,
     maxPasswordLength: 20,
@@ -46,18 +64,14 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
-    async afterEmailVerification(user, request,) {
-      // Your custom logic here, e.g., grant access to premium features
-      console.log(`${user.email} has been successfully verified!`);
-    },
     sendOnSignUp: true, // Automatically sends a verification email at signup
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
     expiresIn: 60 * 15, // 15 minutes
 
     sendVerificationEmail: async ({ user, url, token }) => {
-      console.error(token);
       const getUrl = new URL(url);
       getUrl.pathname = '/api/rpc/verify-email';
+      // getUrl.searchParams.set('user', user.email);
       const newUrl = getUrl.toString();
       void resend.emails
         .send({

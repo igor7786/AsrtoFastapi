@@ -1,19 +1,34 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { ResendEmailUser } from '@rcomp/auth-forms-emails/resend-email';
-import { tokenUrlSchema } from '@/lib/types-schemas-validator/pages-other/resend.email';
+import EmailVerificationDialog from '@rcomp/auth-forms-emails/resend-email/ResendEmailModal';
+import {
+  tokenUrlSchema,
+  type TokenUrlSchema,
+} from '@/lib/types-schemas-validator/pages-other/resend.email';
 const title = 'Resend Email';
-let token = Astro.url.searchParams.get('error') as string;
 const urlPath = Astro.url.pathname;
-// Validate tab query param
-try {
-  token = tokenUrlSchema.parse(token);
-} catch {
-  token = 'token_expired'; // fallback
-  return Astro.redirect(`${urlPath}?error=${token}`, 302); // redirect
+
+// get query param
+const errorParam = Astro.url.searchParams.get('error');
+
+// Destructure with default using safeParse
+const { success, data } = tokenUrlSchema.safeParse(errorParam);
+const err: TokenUrlSchema = success ? data : 'token_expired';
+
+// Redirect automatically if token was invalid
+if (!success) {
+  return Astro.redirect(`${urlPath}?error=${err}`, 302);
 }
 ---
 
 <Layout title={title}>
-  <ResendEmailUser slot="main" client:load />
+  {
+    err === 'token_expired' ? (
+      <ResendEmailUser slot="main" client:load />
+    ) : (
+      <EmailVerificationDialog errorMessage={'Email already verified'} slot="main" client:load />
+    )
+  }
+  <!-- <ResendEmailUser slot="main" client:load /> -->
 </Layout>

@@ -48,7 +48,7 @@ export const resendEmail = baseLogin
           const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
           context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
         }
-        return { message: `Welcome back ${response.user.name}.`, redirectTo: '/' };
+        return { message: `Welcome back ${response.user.name}.`, redirectTo: '/resend-email?error=token_already_used' };
       }
       const response = await auth.api.sendVerificationEmail({
         returnHeaders: true,

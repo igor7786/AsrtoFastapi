@@ -4,6 +4,7 @@ import { getQueryClient } from '@/lib/tan-stack/tanstack-query';
 import type { LoginSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import type { UseFormReturn } from 'react-hook-form';
 import { isOpen, isPending, isError, isUser } from '@/lib/stores/register';
+import { navigate } from 'astro:transitions/client';
 
 export function useResendEmailMutation(form: UseFormReturn<LoginSchema>) {
   const queryClient = getQueryClient();
@@ -28,6 +29,7 @@ export function useResendEmailMutation(form: UseFormReturn<LoginSchema>) {
         isPending.set(false);
         // isUser.set(data);
         form.reset();
+        navigate(data.redirectTo, { history: 'replace' });
       },
     },
     queryClient

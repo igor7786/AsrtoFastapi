@@ -38,6 +38,7 @@ export const verifyEmail = base
 
       const location = res.headers.get('location') ?? '/';
       const cookies = res.headers.getAll('set-cookie');
+      console.log(res);
 
       /* --------------------------------------------
        * 302 – success / already verified / expired

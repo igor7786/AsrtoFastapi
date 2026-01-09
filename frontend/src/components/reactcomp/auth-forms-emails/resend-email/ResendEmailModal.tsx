@@ -1,27 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { MailIcon, X } from 'lucide-react';
-import {
-  isPending as pending,
-  isOpen as open,
-  isError as error,
-  isUser as user,
-} from '@/lib/stores/register';
-import { useStore } from '@nanostores/react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@rcomp/ui/dialog';
-import { Spinner } from '@rcomp/spinner';
 import { cn } from '@rcomp/lib/utils';
 import { navigate } from 'astro:transitions/client';
-const EmailVerificationDialog = () => {
+const EmailVerificationDialog = ({ errorMessage }: { errorMessage: string }) => {
+  const err = errorMessage;
   const contentRef = useRef<HTMLDivElement>(null);
-  const isOpen = useStore(open);
-  const isPending = useStore(pending);
-  const isError = useStore(error);
-  const isUser = useStore(user);
-
+  const [isOpen, setIsOpen] = useState(true);
   function navigateUser() {
-    navigate(isUser!.redirectTo, { history: 'replace' });
+    navigate('/auth?tabs=signin', { history: 'replace' });
   }
-
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {
     if (!isOpen) return;
@@ -34,13 +22,12 @@ const EmailVerificationDialog = () => {
           clearInterval(interval);
           return 0;
         }
-        console.log(isUser);
         return s - 1;
       });
     }, 1_000);
 
     const timeout = setTimeout(() => {
-      open.set(false); // auto-close after 30s
+      setIsOpen(false); // auto-close after 30s
       navigateUser();
     }, 10_000);
 
@@ -48,17 +35,15 @@ const EmailVerificationDialog = () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [isOpen, isUser]);
+  }, [isOpen]);
 
   return (
     <Dialog
       open={isOpen}
-      {...(!isPending && {
-        onOpenChange: (val: boolean) => {
-          open.set(val);
-          navigateUser();
-        },
-      })}
+      onOpenChange={(val: boolean) => {
+        setIsOpen(val);
+        navigateUser();
+      }}
     >
       <DialogContent
         ref={contentRef}
@@ -76,9 +61,7 @@ const EmailVerificationDialog = () => {
             )}
             aria-hidden="true"
           >
-            {isPending ? (
-              <Spinner className="text-sky-600 dark:text-white" />
-            ) : isError ? (
+            {err ? (
               <X className="text-red-500/90" />
             ) : (
               <MailIcon className="text-sky-600 dark:text-white" strokeWidth={1} />
@@ -86,52 +69,22 @@ const EmailVerificationDialog = () => {
           </div>
           <DialogHeader>
             <DialogTitle className="sm:text-center">
-              {isPending
-                ? 'Sending verification email...'
-                : isError
-                  ? 'Error sending verification email.'
-                  : isUser?.email
-                    ? 'Verify your email address'
-                    : null}
+              {err ? 'Error verifying email. You will be redirected...' : null}
             </DialogTitle>
             <DialogDescription className="sm:text-center">
-              {isPending ? (
-                <span>Just a moment...</span>
-              ) : isError ? (
-                <div className="flex flex-col gap-2">
-                  <span className="text-2xl text-red-500">{isError}</span>
-                  <strong className="text-primary">
-                    This window will close in {seconds} seconds...
-                  </strong>
-                </div>
-              ) : isUser?.email ? (
-                <span>
-                  Welcome <strong className="text-amber-500">{isUser.name}</strong>!
-                  <br />
-                  We’ve sent a verification email to{' '}
-                  <strong className="text-amber-500">{isUser.email}</strong>. Please check your inbox to
-                  activate your account.
-                  <br />
-                  If you don’t see the email, be sure to check your{' '}
-                  <strong className="text-red-500">Spam</strong> or{' '}
-                  <strong className="text-red-500">Junk</strong> folder.
-                  <br />
+              {err ? (
+                <span className="flex flex-col gap-2">
+                  <span className="text-2xl text-red-500">{err}</span>
                   <strong className="text-primary">
                     This window will close in {seconds} seconds...
                   </strong>
                 </span>
-              ) : null}
+              ) : (
+                <span>Just a moment...</span>
+              )}
             </DialogDescription>
           </DialogHeader>
         </div>
-        {isUser?.email && (
-          <p className="text-center text-sm">
-            Didn&apos;t get a email?{' '}
-            <a className="text-sky-600 hover:underline dark:text-sky-400" href="#">
-              Resend
-            </a>
-          </p>
-        )}
       </DialogContent>
     </Dialog>
   );
