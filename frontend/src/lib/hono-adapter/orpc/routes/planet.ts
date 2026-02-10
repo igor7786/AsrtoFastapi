@@ -7,7 +7,7 @@ import { PlanetSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/p
 // GET route to list planets
 export const listPlanet = os
   .route({
-    method: 'POST',
+    method: 'GET',
     path: '/get-planets',
     description: 'List planets with pagination',
     summary: 'Get all planets',

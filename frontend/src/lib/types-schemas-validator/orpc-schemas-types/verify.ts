@@ -3,6 +3,13 @@ export const inputVerifyEmailSchema = z.object({
   token: z.string().min(1, 'Token is required'),
   callbackURL: z.string().optional(),
 });
+export const jwtTokenSchema = z.object({
+  email: z.string(),
+  iat: z.number(),
+  exp: z.number(),
+});
+
+export type JwtTokenSchema = z.infer<typeof jwtTokenSchema>;
 
 export const verifyEmailOutputSchema = z.union([
   // Redirect with cookies (success)

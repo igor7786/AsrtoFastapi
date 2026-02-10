@@ -8,14 +8,11 @@ import {
 } from '@/lib/types-schemas-validator/pages-other/resend.email';
 const title = 'Resend Email';
 const urlPath = Astro.url.pathname;
-
 // get query param
 const errorParam = Astro.url.searchParams.get('error');
-
 // Destructure with default using safeParse
 const { success, data } = tokenUrlSchema.safeParse(errorParam);
 const err: TokenUrlSchema = success ? data : 'token_expired';
-
 // Redirect automatically if token was invalid
 if (!success) {
   return Astro.redirect(`${urlPath}?error=${err}`, 302);
@@ -26,8 +23,10 @@ if (!success) {
   {
     err === 'token_expired' ? (
       <ResendEmailUser slot="main" client:load />
-    ) : (
+    ) : err === 'token_already_used' ? (
       <EmailVerificationDialog errorMessage={'Email already verified'} slot="main" client:load />
+    ) : (
+      <EmailVerificationDialog errorMessage={'Invalid token'} slot="main" client:load />
     )
   }
   <!-- <ResendEmailUser slot="main" client:load /> -->

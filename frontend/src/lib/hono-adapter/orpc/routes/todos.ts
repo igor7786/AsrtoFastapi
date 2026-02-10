@@ -10,6 +10,11 @@ import {
 import * as z from 'zod';
 import { isAuth } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { baseAuth } from '@hono-adapt/orpc/middlewares/base';
+import { arcjetRead, arcjetHeavyRead } from '@/lib/hono-adapter/orpc/middlewares/arcjet/auth-user/read';
+import {
+  arcjetWrite,
+  arcjetHeavyWrite,
+} from '@/lib/hono-adapter/orpc/middlewares/arcjet/auth-user/write';
 import {
   createTodoSchema,
   deleteTodoSchemabyId,
@@ -32,9 +37,9 @@ const baseTodo = baseAuth
   })
   .use(isAuth)
   .use(isValErrors);
-// GET route to list planets
+// GET route to list todos
 export const listTodos = baseTodo
-
+  .use(arcjetHeavyRead)
   .route({
     method: 'GET',
     path: '/get-todos',
@@ -53,8 +58,9 @@ export const listTodos = baseTodo
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
-
+// GET  todo
 export const getTodoById = baseTodo
+  .use(arcjetRead)
   .route({
     method: 'GET',
     path: '/todos/{id}', // Dynamic route (unchanged)
@@ -83,7 +89,9 @@ export const getTodoById = baseTodo
     }
     return todo;
   });
+// Create a new todo
 export const createTodo = baseTodo
+  .use(arcjetWrite)
   .route({
     method: 'POST',
     path: '/create-todo',
@@ -106,7 +114,9 @@ export const createTodo = baseTodo
       throw errors.INTERNAL_SERVER_ERROR(); // ✔ Correct
     }
   });
+// Update a todo by ID
 export const putTodo = baseTodo
+  .use(arcjetWrite)
   .route({
     method: 'PATCH',
     path: '/todos/{id}', // Dynamic route for the todo ID
@@ -136,8 +146,9 @@ export const putTodo = baseTodo
 
     return updatedTodo;
   });
-
+// Delete a todo by ID
 export const deleteTodo = baseTodo
+  .use(arcjetWrite)
   .route({
     method: 'DELETE',
     path: '/delete-todo',
@@ -162,7 +173,9 @@ export const deleteTodo = baseTodo
     }
     return null;
   });
+// Delete all todos
 export const deleteAllTodos = baseTodo
+  .use(arcjetHeavyWrite)
   .route({
     method: 'DELETE',
     path: '/delete-all-todos',

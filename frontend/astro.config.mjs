@@ -45,13 +45,19 @@ export default defineConfig({
   //   },
   // },
   server: {
-    host: '0.0.0.0', // Allow access from any interface. Change to 'localhost' for local use
-    port: 4321, // Port number for your Astro server
+    host: '0.0.0.0', // bind all interfaces
+    port: 443, // THIS ensures Astro itself uses the correct port
+    // strictPort: true,
+    // https: {
+    //   key: fs.readFileSync(path.resolve('./src/ssl/_.igorfastapi.co.uk_private_key.key')),
+    //   cert: fs.readFileSync(path.resolve('./src/ssl/full_chain.pem')),
+    // },
   },
   vite: {
+    ssr: { resolve: { externalConditions: ['bun', 'node'] } },
     server: {
       host: 'igorfastapi.co.uk', // bind all interfaces
-      port: 4321,
+      port: 443, // standard HTTPS port
       strictPort: true,
       https: {
         key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/_.igorfastapi.co.uk_private_key.key')),
@@ -64,6 +70,7 @@ export default defineConfig({
         '0.0.0.0',
         '10.87.40.210',
         '192.168.0.71',
+        '10.246.81.210',
       ],
       hmr: {
         protocol: 'wss', // WebSocket secure
@@ -71,6 +78,7 @@ export default defineConfig({
         port: 5173,
       },
     },
+
     plugins: [
       tailwindcss(),
       {
@@ -164,5 +172,30 @@ export default defineConfig({
       },
     },
   },
-  integrations: [react({ include: ['**/reactcomp/**/*'] }), typesafeRoutes()],
+  env: {
+    // We recommend enabling secret validation
+    validateSecrets: true,
+  },
+  integrations: [
+    react({ include: ['**/reactcomp/**/*'] }),
+    typesafeRoutes(),
+
+    // // 🚦 Global rate limit for entire site
+    // fixedWindow({
+    //   mode: 'LIVE',
+    //   window: '1m',
+    //   max: 200, // 200 req/min globally is safe
+    // }),
+
+    // // 🐢 Slow down abusive IPs (soft rate limit)
+    // slidingWindow({
+    //   mode: 'LIVE',
+    //   interval: '10m',
+    //   max: 500, // Allow some using, but slow abusers
+    // }),
+    // validateEmail({
+    //   mode: 'LIVE',
+    //   deny: ['DISPOSABLE', 'INVALID', 'NO_GRAVATAR', 'NO_MX_RECORDS'],
+    // }),
+  ],
 });

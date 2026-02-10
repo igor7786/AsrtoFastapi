@@ -7,8 +7,12 @@ import { createAuthMiddleware, APIError } from 'better-auth/api';
 import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
-import { resend } from '@/lib/resend-email';
-import { WelcomeEmail } from '@rcomp/auth-forms-emails/emails/VerificationEmail';
+import { emailQueue } from '@/lib/queues/email-queue';
+
+
+
+import {redis } from '@/lib/queues/redis'; // Import the Redis client
+
 
 export const auth = betterAuth({
   basePath: '/api/auth',
@@ -20,9 +24,10 @@ export const auth = betterAuth({
     'http://172.30.233.210:4321',
   ],
   database: drizzleAdapter(db, {
-    provider: 'sqlite', // or "mysql", "sqlite"
+    provider: 'pg', // or "mysql", "sqlite"
     schema: schema,
     camelCase: false,
+    debugLogs: false,
   }),
 
   socialProviders: {
@@ -54,38 +59,17 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
     expiresIn: 60 * 15, // 15 minutes
 
-    sendVerificationEmail: async ({ user, url, token }) => {
+    sendVerificationEmail: async ({ user, url }) => {
+      await redis.set('user', user.id, 'EX', 60 * 15); // Store user ID with expiration
       const getUrl = new URL(url);
+      getUrl.port = '443'; // Ensure the port is correct for the verification link
       getUrl.pathname = '/api/rpc/verify-email';
-      // getUrl.searchParams.set('user', user.email);
       const newUrl = getUrl.toString();
-      void resend.emails
-        .send({
-          from: 'Verification <astrofastapi@igorfastapi.co.uk>',
-          to: 'grimuta60@gmail.com',
-          subject: 'Email Verification',
-          react: WelcomeEmail({ user, newUrl }),
-        })
-        .then((result) => {
-          if (result.error) {
-            console.error('[EMAIL ERROR]', {
-              userId: user.id,
-              email: user.email,
-              statusCode: result.error.statusCode,
-              message: result.error.message,
-              name: result.error.name,
-            });
-          }
-        })
-        .catch((err) => {
-          // only network / runtime failures
-          console.error('[EMAIL FATAL]', {
-            userId: user.id,
-            email: user.email,
-            message: err.message,
-            fullError: err,
-          });
-        });
+      await emailQueue.add('verifyEmail', {
+        email: user.email,
+        verifyUrl: newUrl,
+        user,
+      });
     },
   },
 

@@ -2,11 +2,14 @@ import { os } from '@orpc/server';
 import type { RequestHeadersPluginContext, ResponseHeadersPluginContext } from '@orpc/server/plugins';
 import type { auth } from '@/lib/auth';
 import { type DB } from '@db/db-instance';
+import type { Context as HonoContext } from 'hono';
 
 // 👇 Extend ORPC context with your auth fields
 export type AppContext = RequestHeadersPluginContext &
   ResponseHeadersPluginContext & {
     db: DB;
+    request: Request;
+    hono: HonoContext;
   };
 
 export type AuthedContext = AppContext & {
@@ -29,6 +32,8 @@ export const base = os.$context<AppContext>().errors({
   TOO_MANY_REQUESTS: { message: 'Rate limit exceeded please try again later', code: 429 },
   INTERNAL_SERVER_ERROR: { message: 'Internal Server Error', code: 500 },
 });
+
+export const arcjetBase = base.$context<AuthedContext>();
 
 export const baseAuth = base.$context<AuthedContext>();
 export const baseLogin = base.$context<IsAuthedContext>();

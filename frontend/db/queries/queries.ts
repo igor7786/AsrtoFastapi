@@ -7,7 +7,6 @@ import type z from 'zod';
 import { user, account } from '@db/auth-schema';
 import { type LoginSchema } from '@/lib/types-schemas-validator/orpc-schemas-types/auth.login.register';
 import { verifyPassword } from '@/lib/argon2';
-import { error } from 'node:console';
 type OutputTodo = z.infer<typeof outputTodoSchema>;
 
 export const getUserByEmail = async (input: LoginSchema, db: DB) => {
@@ -94,9 +93,9 @@ export const deleteTodo = async (todoId: string, userId: string) => {
   return deleted;
 };
 export const deleteAllTodos = async (userId: string) => {
-  const deleted = await db.delete(todos).where(eq(todos.userId, userId)).run();
+  const deleted = await db.delete(todos).where(eq(todos.userId, userId)).returning();
   // @ts-ignore
-  if (deleted.changes === 0) {
+  if (deleted.length === 0) {
     return false;
   }
   return true;

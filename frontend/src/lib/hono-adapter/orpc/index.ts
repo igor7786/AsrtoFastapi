@@ -13,6 +13,7 @@ import { db } from '@db/db-instance';
 // 1️⃣ Create Hono app
 // ------------------------------
 const app = new Hono<HonoEnv>({ strict: false }).basePath('/api');
+
 // Enable CORS globally for /api routes
 app.use(
   '/rpc/auth/*',
@@ -40,14 +41,16 @@ app
     const { matched, response } = await openApiHandler.handle(c.req.raw, {
       prefix: '/api/rpc',
       context: {
-        session: c.get('session'), // ✅ real session object
-        user: c.get('user'), // You can inject user/session context here
-        db: db,
+        session: c.get('session'), // Your auth session
+        user: c.get('user'), // Your user object
+        db, // Database instance
+        request: c.req.raw, // Raw Request object (for ArcJet, etc.)
+        hono: c, // Full Hono context
       },
     });
 
     if (matched) return c.newResponse(response.body, response);
-    await next();
+    return next();
   })
   .on(['GET'], '/rpc/generate-contract-json', (c) => {
     const minified = minifyContractRouter(router);

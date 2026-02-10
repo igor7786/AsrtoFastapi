@@ -8,10 +8,12 @@ import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
 import { isLoggedIn } from '@hono-adapt/orpc/middlewares/auth-middleware';
 import { getUserByEmail } from '@db/queries/queries';
+import { arcjetNonAuthHeavyWrite } from '@/lib/hono-adapter/orpc/middlewares/arcjet/non-auth-user/write';
 
 export const resendEmail = baseLogin
   .use(isValErrors)
   .use(isLoggedIn)
+  .use(arcjetNonAuthHeavyWrite)
   .route({
     method: 'POST',
     path: '/resend-email',
@@ -48,7 +50,10 @@ export const resendEmail = baseLogin
           const isHttps = context.reqHeaders?.get('x-forwarded-proto') === 'https';
           context.resHeaders?.append('Set-Cookie', isHttps ? `${cookie}; Secure` : cookie);
         }
-        return { message: `Welcome back ${response.user.name}.`, redirectTo: '/resend-email?error=token_already_used' };
+        return {
+          message: `${response.user.name} you are already verified, you are now logged in.`,
+          redirectTo: '/resend-email?error=token_already_used',
+        };
       }
       const response = await auth.api.sendVerificationEmail({
         returnHeaders: true,
@@ -58,7 +63,6 @@ export const resendEmail = baseLogin
           email,
           callbackURL: '/',
         },
-
       });
       return {
         message: ` ${user.userRecord?.name} Yours verification email was sent to ${user.userRecord?.email}`,

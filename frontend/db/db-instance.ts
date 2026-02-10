@@ -1,5 +1,5 @@
-import { drizzle } from 'drizzle-orm/bun-sqlite';
-import { Database } from 'bun:sqlite';
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import { envServer } from '@/lib/env/env.server';
 import { LRUCache } from 'lru-cache';
 
@@ -21,11 +21,10 @@ export function getDbInstance() {
   }
 
   // Create SQLite instance
-  const sqlite = new Database(envServer.DB_FILE_NAME);
-  sqlite.run('PRAGMA foreign_keys = ON');
+  const sql = neon(envServer.DB_URL);
 
   // Create Drizzle instance
-  const db = drizzle({ client: sqlite });
+  const db = drizzle({ client: sql });
 
   // Cache it
   cache.set('db', { db });

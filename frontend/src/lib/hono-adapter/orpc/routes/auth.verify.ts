@@ -5,7 +5,8 @@ import {
   inputVerifyEmailSchema,
   verifyEmailOutputSchema,
 } from '@/lib/types-schemas-validator/orpc-schemas-types/verify';
-
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import { redis } from '@/lib/queues/redis';
 /* --------------------------------------------------
  * Route
  * -------------------------------------------------- */
@@ -21,8 +22,10 @@ export const verifyEmail = base
   .input(inputVerifyEmailSchema)
   .output(verifyEmailOutputSchema)
   .handler(async ({ input, context, errors }) => {
-    const { token, callbackURL } = input;
     try {
+      const result = await redis.get('user');
+      console.log('Redis value for key "user":', result);
+      const { token, callbackURL } = input;
       /* --------------------------------------------
        * Call BetterAuth
        * -------------------------------------------- */
@@ -38,17 +41,17 @@ export const verifyEmail = base
 
       const location = res.headers.get('location') ?? '/';
       const cookies = res.headers.getAll('set-cookie');
-
       /* --------------------------------------------
-       * 302 – success / already verified / expired
+       * 302 – success / already verified / expired/ invalid
        * -------------------------------------------- */
       // Successful verification (cookies present)
       if (res.status === 302 && cookies.length > 0) {
         return {
           status: 302,
           headers: {
-            location,
+            location: '/resend-email?error=false',
             'set-cookie': cookies,
+            'x-auth-token': 'Success',
           },
         };
       } else if (res.status === 302 && location === '/?error=token_expired') {
@@ -60,6 +63,14 @@ export const verifyEmail = base
           },
         };
         // Token already used
+      } else if (res.status === 302 && location === '/?error=invalid_token') {
+        // Token expired
+        return {
+          status: 302,
+          headers: {
+            location: '/resend-email?error=invalid_token',
+          },
+        };
       } else if (res.status === 302 && cookies.length === 0) {
         // Token already used
         return {
@@ -72,6 +83,7 @@ export const verifyEmail = base
         /* --------------------------------------------
          * 200 – non-redirect success (edge case)
          * -------------------------------------------- */
+        // Token already used
         return {
           status: 200,
           body: {
@@ -80,12 +92,10 @@ export const verifyEmail = base
           },
         };
       }
-      /* --------------------------------------------
-       * Unexpected status
-       * -------------------------------------------- */
+      const errorBody = await res.json();
       throw new APIError('UNAUTHORIZED', {
-        message: 'token_expired',
-        code: 'TOKEN_EXPIRED',
+        message: errorBody.message,
+        code: errorBody.code,
       });
     } catch (err) {
       if (err instanceof APIError && err.statusCode === 400) {

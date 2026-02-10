@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const tokenUrlSchema = z.enum(['token_already_used', 'token_expired']);
+export const tokenUrlSchema = z.enum(['token_already_used', 'token_expired', 'invalid_token', 'false']);
 
 export type TokenUrlSchema = z.infer<typeof tokenUrlSchema>;

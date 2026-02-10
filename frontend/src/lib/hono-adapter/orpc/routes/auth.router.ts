@@ -9,9 +9,14 @@ import { auth } from '@/lib/auth';
 import { isValErrors } from '@hono-adapt/orpc/middlewares/validation-errors';
 import { APIError } from 'better-auth/api';
 import { isAuth, isLoggedIn } from '@hono-adapt/orpc/middlewares/auth-middleware';
-
+import { deleteCookie } from '@orpc/server/helpers';
+import { arcjetNonAuthHeavyRead } from '@/lib/hono-adapter/orpc/middlewares/arcjet/non-auth-user/read';
+import { arcjetRead } from '@/lib/hono-adapter/orpc/middlewares/arcjet/auth-user/read';
+import { arcjetNonAuthHeavyWrite } from '@/lib/hono-adapter/orpc/middlewares/arcjet/non-auth-user/write';
+// Register user
 export const register = base
   .use(isValErrors)
+  .use(arcjetNonAuthHeavyWrite)
   .route({
     method: 'POST',
     path: '/register',
@@ -75,10 +80,11 @@ export const register = base
       throw errors.INTERNAL_SERVER_ERROR();
     }
   });
-
+// Login user
 export const login = baseLogin
   .use(isValErrors)
   .use(isLoggedIn)
+  .use(arcjetNonAuthHeavyRead)
   .route({
     method: 'POST',
     path: '/login',
@@ -128,10 +134,11 @@ export const login = baseLogin
     }
   });
 
-import { deleteCookie } from '@orpc/server/helpers';
+// Logout user
 export const logout = baseAuth
   .use(isValErrors)
   .use(isAuth)
+  .use(arcjetRead)
   .route({
     method: 'POST',
     path: '/logout',

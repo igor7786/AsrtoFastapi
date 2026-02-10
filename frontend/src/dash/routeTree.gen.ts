@@ -28,7 +28,7 @@ const DashHomeRoute = DashHomeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   "/dash/home": typeof DashHomeRoute
-  "/dash": typeof DashIndexLazyRoute
+  "/dash/": typeof DashIndexLazyRoute
 }
 export interface FileRoutesByTo {
   "/dash/home": typeof DashHomeRoute
@@ -41,7 +41,7 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/dash/home" | "/dash"
+  fullPaths: "/dash/home" | "/dash/"
   fileRoutesByTo: FileRoutesByTo
   to: "/dash/home" | "/dash"
   id: "__root__" | "/dash/home" | "/dash/"
@@ -57,7 +57,7 @@ declare module "@tanstack/react-router" {
     "/dash/": {
       id: "/dash/"
       path: "/dash"
-      fullPath: "/dash"
+      fullPath: "/dash/"
       preLoaderRoute: typeof DashIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }

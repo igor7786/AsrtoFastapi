@@ -1,22 +1,18 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { user } from '@db/auth-schema'; // adjust the import path
-import { v4 as uuidv4 } from 'uuid';
+import { pgTable, text, uuid, timestamp, boolean, varchar } from 'drizzle-orm/pg-core';
+import { user } from '@db/auth-schema'; // keep your correct import
 
-export const todos = sqliteTable('todos', {
-  id: text('id')
-    .primaryKey()
-    .$defaultFn(() => uuidv4()),
-  title: text('title', { length: 255 }).notNull(),
-  description: text('description', { length: 1000 }).notNull(),
-  completed: integer('completed', { mode: 'boolean' })
-    .$default(() => false)
-    .notNull(),
-  createdAt: integer('created_at', { mode: 'timestamp' })
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' })
-    .$defaultFn(() => /* @__PURE__ */ new Date())
-    .notNull(),
+export const todos = pgTable('todos', {
+  id: uuid('id').primaryKey().defaultRandom(), // PostgreSQL-native UUID generator
+
+  title: varchar('title', { length: 255 }).notNull(),
+  description: varchar('description', { length: 1000 }).notNull(),
+
+  completed: boolean('completed').notNull().default(false),
+
+  createdAt: timestamp('created_at', { withTimezone: false }).notNull().defaultNow(),
+
+  updatedAt: timestamp('updated_at', { withTimezone: false }).notNull().defaultNow(),
+
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),

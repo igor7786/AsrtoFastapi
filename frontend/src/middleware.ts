@@ -9,7 +9,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   ) {
     return next();
   }
-  const notProtectedPaths = ['/resend-email', '/auth'];
+  const notProtectedPaths = ['/auth'];
   const protectedPaths = ['/dashboard', '/admin', '/settings'];
   const pathname = context.url.pathname;
   const session = await auth.api.getSession({ headers: context.request.headers });
