@@ -8,7 +8,7 @@ import {
 function createArcjetMiddleware(getClient: () => ReturnType<typeof arcjet>) {
   return ajBase.concat(async ({ context, next, errors }) => {
     const client = getClient();
-    const decision = await client.protect(context.request);
+    const decision = await client.protect(context.request.clone());
 
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {

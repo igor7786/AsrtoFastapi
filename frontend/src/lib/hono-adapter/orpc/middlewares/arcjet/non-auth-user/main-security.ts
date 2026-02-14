@@ -8,9 +8,9 @@ export const ajBase = arcjetBase.middleware(async ({ context, next, errors }) =>
   const userId = context.user?.id;
   let decision;
   if (userId) {
-    decision = await standardArcjet.protect(context.request, { userId });
+    decision = await standardArcjet.protect(context.request.clone(), { userId });
   } else {
-    decision = await standardArcjetNonAuth.protect(context.request);
+    decision = await standardArcjetNonAuth.protect(context.request.clone());
   }
   // console.log('ArcJet details:', decision.results);
   if (decision.isDenied()) {

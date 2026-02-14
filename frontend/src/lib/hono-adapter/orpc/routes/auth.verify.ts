@@ -23,8 +23,9 @@ export const verifyEmail = base
   .output(verifyEmailOutputSchema)
   .handler(async ({ input, context, errors }) => {
     try {
-      const result = await redis.get('user');
-      console.log('Redis value for key "user":', result);
+      const result = await redis.get(input.token);
+      const userObj = JSON.parse(result!);
+      console.log('User object:', userObj);
       const { token, callbackURL } = input;
       /* --------------------------------------------
        * Call BetterAuth

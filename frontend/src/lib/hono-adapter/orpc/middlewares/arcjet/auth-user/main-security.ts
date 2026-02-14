@@ -4,7 +4,7 @@ import { base, type AuthedContext } from '@/lib/hono-adapter/orpc/middlewares/ba
 export const arcjetBase = base.$context<AuthedContext>();
 export const ajBase = arcjetBase.middleware(async ({ context, next, errors }) => {
   const userId = context.user.id;
-  const decision = await standardArcjet.protect(context.request, {
+  const decision = await standardArcjet.protect(context.request.clone(), {
     userId,
   });
   if (decision.isDenied()) {

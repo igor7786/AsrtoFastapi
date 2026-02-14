@@ -8,7 +8,7 @@ function createAuthArcjetMiddleware(getClient: () => ArcjetClientWithUser) {
   return ajBase.concat(async ({ context, next, errors }) => {
     const client = getClient();
     const userId = context.user?.id;
-    const decision = await client.protect(context.request, { userId });
+    const decision = await client.protect(context.request.clone(), { userId });
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {
         throw errors.FORBIDDEN({ message: 'Too many requests. Please slow down!' });

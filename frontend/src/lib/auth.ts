@@ -8,12 +8,7 @@ import * as schema from '@db/shema-index';
 import { hashPassword, verifyPassword } from '@/lib/argon2';
 import { envServer } from '@/lib/env/env.server';
 import { emailQueue } from '@/lib/queues/email-queue';
-
-
-
-import {redis } from '@/lib/queues/redis'; // Import the Redis client
-
-
+import { redis } from '@/lib/queues/redis'; // Import the Redis client
 export const auth = betterAuth({
   basePath: '/api/auth',
   trustedOrigins: [
@@ -59,8 +54,8 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true, // Automatically signIn the user after verification
     expiresIn: 60 * 15, // 15 minutes
 
-    sendVerificationEmail: async ({ user, url }) => {
-      await redis.set('user', user.id, 'EX', 60 * 15); // Store user ID with expiration
+    sendVerificationEmail: async ({ user, url, token }) => {
+      await redis.set(token, JSON.stringify(user), 'EX', 60 * 15); // Store user ID with expiration
       const getUrl = new URL(url);
       getUrl.port = '443'; // Ensure the port is correct for the verification link
       getUrl.pathname = '/api/rpc/verify-email';
@@ -84,6 +79,21 @@ export const auth = betterAuth({
   user: {
     deleteUser: {
       enabled: true,
+    },
+  },
+  advanced: {
+    ipAddress: {
+      ipAddressHeaders: [
+        'x-forwarded-for',
+        'x-real-ip',
+        'cf-connecting-ip',
+        'fastly-client-ip',
+        'true-client-ip',
+        'x-cluster-client-ip',
+        'x-forwarded',
+        'forwarded-for',
+        'forwarded',
+      ],
     },
   },
   plugins: [openAPI()],

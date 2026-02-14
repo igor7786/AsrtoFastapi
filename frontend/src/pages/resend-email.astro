@@ -25,8 +25,10 @@ if (!success) {
       <ResendEmailUser slot="main" client:load />
     ) : err === 'token_already_used' ? (
       <EmailVerificationDialog errorMessage={'Email already verified'} slot="main" client:load />
-    ) : (
+    ) : err === 'invalid_token' ? (
       <EmailVerificationDialog errorMessage={'Invalid token'} slot="main" client:load />
+    ) : (
+      <EmailVerificationDialog errorMessage={'WELCOME YOU CUNT!!!'} slot="main" client:load />
     )
   }
   <!-- <ResendEmailUser slot="main" client:load /> -->

@@ -38,3 +38,17 @@ pls add on top of file:
 qwik-react:
 npm install @builder.io/qwik-react@0.5.0 @emotion/react@^11.11.1  @emotion/styled@^11.11.0   @mui/material@^5.13.0 @mui/x-data-grid@^6.4.0
 
+
+#Build
+sudo chown -R $USER:$USER /home/igor7786/PycharmProjects/PythonProject/AsrtoFastapi/frontend
+
+sudo rm -rf node_modules
+  sudo rm -rf bun.lock
+  sudo rm -rf package-lock.json   # if exists
+  sudo rm -rf .astro
+  sudo rm -rf node_modules/.vite
+  sudo rm -rf dist
+
+bun install
+
+bun run bun:build
