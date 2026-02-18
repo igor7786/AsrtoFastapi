@@ -1,4 +1,4 @@
-import { ajBase } from '@/lib/hono-adapter/orpc/middlewares/arcjet/auth-user/main-security';
+import { ajBase } from '@/lib/hono-adapter/orpc/middlewares/arcjet/main-instance';
 import {
   writeArcjet,
   heavyWriteArcjet,
@@ -8,6 +8,10 @@ function createAuthArcjetMiddleware(getClient: () => ArcjetClientWithUser) {
   return ajBase.concat(async ({ context, next, errors }) => {
     const client = getClient();
     const userId = context.user?.id;
+    if (!userId) {
+      // or UNAUTHORIZED if you have it
+      throw errors.FORBIDDEN({ message: 'Authentication required' });
+    }
     const decision = await client.protect(context.request.clone(), { userId });
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {

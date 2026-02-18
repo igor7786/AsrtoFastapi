@@ -19,5 +19,7 @@ new Worker(
       });
     }
   },
+  // @ts-ignore
+
   { connection: redis }
 );

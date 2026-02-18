@@ -8,6 +8,7 @@ import { minifyContractRouter } from '@orpc/contract';
 import { router } from '@hono-adapt/orpc/routes/router';
 import type { HonoEnv } from '@db/types';
 import { db } from '@db/db-instance';
+  import { findIp } from '@arcjet/ip';
 
 // ------------------------------
 // 1️⃣ Create Hono app
@@ -73,6 +74,10 @@ app
 // ------------------------------
 // 3️⃣ Health check endpoint
 // ------------------------------
-app.get('/test', (c) => c.json({ message: 'Server healthy' }));
+app.get('/test', (c) => {
+  const ip = findIp(c.req.raw) || 'unknown';
+
+  return c.json({ message: 'Server healthy', ip });
+});
 
 export default app;

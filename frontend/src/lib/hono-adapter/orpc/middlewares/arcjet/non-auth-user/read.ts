@@ -1,5 +1,5 @@
 import { type arcjet } from '@hono-adapt/orpc/middlewares/arcjet/main-instance';
-import { ajBase } from '@/lib/hono-adapter/orpc/middlewares/arcjet/non-auth-user/main-security';
+import { ajBase } from '@/lib/hono-adapter/orpc/middlewares/arcjet/main-instance';
 import {
   readArcjet,
   heavyReadArcjet,
