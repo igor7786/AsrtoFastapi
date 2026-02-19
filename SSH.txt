@@ -16,16 +16,21 @@ mv "/home/igor7786/Downloads/ssh-key-oracle.key" ~/.ssh/ssh-key-oracle.key
 chmod 600 ~/.ssh/ssh-key-oracle.key
 chmod 700 ~/.ssh
 
-ssh -i ~/.ssh/ssh-key-oracle.key ubuntu@132.145.55.230
+ssh -i ~/.ssh/ssh-key-oracle.key ubuntu@84.8.155.57
 
 
 # On the server (as ubuntu):
 sudo apt update
 sudo apt upgrade -y
+# Check if ssh keys exists
+ls -ld /home/ubuntu/.ssh
+ls -l /home/ubuntu/.ssh/authorized_keys
+
 
 sudo adduser igor
 sudo usermod -aG sudo igor
 
+# If you wanna create new user
 sudo mkdir -p /home/igor/.ssh
 sudo cp /home/ubuntu/.ssh/authorized_keys /home/igor/.ssh/
 sudo chown -R igor:igor /home/igor/.ssh
@@ -33,7 +38,7 @@ sudo chmod 700 /home/igor/.ssh
 sudo chmod 600 /home/igor/.ssh/authorized_keys
 
 # Back on your PC (test):
-ssh -i ~/.ssh/ssh-key-oracle.key igor@132.145.55.230
+ssh -i ~/.ssh/ssh-key-oracle.key ubuntu@84.8.155.57
 
 # Only after that succeeds, on the server:
 sudo nano /etc/ssh/sshd_config
