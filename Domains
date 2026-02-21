@@ -1,0 +1,26 @@
+A CNAME makes one domain name point to another domain name.
+A      fast-web-tech.co.uk     → 82.15.200.10
+CNAME  www                     → fast-web-tech.co.uk
+
+AAAA Record Points a domain to an IPv6 address.
+AAAA  fast-web-tech.co.uk     → 2001:db8::1
+A = IPv4
+AAAA = IPv6
+(AAAA = 4 × A = bigger address 😄)
+
+MX Record Tells the internet which server handles email for your domain.
+
+MX  fast-web-tech.co.uk  → mail.fast-web-tech.co.uk
+“All emails like info@fast-web-tech.co.uk
+ go to that mail server.”
+
+
+TXT Record Stores text information for verification or security purposes.
+TXT  fast-web-tech.co.uk  → google-site-verification=abc123
+TXT  fast-web-tech.co.uk  → v=spf1 include:_spf.google.com ~all
+
+NS Record Specifies the authoritative name servers for your domain.
+NS  fast-web-tech.co.uk  → ns1.cloudflare.com
+NS  fast-web-tech.co.uk  → ns2.cloudflare.com
+NS  fast-web-tech.co.uk  → ns3.cloudflare.com
+NS  fast-web-tech.co.uk  → ns4.cloudflare.com
