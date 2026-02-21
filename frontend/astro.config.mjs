@@ -46,7 +46,7 @@ export default defineConfig({
   // },
   server: {
     host: '0.0.0.0', // bind all interfaces
-    port: 443, // THIS ensures Astro itself uses the correct port
+    port: 4321, // THIS ensures Astro itself uses the correct port
     // strictPort: true,
     // https: {
     //   key: fs.readFileSync(path.resolve('./src/ssl/_.igorfastapi.co.uk_private_key.key')),
@@ -56,15 +56,17 @@ export default defineConfig({
   vite: {
     ssr: { resolve: { externalConditions: ['bun', 'node'] } },
     server: {
-      host: 'igorfastapi.co.uk', // bind all interfaces
-      port: 443, // standard HTTPS port
+      host: 'fast-web-tech.co.uk', // bind all interfaces
+      port: 4321, // standard HTTPS port
       strictPort: true,
-      https: {
-        key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/_.igorfastapi.co.uk_private_key.key')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/full_chain.pem')),
-      },
+      // https: {
+      //   key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/_.igorfastapi.co.uk_private_key.key')),
+      //   cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/full_chain.pem')),
+      // },
       allowedHosts: [
         'igorfastapi.co.uk',
+        'fast-web-tech.co.uk',
+        'www.fast-web-tech.co.uk',
         'localhost',
         '127.0.0.1',
         '0.0.0.0',
@@ -72,11 +74,11 @@ export default defineConfig({
         '192.168.0.71',
         '10.246.81.210',
       ],
-      hmr: {
-        protocol: 'wss', // WebSocket secure
-        host: 'igorfastapi.co.uk', // public hostname used by browser
-        port: 5173,
-      },
+      // hmr: {
+      //   protocol: 'wss', // WebSocket secure
+      //   host: 'igorfastapi.co.uk', // public hostname used by browser
+      //   port: 5173,
+      // },
     },
 
     plugins: [

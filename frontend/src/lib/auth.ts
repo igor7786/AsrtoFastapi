@@ -57,7 +57,7 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, url, token }) => {
       await redis.set(token, JSON.stringify(user), 'EX', 60 * 15); // Store user ID with expiration
       const getUrl = new URL(url);
-      getUrl.port = '443'; // Ensure the port is correct for the verification link
+      getUrl.port = '4321'; // Ensure the port is correct for the verification link
       getUrl.pathname = '/api/rpc/verify-email';
       const newUrl = getUrl.toString();
       await emailQueue.add('verifyEmail', {

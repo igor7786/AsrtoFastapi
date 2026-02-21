@@ -158,7 +158,9 @@ pkg/
 *.zpaq
 # Archiver with a compression algorithm based on the Burrows-Wheeler transform method.
 *.zz
-
+### Docker ###
+**/docker/data
+**/docker/portainer_data
 
 ### dotenv ###
 */.env
