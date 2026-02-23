@@ -9,7 +9,7 @@ new Worker(
     if (job.name === 'verifyEmail') {
       const { email, verifyUrl, user } = job.data;
       await resend.emails.send({
-        from: 'Verification <astrofastapi@igorfastapi.co.uk>',
+        from: 'Verification <no-reply@fast-web-tech.co.uk>',
         to: 'grimuta60@gmail.com',
         subject: 'Email Verification',
         react: WelcomeEmail({

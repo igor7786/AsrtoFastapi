@@ -9,6 +9,27 @@ then confirm
 after code -> ssh -> git clone -> git@github.com:igor7786/AsrtoFastapi.git
 
 #REMOTE-SERVER
+ssh username@hostname_or_ip
+enter password
+exit
+ssh-keygen -t ed25519 -C "example@domain.com" -f ~/.ssh/id_somthing
+Enter passphrase (empty for no passphrase):
+👉 Option A (Recommended for security): Type a strong password. (Note: Nothing will show on screen while typing).
+👉 Option B (Easiest for automation/scripts): Press Enter twice to leave it empty.
+#Try to connect
+ssh -i ~/.ssh/id_somthing root@hostname_or_ip
+exit
+#On main PC
+sudo nano ~/.ssh/config
+Host something
+    HostName 185.230.218.3
+    User root
+    IdentityFile ~/.ssh/id_something
+    IdentitiesOnly yes
+now try to connect
+ssh something
+
+#Key already exsist
 # On your PC:
 chmod 600 "/home/igor7786/Downloads/ssh-key-oracle.key"
 mkdir -p ~/.ssh
@@ -20,19 +41,17 @@ ssh -i ~/.ssh/ssh-key-oracle.key ubuntu@84.8.155.57
 
 
 # On the server (as ubuntu):
-sudo apt update
-sudo apt upgrade -y
+r
 # Check if ssh keys exists
 ls -ld /home/ubuntu/.ssh
 ls -l /home/ubuntu/.ssh/authorized_keys
-
 
 sudo adduser igor
 sudo usermod -aG sudo igor
 
 # If you wanna create new user
 sudo mkdir -p /home/igor/.ssh
-sudo cp /home/ubuntu/.ssh/authorized_keys /home/igor/.ssh/
+sudo cp /home/root/.ssh/authorized_keys /home/igor/.ssh/
 sudo chown -R igor:igor /home/igor/.ssh
 sudo chmod 700 /home/igor/.ssh
 sudo chmod 600 /home/igor/.ssh/authorized_keys

@@ -53,13 +53,14 @@ export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
             className="mx-auto my-20"
           />
           <Container className="bg-white p-45">
-            <Heading className="my-0 text-center leading-8">Welcome to AsrtoFastapi</Heading>
+            <Heading className="my-0 text-center leading-8">Welcome to FAST WEB TECH ⚡</Heading>
 
             <Section>
               <Row>
                 <Text className="text-base">
-                  Congratulations {user?.name} ! You're joining over 3 million people around the world
-                  who use <strong>igorfastapi.co.uk</strong> to be part of community.
+                  Congratulations, <Text className="font-semibold">{user?.name}.</Text> You're joining
+                  over 3 million people around the world who use{' '}
+                  <strong>https://fast-web-tech.co.uk/ 🚀 </strong> to be part of community.
                 </Text>
 
                 <Text className="text-base">Here's how to get started:</Text>
@@ -68,7 +69,7 @@ export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
 
             <Section className="text-center">
               <Button href={newUrl} className="rounded-lg bg-[#007a55] px-4.5 py-3 text-white">
-                Verify your email address !
+                Verify your email address ✊ !
               </Button>
               <Text className="mt-4 text-center font-semibold text-red-500">
                 Link expires in 15 minutes!
@@ -86,7 +87,7 @@ export const WelcomeEmail = ({ user, newUrl }: EmailProps) => {
               </Row>
             </Section>
             <Text className="mb-45 text-center text-gray-400">
-              AsrtoFastapi, XX Some Street, Suite 300 Some City, Some State, 99999
+              Fast Web Tech, XX Some Street, Suite 300 Some City, Some State, 99999 🌏
             </Text>
           </Container>
         </Body>
