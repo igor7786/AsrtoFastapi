@@ -68,8 +68,17 @@ PubkeyAuthentication yes
 KbdInteractiveAuthentication no
 UsePAM yes
 
+sudo nano /etc/ssh/sshd_config.d/99-hardening.conf
+# add at bottom:
+Match All
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    PermitRootLogin no
+    PubkeyAuthentication yes
+
 sudo sshd -t
 sudo systemctl reload ssh
+sudo sshd -T | grep passwordauthentication
 
 # Optional after confirming everything:
 sudo passwd -l ubuntu

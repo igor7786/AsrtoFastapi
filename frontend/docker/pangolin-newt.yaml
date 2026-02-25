@@ -1,0 +1,21 @@
+services:
+  newt:
+    image: fosrl/newt
+    container_name: newt
+    restart: unless-stopped
+
+    # 1. Move env_file INSIDE the service
+    env_file:
+      - ../.env  # Loads all variables from this file automatically
+
+    environment:
+      # 2. Use ${VAR} syntax OR just the variable name
+      # Option A: Explicit mapping (recommended if names differ)
+      - PANGOLIN_ENDPOINT
+      - NEWT_ID
+      - NEWT_SECRET
+
+      # Option B: Shorthand (does the same thing if names match)
+      # - PANGOLIN_ENDPOINT
+      # - NEWT_ID
+      # - NEWT_SECRET
