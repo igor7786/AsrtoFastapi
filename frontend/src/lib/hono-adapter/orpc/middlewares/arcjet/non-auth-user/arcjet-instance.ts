@@ -1,7 +1,4 @@
-import {
-  standardArcjet,
-  slidingWindow,
-} from '@hono-adapt/orpc/middlewares/arcjet/main-instance';
+import { standardArcjet, slidingWindow } from '@hono-adapt/orpc/middlewares/arcjet/main-instance';
 
 export const readArcjet = () =>
   standardArcjet.withRule(

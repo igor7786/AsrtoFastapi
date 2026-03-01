@@ -24,7 +24,7 @@ export const standardArcjet = arcjet({
 
 export const arcjetBase = base.$context<IsAuthedContext>();
 export const ajBase = arcjetBase.middleware(async ({ context, next, errors }) => {
-    const decision = await standardArcjet.protect(context.request.clone());
+  const decision = await standardArcjet.protect(context.request.clone());
   // console.log('ArcJet details:', decision.results);
   if (decision.isDenied()) {
     if (decision.reason.isBot()) {

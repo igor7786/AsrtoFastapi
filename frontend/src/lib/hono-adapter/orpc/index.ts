@@ -8,7 +8,7 @@ import { minifyContractRouter } from '@orpc/contract';
 import { router } from '@hono-adapt/orpc/routes/router';
 import type { HonoEnv } from '@db/types';
 import { db } from '@db/db-instance';
-  import { findIp } from '@arcjet/ip';
+import { findIp } from '@arcjet/ip';
 
 // ------------------------------
 // 1️⃣ Create Hono app

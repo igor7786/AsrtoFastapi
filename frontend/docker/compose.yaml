@@ -1,0 +1,5 @@
+name: homelab
+include:
+  - nginx_proxy_manager.yaml
+  - portainer.yaml
+  - pangolin-newt.yaml

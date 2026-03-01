@@ -3,11 +3,11 @@ services:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx_proxy_manager
     restart: unless-stopped
-    network_mode: "host"
-    # ports:
-    #   - "80:80"
-    #   - "81:81"
-    #   - "443:443"
+    # network_mode: "host"
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
     volumes:
       - ./data/npm_data:/data
       - ./data/npm_letsencrypt:/etc/letsencrypt
@@ -26,3 +26,7 @@ services:
       - "7880:7880"
     volumes:
       - ./data/npm_data/logs:/opt/log:ro
+
+networks:
+  default:
+    name: homelab

@@ -7,11 +7,11 @@ type ArcjetClientWithUser = ReturnType<typeof readArcjet>; // includes userId in
 function createAuthArcjetMiddleware(getClient: () => ArcjetClientWithUser) {
   return ajBase.concat(async ({ context, next, errors }) => {
     const client = getClient();
-     const userId = context.user?.id;
-     if (!userId) {
-       // or UNAUTHORIZED if you have it
-       throw errors.FORBIDDEN({ message: 'Authentication required' });
-     }
+    const userId = context.user?.id;
+    if (!userId) {
+      // or UNAUTHORIZED if you have it
+      throw errors.FORBIDDEN({ message: 'Authentication required' });
+    }
     const decision = await client.protect(context.request.clone(), { userId });
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {
