@@ -64,10 +64,8 @@ export default defineConfig({
       //   cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/full_chain.pem')),
       // },
       allowedHosts: [
-        'igorfastapi.co.uk',
         'fast-web-tech.co.uk',
         'www.fast-web-tech.co.uk',
-        'testing.fast-web-tech.co.uk',
         'localhost',
         '127.0.0.1',
         '0.0.0.0',

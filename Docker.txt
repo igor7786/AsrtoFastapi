@@ -1,0 +1,50 @@
+
+#DOCKER
+# Set up Docker with overlay2 storage driver to avoid btrfs issues
+sudo systemctl stop docker.socket
+sudo systemctl stop docker.service
+sudo systemctl disable docker.socket
+ps aux | grep dockerd
+sudo mv /var/lib/docker /var/lib/docker.btrfs-backup
+sudo mkdir /var/lib/docker
+sudo chmod 711 /var/lib/docker
+sudo mkdir -p /etc/docker
+sudo nano /etc/docker/daemon.json
+{
+  "storage-driver": "overlay2"
+}
+sudo systemctl enable docker.socket
+sudo systemctl start docker
+docker info | grep -i "Storage Driver"
+docker run hello-world
+sudo rm -rf /var/lib/docker.btrfs-backup
+sudo usermod -aG docker igor7786
+sudo usermod -aG docker $USER
+
+#Delete all images, containers, volumes, and networks
+docker rmi -f $(docker images -q)
+docker system prune -a --volumes -f
+docker compose up -d --force-recreate traefik
+#Check env if was loaded
+docker inspect traefik | grep CLOUDFLARE
+#From the compose directory:
+docker compose config
+
+newgrp docker
+docker ps
+docker exec -it my-nginx-container bash
+docker stop $(docker ps -q)
+
+
+docker compose down --remove-orphans
+docker network prune -f
+docker compose build --no-cache && docker compose up
+docker exec -it 0c640c652bc2 /bin/sh
+sudo journalctl -xeu nginx.service
+sudo chown -R $(whoami) frontend #after needed on top layer after running docker
+docker network ls
+docker network inspect my_network
+docker network rm my_network
+docker-compose -f portainer-docker-compose.yml up -d
+docker exec -it my-nginx-container curl -I http://localhost:9000
+docker exec -it my-nginx-container curl -k -I https://127.0.0.1 #by

@@ -8,12 +8,12 @@ services:
     env_file:
       - ../.env  # Loads all variables from this file automatically
 
-    environment:
-      # 2. Use ${VAR} syntax OR just the variable name
-      # Option A: Explicit mapping (recommended if names differ)
-      - PANGOLIN_ENDPOINT
-      - NEWT_ID
-      - NEWT_SECRET
+    # environment:
+    # #   # 2. Use ${VAR} syntax OR just the variable name
+    # #   # Option A: Explicit mapping (recommended if names differ)
+    #   - PANGOLIN_ENDPOINT=${PANGOLIN_ENDPOINT}
+    #   - NEWT_ID=${NEWT_ID}
+    #   - NEWT_SECRET=${NEWT_SECRET}
 
       # Option B: Shorthand (does the same thing if names match)
       # - PANGOLIN_ENDPOINT

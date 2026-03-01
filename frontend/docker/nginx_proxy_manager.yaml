@@ -4,6 +4,10 @@ services:
     container_name: nginx_proxy_manager
     restart: unless-stopped
     network_mode: "host"
+    # ports:
+    #   - "80:80"
+    #   - "81:81"
+    #   - "443:443"
     volumes:
       - ./data/npm_data:/data
       - ./data/npm_letsencrypt:/etc/letsencrypt
@@ -17,7 +21,7 @@ services:
     container_name: goaccess
     restart: unless-stopped
     environment:
-      - TZ=America/Denver
+      - TZ=Europe/London
     ports:
       - "7880:7880"
     volumes:

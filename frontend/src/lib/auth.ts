@@ -1,3 +1,4 @@
+// At the top of your file
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@db/db-instance'; // your drizzle instance
@@ -59,10 +60,7 @@ export const auth = betterAuth({
       const getUrl = new URL(url);
       // Set correct verification path
       getUrl.pathname = '/api/rpc/verify-email';
-
       const newUrl = getUrl.toString();
-
-      console.log('Final Verification URL:', newUrl);
       await emailQueue.add('verifyEmail', {
         email: user.email,
         verifyUrl: newUrl,
