@@ -60,8 +60,8 @@ export default defineConfig({
       port: 4321, // standard HTTPS port
       strictPort: true,
       // https: {
-      //   key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/_.igorfastapi.co.uk_private_key.key')),
-      //   cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/full_chain.pem')),
+      //   key: fs.readFileSync(path.resolve(__dirname, 'src/ssl/privkey.pem')),
+      //   cert: fs.readFileSync(path.resolve(__dirname, 'src/ssl/fullchain.pem')),
       // },
       allowedHosts: [
         'fast-web-tech.co.uk',
