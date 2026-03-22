@@ -1,0 +1,6 @@
+sudo pacman -S obsidian --overwrite "*"
+sudo pacman -Syu
+yay -S visual-studio-code-bin --overwrite '*'
+# Install the fakeroot-adopt tool or just force-reinstall each package
+sudo pacman -S --overwrite '*' lsof libxss xdg-utils libxkbfile libnotify
+sudo chown -R root:root /opt/visual-studio-code

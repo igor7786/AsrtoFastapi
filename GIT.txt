@@ -92,3 +92,26 @@ Changes not staged for commit:
   (use "git add/rm <file>..." to update what will be committed)
   (use "git restore <file>..." to discard changes in working directory)
         deleted:    backend/app_db.db
+
+To make sure ignored files stay local:
+check what's already tracked:
+      git ls-files
+      git rm -r --cached filename
+      ga .
+      gc "chore: untrack ignored files"
+# Create new branch from main
+gbc test-branch
+# work, commit, merge, repeat
+touch test.txt
+ga .
+gc "feat: add test.txt"
+first push to remote:
+      g push --set-upstream origin test-branch
+after pull request is merged to main:
+      gbs main
+      gpl
+      gp
+      g branch -d test-branch
+      g push origin --delete test-branch
+**Your full cycle looks like this:**
+      main → gbc test-branch → work → commit → merge to main → delete branch → repeat
