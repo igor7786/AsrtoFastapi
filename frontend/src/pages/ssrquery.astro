@@ -35,6 +35,7 @@ const dehydratedState = dehydrate(queryClient);
 
       <QueryProvider client:load dehydratedState={dehydratedState}>
         <PostsList client:load />
+        <PostsList client:visible />
       </QueryProvider>
     </main>
   </body>

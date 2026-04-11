@@ -48,3 +48,14 @@ docker network rm my_network
 docker-compose -f portainer-docker-compose.yml up -d
 docker exec -it my-nginx-container curl -I http://localhost:9000
 docker exec -it my-nginx-container curl -k -I https://127.0.0.1 #by
+
+
+#Network
+
+docker exec -it my-nginx-container curl -I http://localhost:9000
+docker exec -it my-nginx-container curl -k -I https://127.0.0.1 #by
+❯ docker network inspect homelab | grep Gateway
+                    "Gateway": "172.18.0.1"
+
+❯ docker exec -it nginx_proxy_manager getent hosts host.docker.internal
+172.17.0.1      host.docker.internal
